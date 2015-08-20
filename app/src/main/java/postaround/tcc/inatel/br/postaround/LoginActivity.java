@@ -4,20 +4,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
-import com.facebook.login.widget.LoginButton;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private LoginButton loginButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        FacebookSdk.sdkInitialize(getApplicationContext());
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        loginButton = (LoginButton)findViewById(R.id.login_button);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

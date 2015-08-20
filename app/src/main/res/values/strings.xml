@@ -4,5 +4,21 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="facebook_app_id">492199260955846</string>
+    <string name="title_activity_navigation">NavigationActivity</string>
+
+    <string name="post_ao_redor">Post ao Redor</string>
+    <string name="meus_posts">Meus Posts</string>
+    <string name="configuracoes">configurações</string>
+    <string name="sobre">Sobre</string>
+    <string name="sair">Sair</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_example">Example action</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <string name="dados">dados</string>
+    <string name="nome_usuario">name</string>
 
 </resources>
