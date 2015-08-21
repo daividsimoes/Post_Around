@@ -16,12 +16,13 @@ import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.LoggingBehavior;
-import com.facebook.Profile;
 
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
+import org.json.JSONException;
 import org.json.JSONObject;
+
 
 import java.util.Arrays;
 
@@ -35,7 +36,7 @@ import postaround.tcc.inatel.br.postaround.R;
 public class LoginActivityFragment extends Fragment {
 
     private String name;
-
+    private String email;
 
     private CallbackManager mCallbackManager;
     private FacebookCallback<LoginResult> mFacebookCallback = new FacebookCallback<LoginResult>() {
@@ -53,13 +54,26 @@ public class LoginActivityFragment extends Fragment {
                                 FacebookSdk.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
 
                                 System.out.println("AccessToken.getCurrentAccessToken()" + AccessToken.getCurrentAccessToken().toString());
+                               // name = Profile.getCurrentProfile().getName().toString();
 
-                                name = Profile.getCurrentProfile().getName().toString();
-                                Log.e("Nome",name.toString());
 
+                                try {
+                                    name = object.getString("name");
+                                    email = object.getString("email");
+                                    Log.e("OBJETO",object.toString());
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    name = "NULL";
+                                    email = "NULL";
+                                }
+                                Log.e("Nome", name);
+                                Log.e("Email",email);
                             }
                         }
                     });
+            Bundle parameters = new Bundle();
+            parameters.putString("fields", "id,name,email,gender, birthday");
+            request.setParameters(parameters);
             request.executeAsync();
         }
 
@@ -96,7 +110,7 @@ public class LoginActivityFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         LoginButton loginButton = (LoginButton)view.findViewById(R.id.login_button);
-        loginButton.setReadPermissions(Arrays.asList("public_profile", "email"));
+        loginButton.setReadPermissions(Arrays.asList("public_profile","email"));
         loginButton.setFragment(this);
         loginButton.registerCallback(mCallbackManager, mFacebookCallback);
 
