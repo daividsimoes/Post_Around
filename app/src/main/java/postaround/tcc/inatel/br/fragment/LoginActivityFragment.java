@@ -17,6 +17,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.LoggingBehavior;
 
+import com.facebook.Profile;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
@@ -26,6 +27,7 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 
+import postaround.tcc.inatel.br.model.LoginModel;
 import postaround.tcc.inatel.br.postaround.BuildConfig;
 
 import postaround.tcc.inatel.br.postaround.R;
@@ -35,8 +37,7 @@ import postaround.tcc.inatel.br.postaround.R;
  */
 public class LoginActivityFragment extends Fragment {
 
-    private String name;
-    private String email;
+    private LoginModel loginModel;
 
     private CallbackManager mCallbackManager;
     private FacebookCallback<LoginResult> mFacebookCallback = new FacebookCallback<LoginResult>() {
@@ -53,21 +54,26 @@ public class LoginActivityFragment extends Fragment {
                                 FacebookSdk.setIsDebugEnabled(true);
                                 FacebookSdk.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
 
-                                System.out.println("AccessToken.getCurrentAccessToken()" + AccessToken.getCurrentAccessToken().toString());
-                               // name = Profile.getCurrentProfile().getName().toString();
+                                //System.out.println("AccessToken.getCurrentAccessToken.getToken)" + AccessToken.getCurrentAccessToken().getToken().toString());
+                               //Profile.getCurrentProfile().getName().toString();
+                               //Profile.getCurrentProfile().getProfilePictureUri(120,120);
 
 
                                 try {
-                                    name = object.getString("name");
-                                    email = object.getString("email");
-                                    Log.e("OBJETO",object.toString());
+                                    loginModel.setId(object.getLong("id"));
+                                    loginModel.setAccessToken(AccessToken.getCurrentAccessToken().getToken());
+                                    loginModel.setName(object.getString("name"));
+                                    loginModel.setEmail(object.getString("email"));
+                                    loginModel.setUrlFotoPerfil("https://graph.facebook.com/" + loginModel.getId() + "/picture?type=large");
+                                  //  Log.e("OBJETO", object.toString());
                                 } catch (JSONException e) {
                                     e.printStackTrace();
-                                    name = "NULL";
-                                    email = "NULL";
                                 }
-                                Log.e("Nome", name);
-                                Log.e("Email",email);
+                                Log.e("ID",String.valueOf(loginModel.getId()));
+                                Log.e("Access Token",loginModel.getAccessToken());
+                                Log.e("Nome", loginModel.getName());
+                                Log.e("Email", loginModel.getEmail());
+                                Log.e("URL", loginModel.getUrlFotoPerfil());
                             }
                         }
                     });
@@ -97,6 +103,7 @@ public class LoginActivityFragment extends Fragment {
         FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
         mCallbackManager = CallbackManager.Factory.create();
 
+        loginModel = new LoginModel();
     }
 
     @Override
