@@ -1,14 +1,13 @@
 <resources>
-    <string name="app_name">Post Around</string>
+    <string name="app_name">PostAí</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="facebook_app_id">492199260955846</string>
     <string name="title_activity_navigation">NavigationActivity</string>
 
-    <string name="post_ao_redor">Post ao Redor</string>
+    <string name="post_ao_redor">Posts ao Redor</string>
     <string name="meus_posts">Meus Posts</string>
-    <string name="configuracoes">configurações</string>
+    <string name="configuracoes">Configurações</string>
     <string name="sobre">Sobre</string>
     <string name="sair">Sair</string>
 
@@ -18,7 +17,15 @@
     <string name="action_example">Example action</string>
     <string name="title_activity_login">Sign in</string>
 
-    <string name="dados">dados</string>
-    <string name="nome_usuario">name</string>
+    <string name="versao_post_around">PostAí versão 1.0</string>
+    <string name="sobre_post_around">EXPLICAÇÃO SOBRE PostAí AQUI</string>
+
+    <string name="notificacao">Notificações</string>
+    <string name="conta">Conta</string>
+
+    <string name="novos_posts_ao_redor">Novos Posts ao redor</string>
+    <string name="novos_comentarios">Novos comentários</string>
+
+    <string name="bt_apagar_conta">Apagar conta</string>
 
 </resources>

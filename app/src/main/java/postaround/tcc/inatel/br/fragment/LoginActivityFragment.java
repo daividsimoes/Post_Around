@@ -25,11 +25,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 import postaround.tcc.inatel.br.model.LoginModel;
 import postaround.tcc.inatel.br.postaround.BuildConfig;
 
+import postaround.tcc.inatel.br.postaround.NavigationActivity;
 import postaround.tcc.inatel.br.postaround.R;
 
 /**
@@ -38,6 +40,7 @@ import postaround.tcc.inatel.br.postaround.R;
 public class LoginActivityFragment extends Fragment {
 
     private LoginModel loginModel;
+    private Intent intent;
 
     private CallbackManager mCallbackManager;
     private FacebookCallback<LoginResult> mFacebookCallback = new FacebookCallback<LoginResult>() {
@@ -72,8 +75,9 @@ public class LoginActivityFragment extends Fragment {
                                 Log.e("ID",String.valueOf(loginModel.getId()));
                                 Log.e("Access Token",loginModel.getAccessToken());
                                 Log.e("Nome", loginModel.getName());
-                                Log.e("Email", loginModel.getEmail());
-                                Log.e("URL", loginModel.getUrlFotoPerfil());
+
+                                intent = new Intent(getActivity(), NavigationActivity.class);
+                                startActivity(intent);
                             }
                         }
                     });

@@ -1,19 +1,27 @@
 package postaround.tcc.inatel.br.postaround;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
+import android.widget.Toast;
 
+import postaround.tcc.inatel.br.fragment.ConfiguracaoFragment;
+import postaround.tcc.inatel.br.fragment.MeusPostsFragment;
 import postaround.tcc.inatel.br.fragment.NavigationDrawerFragment;
+import postaround.tcc.inatel.br.fragment.PostAoRedorFragment;
+import postaround.tcc.inatel.br.fragment.SairFragment;
+import postaround.tcc.inatel.br.fragment.SobreFragment;
 
 public class NavigationActivity extends AppCompatActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -89,15 +97,9 @@ public class NavigationActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!mNavigationDrawerFragment.isDrawerOpen()) {
-            // Only show items in the action bar relevant to this screen
-            // if the drawer is not showing. Otherwise, let the drawer
-            // decide what to show in the action bar.
-            getMenuInflater().inflate(R.menu.navigation, menu);
-            restoreActionBar();
-            return true;
-        }
-        return super.onCreateOptionsMenu(menu);
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_login, menu);
+        return true;
     }
 
     @Override
@@ -114,7 +116,6 @@ public class NavigationActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
-
     /**
      * A placeholder postaround.tcc.inatel.br.fragment containing a simple view.
      */
@@ -129,8 +130,34 @@ public class NavigationActivity extends AppCompatActivity
          * Returns a new instance of this postaround.tcc.inatel.br.fragment for the given section
          * number.
          */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
+        public static Fragment newInstance(int sectionNumber) {
+            Fragment fragment;
+            switch (sectionNumber){
+                case 1:
+                    fragment = new PostAoRedorFragment();
+                    break;
+
+                case 2:
+                    fragment = new MeusPostsFragment();
+                    break;
+
+                case 3:
+                    fragment = new ConfiguracaoFragment();
+                    break;
+
+                case 4:
+                    fragment = new SobreFragment();
+                    break;
+
+                case 5:
+                    fragment = new SairFragment();
+                    break;
+
+                default:
+                    fragment = new PlaceholderFragment();
+                    break;
+
+            }
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
             fragment.setArguments(args);
