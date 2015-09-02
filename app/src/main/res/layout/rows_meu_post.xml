@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:maxLength="50"
+            android:id="@+id/textView_descricao_meu_post"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLargePopupMenu" />
+
+        <TextView
+            android:maxLength="100"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="15dp"
+            android:id="@+id/textView_comentario_meu_post" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="20dp">
+
+
+            <com.facebook.login.widget.ProfilePictureView
+                android:layout_gravity="right"
+                android:id="@+id/imagemview_profile_picture_meu_post"
+                android:layout_width="50dp"
+                android:layout_height="50dp"/>
+
+            <TextView
+                android:maxLength="18"
+                android:paddingTop="10dp"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/textView_nome_usuario_meu_post" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_gravity="right"
+        android:id="@+id/imageView_post_picture_meu_post"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/tcc"/>
+
+</LinearLayout>

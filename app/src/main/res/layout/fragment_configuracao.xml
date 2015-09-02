@@ -1,0 +1,101 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="postaround.tcc.inatel.br.fragment.ConfiguracaoFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="30dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/notificacao" />
+
+        <View
+            android:layout_marginTop="10dp"
+            android:id="@+id/divisor1"
+            android:layout_width="fill_parent"
+            android:layout_height="2dip"
+            android:background="@color/blue" />
+
+        <LinearLayout
+            android:paddingTop="5dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/novos_posts_ao_redor" />
+                <Switch
+                    android:paddingTop="20dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/switch_novo_post_retor"
+                    android:checked="true"/>
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/novos_comentarios" />
+                <Switch
+                    android:paddingTop="20dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/switch_novos_comentarios"
+                    android:checked="true"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:paddingTop="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/conta" />
+
+        <View
+            android:layout_marginTop="10dp"
+            android:id="@+id/divisor2"
+            android:layout_width="fill_parent"
+            android:layout_height="2dip"
+            android:background="@color/blue" />
+
+        <Button
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bt_apagar_conta"
+            android:id="@+id/bt_apagar_conta"
+            android:layout_gravity="center_horizontal" />
+
+    </LinearLayout>
+</FrameLayout>

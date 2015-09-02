@@ -1,0 +1,32 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="postaround.tcc.inatel.br.fragment.SobreFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:paddingTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:gravity="center_horizontal"
+            android:text="@string/versao_post_around" />
+
+        <TextView
+            android:paddingTop="20dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/sobre_post_around" />
+
+    </LinearLayout>
+
+</FrameLayout>
