@@ -1,9 +1,15 @@
 package postaround.tcc.inatel.br.postaround;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.facebook.AccessToken;
+import com.facebook.FacebookSdk;
+import com.facebook.Profile;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -11,9 +17,14 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        FacebookSdk.sdkInitialize(this.getApplicationContext());
+        loginStatus();
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
     }
 
 
@@ -37,5 +48,18 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void loginStatus() {
+        //check login
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        if (accessToken == null) {
+            Log.d("TAG", ">>>" + "Signed Out");
+            setContentView(R.layout.activity_login);
+        } else {
+            Log.d("TAG", ">>>" + "Signed In");
+            Intent intent = new Intent(this, NavigationActivity.class);
+            startActivity(intent);
+        }
     }
 }

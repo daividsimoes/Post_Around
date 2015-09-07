@@ -1,7 +1,10 @@
 package postaround.tcc.inatel.br.postaround;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -15,6 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.Toast;
+
+import com.facebook.login.LoginManager;
 
 import postaround.tcc.inatel.br.fragment.ConfiguracaoFragment;
 import postaround.tcc.inatel.br.fragment.MeusPostsFragment;
@@ -126,6 +131,8 @@ public class NavigationActivity extends AppCompatActivity
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
 
+        private Context context = getActivity().getBaseContext();
+
         /**
          * Returns a new instance of this postaround.tcc.inatel.br.fragment for the given section
          * number.
@@ -150,7 +157,7 @@ public class NavigationActivity extends AppCompatActivity
                     break;
 
                 case 5:
-                    fragment = new SairFragment();
+                   fragment = new SairFragment();
                     break;
 
                 default:
@@ -180,6 +187,12 @@ public class NavigationActivity extends AppCompatActivity
             ((NavigationActivity) activity).onSectionAttached(
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
+    }
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+
     }
 
 }

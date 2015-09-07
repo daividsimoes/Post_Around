@@ -1,6 +1,8 @@
 package postaround.tcc.inatel.br.fragment;
 
 import android.content.Intent;
+import android.content.pm.PackageInstaller;
+import android.service.textservice.SpellCheckerService;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
+import com.facebook.FacebookActivity;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
@@ -18,6 +21,7 @@ import com.facebook.GraphResponse;
 import com.facebook.LoggingBehavior;
 
 import com.facebook.Profile;
+import com.facebook.applinks.FacebookAppLinkResolver;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
@@ -78,6 +82,7 @@ public class LoginActivityFragment extends Fragment {
 
                                 intent = new Intent(getActivity(), NavigationActivity.class);
                                 startActivity(intent);
+                                getActivity().finish();
                             }
                         }
                     });
@@ -106,7 +111,6 @@ public class LoginActivityFragment extends Fragment {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
         mCallbackManager = CallbackManager.Factory.create();
-
         loginModel = new LoginModel();
     }
 
