@@ -1,8 +1,12 @@
 package postaround.tcc.inatel.br.fragment;
 
 
+import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,20 +17,30 @@ import android.widget.Toast;
 import com.facebook.FacebookSdk;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import postaround.tcc.inatel.br.adapter.PostAoRedorAdapter;
+import postaround.tcc.inatel.br.interfaces.RestAPI;
 import postaround.tcc.inatel.br.model.LoginModel;
+import postaround.tcc.inatel.br.model.Post;
 import postaround.tcc.inatel.br.model.PostAoRedor;
 import postaround.tcc.inatel.br.postaround.R;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PostAoRedorFragment extends Fragment {
+public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,
+        AdapterView.OnItemClickListener{
 
     private ListView listView;
-    private ArrayList<PostAoRedor> postList;
-    private PostAoRedor post;
+    private List<Post> postList;
+    private View view;
+    private Activity activity;
+    private SwipeRefreshLayout swipeView;
 
 
     public PostAoRedorFragment() {
@@ -35,56 +49,67 @@ public class PostAoRedorFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity = this.getActivity();
         FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_post_ao_redor, container, false);
+
+        view = inflater.inflate(R.layout.fragment_post_ao_redor, container, false);
         listView = (ListView) view.findViewById(R.id.listView_post_redor);
+        swipeView = (SwipeRefreshLayout) view.findViewById(R.id.swipe);
 
-        postList = populaLista();
+        populaLista();
 
-        listView.setAdapter(new PostAoRedorAdapter(this.getActivity(), postList));
+        swipeView.setOnRefreshListener(this);
+        listView.setOnItemClickListener(this);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(),"Nome "+parent.getItemAtPosition(position).toString(),Toast.LENGTH_LONG).show();
-            }
-        });
+
         return view;
     }
 
+    private void populaLista() {
 
-    public ArrayList<PostAoRedor> populaLista(){
-        ArrayList<PostAoRedor> lista = new ArrayList<PostAoRedor>();
+        String longitude ="-45.70410132408142";
+        String latitude = "-22.252638996602688";
+        String maxDis = "3000";
 
-        post = new PostAoRedor();
-        post.setIdUsuario("875726655854018");
-        post.setNomeUsuario("Daivid Simões");
-        post.setTituloDescricao("Desenvolvimento Android");
-        post.setComentarioDescricao("Como fazer um ListView personalizado?");
-        lista.add(post);
+        RestAdapter retrofit = new RestAdapter.Builder()
+                .setEndpoint("http://api-tccpostaround.rhcloud.com/api")
+                .build();
 
-        post = new PostAoRedor();
-        post.setIdUsuario("865987463482201");
-        post.setNomeUsuario("Paula Souza");
-        post.setTituloDescricao("Provas");
-        post.setComentarioDescricao("Resolução provas antigas de Sistema de Controles Dinâmicos.");
-        lista.add(post);
+        RestAPI restAPI = retrofit.create(RestAPI.class);
 
+        restAPI.getPosts(longitude, latitude, maxDis, new Callback<List<Post>>() {
+            @Override
+            public void success(List<Post> posts, Response response) {
 
-        post = new PostAoRedor();
-        post.setIdUsuario("110091962676326");
-        post.setNomeUsuario("TCC Profile");
-        post.setTituloDescricao("Como fazer o TCC");
-        post.setComentarioDescricao("Retire todas suas dúvidas sobre o TCC aqui.");
-        lista.add(post);
+                listView.setAdapter(new PostAoRedorAdapter(activity, posts));
+                swipeView.setRefreshing(false);
+            }
 
-
-        return  lista;
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("error", error.getMessage());
+            }
+        });
     }
 
+    @Override
+    public void onRefresh() {
+        swipeView.setRefreshing(true);
+        (new Handler()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                populaLista();
+            }
+        }, 3000);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        Toast.makeText(getActivity(), "Nome " + adapterView.getItemAtPosition(i).toString(), Toast.LENGTH_LONG).show();
+    }
 }
