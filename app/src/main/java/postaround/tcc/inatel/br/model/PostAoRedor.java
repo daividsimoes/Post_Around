@@ -17,10 +17,6 @@ public class PostAoRedor {
         this.idUsuario = idUsuario;
     }
 
-
-
-
-
     public String getNomeUsuario() {
         return nomeUsuario;
     }

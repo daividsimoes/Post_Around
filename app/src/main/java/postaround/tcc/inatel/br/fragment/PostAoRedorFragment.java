@@ -2,6 +2,7 @@ package postaround.tcc.inatel.br.fragment;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -24,6 +27,7 @@ import postaround.tcc.inatel.br.interfaces.RestAPI;
 import postaround.tcc.inatel.br.model.LoginModel;
 import postaround.tcc.inatel.br.model.Post;
 import postaround.tcc.inatel.br.model.PostAoRedor;
+import postaround.tcc.inatel.br.postaround.CriarPostActivity;
 import postaround.tcc.inatel.br.postaround.R;
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -41,6 +45,7 @@ public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.
     private View view;
     private Activity activity;
     private SwipeRefreshLayout swipeView;
+    private ImageButton button;
 
 
     public PostAoRedorFragment() {
@@ -60,11 +65,20 @@ public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.
         view = inflater.inflate(R.layout.fragment_post_ao_redor, container, false);
         listView = (ListView) view.findViewById(R.id.listView_post_redor);
         swipeView = (SwipeRefreshLayout) view.findViewById(R.id.swipe);
+        button = (ImageButton) view.findViewById(R.id.button_add_post);
 
         populaLista();
 
         swipeView.setOnRefreshListener(this);
         listView.setOnItemClickListener(this);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity, CriarPostActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
         return view;

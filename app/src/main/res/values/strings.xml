@@ -28,4 +28,10 @@
 
     <string name="bt_apagar_conta">Apagar conta</string>
 
+    <string name="title_activity_criar_post">CriarPostActivity</string>
+    <string name="descricao">Descrição</string>
+    <string name="hint_descricao">Digite uma descrição</string>
+    <string name="comentario">Comentário</string>
+    <string name="hint_comentario">Digite um comentário</string>
+
 </resources>
