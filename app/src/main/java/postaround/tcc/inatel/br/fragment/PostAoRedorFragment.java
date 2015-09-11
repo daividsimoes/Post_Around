@@ -75,7 +75,7 @@ public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.
         listView = (ListView) view.findViewById(R.id.listView_post_redor);
         swipeView = (SwipeRefreshLayout) view.findViewById(R.id.swipe);
 
-        //populaLista();
+        //populaLista(); movido para OnConnected()
 
         swipeView.setOnRefreshListener(this);
         listView.setOnItemClickListener(this);
