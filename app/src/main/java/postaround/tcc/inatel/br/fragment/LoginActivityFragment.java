@@ -31,12 +31,21 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.List;
 
+import postaround.tcc.inatel.br.adapter.PostAoRedorAdapter;
+import postaround.tcc.inatel.br.interfaces.RestAPI;
 import postaround.tcc.inatel.br.model.LoginModel;
+import postaround.tcc.inatel.br.model.Post;
+import postaround.tcc.inatel.br.model.User;
 import postaround.tcc.inatel.br.postaround.BuildConfig;
 
 import postaround.tcc.inatel.br.postaround.NavigationActivity;
 import postaround.tcc.inatel.br.postaround.R;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -79,6 +88,28 @@ public class LoginActivityFragment extends Fragment {
                                 Log.e("ID",String.valueOf(loginModel.getId()));
                                 Log.e("Access Token",loginModel.getAccessToken());
                                 Log.e("Nome", loginModel.getName());
+
+                                RestAdapter retrofit = new RestAdapter.Builder()
+                                        .setEndpoint("http://api-tccpostaround.rhcloud.com/api")
+                                        .build();
+
+                                RestAPI restAPI = retrofit.create(RestAPI.class);
+
+                                User user = new User();
+
+                                user.setToken(loginModel.getAccessToken());
+
+                                restAPI.postUser(user, new Callback<User>() {
+                                    @Override
+                                    public void success(User user, Response response) {
+
+                                    }
+
+                                    @Override
+                                    public void failure(RetrofitError error) {
+
+                                    }
+                                });
 
                                 intent = new Intent(getActivity(), NavigationActivity.class);
                                 startActivity(intent);

@@ -3,8 +3,11 @@ package postaround.tcc.inatel.br.interfaces;
 import java.util.List;
 
 import postaround.tcc.inatel.br.model.Post;
+import postaround.tcc.inatel.br.model.User;
 import retrofit.Callback;
+import retrofit.http.Body;
 import retrofit.http.GET;
+import retrofit.http.POST;
 import retrofit.http.Path;
 
 /**
@@ -15,5 +18,8 @@ public interface RestAPI {
     @GET("/posts/{longitude}/{latitude}/{maxDis}")
     public void getPosts(@Path("longitude") String longitude, @Path("latitude") String latitude,
                          @Path("maxDis") String maxDis, Callback<List<Post>> response);
+
+    @POST("/login/")
+    public void postUser(@Body User user, Callback<User> response);
 
 }
