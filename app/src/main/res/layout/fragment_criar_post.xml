@@ -42,6 +42,18 @@
         android:hint="@string/hint_comentario"
         android:id="@+id/editText_criar_comentario_post" />
 
+    <Button
+        android:id="@+id/selectImagem"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="@string/selecImagem"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/imagemView"
+        />
+
     <LinearLayout
         android:gravity="bottom"
         android:layout_width="match_parent"

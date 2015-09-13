@@ -34,4 +34,6 @@
     <string name="comentario">Comentário</string>
     <string name="hint_comentario">Digite um comentário</string>
 
+    <string name="selecImagem">Selecionar imagem</string>
+
 </resources>
