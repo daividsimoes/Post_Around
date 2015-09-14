@@ -33,7 +33,7 @@ import postaround.tcc.inatel.br.interfaces.RestAPI;
 import postaround.tcc.inatel.br.model.LoginModel;
 import postaround.tcc.inatel.br.model.Post;
 import postaround.tcc.inatel.br.model.PostAoRedor;
-import postaround.tcc.inatel.br.postaround.CriarPostActivity;
+
 import postaround.tcc.inatel.br.postaround.R;
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -68,6 +68,8 @@ public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.
 
         buildGoogleApiClient();
 
+
+
     }
 
     @Override
@@ -79,7 +81,7 @@ public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.
         swipeView = (SwipeRefreshLayout) view.findViewById(R.id.swipe);
         button = (ImageButton) view.findViewById(R.id.button_add_post);
 
-        populaLista();
+
 
         swipeView.setOnRefreshListener(this);
         listView.setOnItemClickListener(this);
@@ -87,8 +89,10 @@ public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(activity, CriarPostActivity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(activity, CriarPostActivity.class);
+                // startActivity(intent);
+
+                //populaLista();
             }
         });
 
@@ -101,8 +105,8 @@ public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.
 
         HashMap<String, Double> location = getLocation();
         if(location != null) {
-            String longitude = location.get("latitude").toString();
-            String latitude = location.get("longitude").toString();
+            String longitude = location.get("longitude").toString();
+            String latitude = location.get("latitude").toString();
 
 
             String maxDis = "3000";
@@ -113,19 +117,21 @@ public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.
 
             RestAPI restAPI = retrofit.create(RestAPI.class);
 
-            restAPI.getPosts(longitude, latitude, maxDis, new Callback<List<Post>>() {
-                @Override
-                public void success(List<Post> posts, Response response) {
+    restAPI.getPosts(longitude, latitude, maxDis, new Callback<List<Post>>() {
+        @Override
+        public void success(List<Post> posts, Response response) {
 
-                    listView.setAdapter(new PostAoRedorAdapter(activity, posts));
-                    swipeView.setRefreshing(false);
-                }
+            listView.setAdapter(new PostAoRedorAdapter(activity, posts));
+            swipeView.setRefreshing(false);
+        }
 
-                @Override
-                public void failure(RetrofitError error) {
-                    Log.e("error", error.getMessage());
-                }
-            });
+        @Override
+        public void failure(RetrofitError error) {
+            Log.e("error", error.getMessage());
+        }
+    });
+
+
         }
     }
 

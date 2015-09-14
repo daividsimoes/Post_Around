@@ -89,27 +89,27 @@ public class LoginActivityFragment extends Fragment {
                                 Log.e("Access Token",loginModel.getAccessToken());
                                 Log.e("Nome", loginModel.getName());
 
-                                RestAdapter retrofit = new RestAdapter.Builder()
-                                        .setEndpoint("http://api-tccpostaround.rhcloud.com/api")
-                                        .build();
+                               // RestAdapter retrofit = new RestAdapter.Builder()
+                              //          .setEndpoint("http://api-tccpostaround.rhcloud.com/api")
+                              //          .build();
 
-                                RestAPI restAPI = retrofit.create(RestAPI.class);
+                               // RestAPI restAPI = retrofit.create(RestAPI.class);
 
-                                User user = new User();
+                              //  User user = new User();
 
-                                user.setToken(loginModel.getAccessToken());
+                               // user.setToken(loginModel.getAccessToken());
 
-                                restAPI.postUser(user, new Callback<User>() {
-                                    @Override
-                                    public void success(User user, Response response) {
+                               // restAPI.postUser(user, new Callback<User>() {
+                                 //   @Override
+                                //    public void success(User user, Response response) {
 
-                                    }
+                               //     }
 
-                                    @Override
-                                    public void failure(RetrofitError error) {
+                               //     @Override
+                               //     public void failure(RetrofitError error) {
 
-                                    }
-                                });
+                               //     }
+                               // });
 
                                 intent = new Intent(getActivity(), NavigationActivity.class);
                                 startActivity(intent);

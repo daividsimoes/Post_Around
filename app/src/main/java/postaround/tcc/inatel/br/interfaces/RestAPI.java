@@ -19,7 +19,7 @@ public interface RestAPI {
     public void getPosts(@Path("longitude") String longitude, @Path("latitude") String latitude,
                          @Path("maxDis") String maxDis, Callback<List<Post>> response);
 
-    @POST("/login/")
-    public void postUser(@Body User user, Callback<User> response);
+    //@POST("/login/")
+   // public void postUser(@Body User user, Callback<User> response);
 
 }
