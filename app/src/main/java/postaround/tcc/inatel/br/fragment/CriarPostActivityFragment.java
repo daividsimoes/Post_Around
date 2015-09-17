@@ -4,8 +4,6 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
@@ -17,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import postaround.tcc.inatel.br.postaround.GetResponseAsync;
 import postaround.tcc.inatel.br.postaround.R;
 
 /**
@@ -25,10 +24,16 @@ import postaround.tcc.inatel.br.postaround.R;
 public class CriarPostActivityFragment extends Fragment {
 
     private static final int CAMERA_PIC_REQUEST = 1;
+    private static final int SELECT_PHOTO_REQUEST = 2;
 
-    private Button btnSelectImagem;
-    private ImageView imageview;
+    private Button btnTakePic;
+    private Button btnChosePic;
+    private Button btnSend;
+    private ImageView imgViewPic;
+
     private Uri imageUri;
+
+    GetResponseAsync asyncTask = new GetResponseAsync(getActivity());
 
     public CriarPostActivityFragment() {
     }
@@ -38,78 +43,109 @@ public class CriarPostActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_criar_post, container, false);
 
-        imageview = (ImageView) view.findViewById(R.id.imagemView);
+        imgViewPic = (ImageView) view.findViewById(R.id.imgViewPic);
 
-        btnSelectImagem = (Button) view.findViewById(R.id.selectImagem);
-        btnSelectImagem.setOnClickListener(new View.OnClickListener() {
+        btnTakePic = (Button) view.findViewById(R.id.btnTakePic);
+        btnTakePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                //getActivity().startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
+                try {
+                    ContentValues values = new ContentValues();
+                    values.put(MediaStore.Images.Media.TITLE, "Image from PostAí");
+                    imageUri = getActivity().getContentResolver().insert(
+                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                    startActivityForResult(intent, CAMERA_PIC_REQUEST);
+                }
+                catch (Exception ex)
+                {
+                    Toast t = Toast.makeText(getActivity(), "Fail", Toast.LENGTH_LONG);
+                    t.show();
+                }
+            }
+        });
 
-                ContentValues values = new ContentValues();
-                values.put(MediaStore.Images.Media.TITLE, "New Picture");
-                values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
-                imageUri = getActivity().getContentResolver().insert(
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                startActivityForResult(intent, CAMERA_PIC_REQUEST);
+        btnChosePic = (Button) view.findViewById(R.id.btnGetPicFromFile);
+        btnChosePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/*");
+                startActivityForResult(photoPickerIntent, SELECT_PHOTO_REQUEST);
+            }
+        });
+
+        btnSend = (Button) view.findViewById(R.id.btnSend);
+        btnSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (imageUri != null)
+                {
+                    try {
+                        String path = getRealPathFromURI(imageUri);
+
+                        Boolean result = asyncTask.execute(path).get();
+                        //new DownloadImageAsync(imgViewPic).execute(urlResult);
+
+                        if(!result) {
+                            Toast t = Toast.makeText(getActivity(), "Falha ao carregar imagem.", Toast.LENGTH_LONG);
+                            t.show();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Toast t = Toast.makeText(getActivity(), "Falha ao carregar imagem.", Toast.LENGTH_LONG);
+                        t.show();
+                    }
+                }
             }
         });
 
         if(dispositivoPossuiCamera())
-            btnSelectImagem.setVisibility(view.VISIBLE);
+            btnTakePic.setVisibility(view.VISIBLE);
         else
-            btnSelectImagem.setVisibility(view.GONE);
+            btnTakePic.setVisibility(view.GONE);
 
         return view;
     }
 
+    // Gerencia o resultado das Intents chamadas para capturar e busca imagem
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == CAMERA_PIC_REQUEST) {
-
             try {
-                Bitmap thumbnail = MediaStore.Images.Media.getBitmap(
-                        getActivity().getContentResolver(), imageUri);
-                imageview.setImageBitmap(thumbnail);
-                String imageurl = getRealPathFromURI(imageUri);
+                imgViewPic.setImageURI(imageUri);
             } catch (Exception e) {
                 e.printStackTrace();
-            }
 
-            /*if (resultCode == getActivity().RESULT_OK) {
-                Toast t = Toast.makeText(getActivity(), "SUCESSO", Toast.LENGTH_LONG);
+                Toast t = Toast.makeText(getActivity(), "Fail", Toast.LENGTH_LONG);
                 t.show();
-
-                Bitmap image = (Bitmap) data.getExtras().get("data");
-                imageview.setImageBitmap(image);
             }
-            else {
-                Toast t = Toast.makeText(getActivity(), "FALHA2", Toast.LENGTH_LONG);
+        }
+        else if(requestCode == SELECT_PHOTO_REQUEST)
+        {
+            try {
+                imageUri = data.getData();
+                imgViewPic.setImageURI(imageUri);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+
+                Toast t = Toast.makeText(getActivity(), "Fail", Toast.LENGTH_LONG);
                 t.show();
-            }*/
+            }
         }
         else
         {
-            Toast t = Toast.makeText(getActivity(), "FALHA1", Toast.LENGTH_LONG);
+            Toast t = Toast.makeText(getActivity(), "Fail", Toast.LENGTH_LONG);
             t.show();
         }
     }
 
-    public String getRealPathFromURI(Uri contentUri) {
-        String[] proj = { MediaStore.Images.Media.DATA };
-        Cursor cursor = getActivity().getContentResolver().query(contentUri, proj, null, null, null);
-        int column_index = cursor
-                .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
-    }
-
-    //Verifica se o dispositivo possui uma camera
+    // Verifica se o dispositivo possui uma camera
     private boolean dispositivoPossuiCamera() {
         if (getActivity().getPackageManager().hasSystemFeature(
                 PackageManager.FEATURE_CAMERA)) {
@@ -117,5 +153,20 @@ public class CriarPostActivityFragment extends Fragment {
         } else {
             return false;
         }
+    }
+
+    // Pega o caminho completo da imagem
+    private String getRealPathFromURI(Uri contentURI) {
+        String result;
+        Cursor cursor = getActivity().getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) { // Source is Dropbox or other similar local file path
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+        return result;
     }
 }
