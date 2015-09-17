@@ -42,17 +42,40 @@
         android:hint="@string/hint_comentario"
         android:id="@+id/editText_criar_comentario_post" />
 
-    <Button
-        android:id="@+id/selectImagem"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:text="@string/selecImagem"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2" >
+
+        <Button
+            android:id="@+id/btnTakePic"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="55dp"
+            android:text="@string/capturarImagem"/>
+
+        <Button
+            android:id="@+id/btnGetPicFromFile"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="55dp"
+            android:text="@string/escolherImagem"/>
+
+    </LinearLayout>
+
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/imagemView"
+        android:layout_height="180dp"
+        android:id="@+id/imgViewPic"
         />
+
+    <Button
+        android:id="@+id/btnSend"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="Enviar"/>
 
     <LinearLayout
         android:gravity="bottom"
