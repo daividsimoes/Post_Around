@@ -85,13 +85,11 @@ public class CriarPostActivityFragment extends Fragment {
                     try {
                         String path = getRealPathFromURI(imageUri);
 
-                        Boolean result = asyncTask.execute(path).get();
+                        String urlResult = asyncTask.execute(path).get();
                         //new DownloadImageAsync(imgViewPic).execute(urlResult);
 
-                        if(!result) {
-                            Toast t = Toast.makeText(getActivity(), "Falha ao carregar imagem.", Toast.LENGTH_LONG);
-                            t.show();
-                        }
+                        Toast t = Toast.makeText(getActivity(), urlResult, Toast.LENGTH_LONG);
+                        t.show();
                     }
                     catch (Exception ex)
                     {

@@ -1,8 +1,11 @@
 package postaround.tcc.inatel.br.postaround;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.Window;
 import android.widget.Toast;
 
 import com.cloudinary.Cloudinary;
@@ -20,12 +23,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import postaround.tcc.inatel.br.fragment.CriarPostActivityFragment;
+
 /**
  * Created by Carol on 13/09/2015.
  */
-public class GetResponseAsync extends AsyncTask<String, Void, Boolean> {
+public class GetResponseAsync extends AsyncTask<String, Void, String> {
 
-    Context context;
+    private Context context;
 
     public GetResponseAsync(Context c) {
         this.context = c;
@@ -43,7 +48,7 @@ public class GetResponseAsync extends AsyncTask<String, Void, Boolean> {
     }
 
     @Override
-    protected Boolean doInBackground(String... params) {
+    protected String doInBackground(String... params) {
 
         Map config = new HashMap();
         config.put("cloud_name", "dfnoff8kl"); //
@@ -54,20 +59,21 @@ public class GetResponseAsync extends AsyncTask<String, Void, Boolean> {
         Cloudinary cloudinary = new Cloudinary(config);
 
         try {
-            cloudinary.uploader().upload(params[0], config);
+            Map result = cloudinary.uploader().upload(params[0], config);
             Log.w("UPLOAD: ", params[0]);
+            String urlResult = result.get("url").toString();
 
-            return true;
+            return urlResult;
         }
         catch (Exception e) {
             e.printStackTrace();
 
-            return false;
+            return null;
         }
     }
 
     @Override
-    protected void onPostExecute(Boolean result) {
+    protected void onPostExecute(String result) {
         super.onPostExecute(result);
     }
 }
