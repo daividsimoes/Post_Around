@@ -35,4 +35,8 @@ public class CriarPostActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void closeActivity(){
+        this.finish();
+    }
 }

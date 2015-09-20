@@ -13,6 +13,7 @@ import com.facebook.login.widget.ProfilePictureView;
 import java.util.ArrayList;
 import java.util.List;
 
+import postaround.tcc.inatel.br.Util.UserInformation;
 import postaround.tcc.inatel.br.model.Post;
 import postaround.tcc.inatel.br.model.PostAoRedor;
 import postaround.tcc.inatel.br.postaround.R;
@@ -64,6 +65,9 @@ public class PostAoRedorAdapter extends BaseAdapter{
         tituloDescricao = (TextView) view.findViewById(R.id.textView_descricao_post_post_redor);
         comentarioDescricao = (TextView) view.findViewById(R.id.textView_comentario_post_post_redor);
         nomeUsuario = (TextView) view.findViewById(R.id.textView_nome_usuario_post_redor);
+
+        ProfilePictureView profilePictureView = (ProfilePictureView) view.findViewById(R.id.imagemview_profile_picture_post_redor);
+        profilePictureView.setProfileId(post.getUser_id());
 
 
         tituloDescricao.setText(post.getTitle());

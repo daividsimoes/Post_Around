@@ -34,6 +34,7 @@ import postaround.tcc.inatel.br.model.LoginModel;
 import postaround.tcc.inatel.br.model.Post;
 import postaround.tcc.inatel.br.model.PostAoRedor;
 
+import postaround.tcc.inatel.br.postaround.CriarPostActivity;
 import postaround.tcc.inatel.br.postaround.R;
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -89,8 +90,8 @@ public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(activity, CriarPostActivity.class);
-                // startActivity(intent);
+                Intent intent = new Intent(activity, CriarPostActivity.class);
+                 startActivityForResult(intent,0);
 
                 //populaLista();
             }
@@ -109,7 +110,7 @@ public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.
             String latitude = location.get("latitude").toString();
 
 
-            String maxDis = "3000";
+            String maxDis = "100";
 
             RestAdapter retrofit = new RestAdapter.Builder()
                     .setEndpoint("http://api-tccpostaround.rhcloud.com/api")

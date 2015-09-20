@@ -3,6 +3,8 @@ package postaround.tcc.inatel.br.interfaces;
 import java.util.List;
 
 import postaround.tcc.inatel.br.model.Post;
+import postaround.tcc.inatel.br.model.PostPostRes;
+import postaround.tcc.inatel.br.model.PostUserRes;
 import postaround.tcc.inatel.br.model.User;
 import retrofit.Callback;
 import retrofit.http.Body;
@@ -19,7 +21,10 @@ public interface RestAPI {
     public void getPosts(@Path("longitude") String longitude, @Path("latitude") String latitude,
                          @Path("maxDis") String maxDis, Callback<List<Post>> response);
 
-    //@POST("/login/")
-   // public void postUser(@Body User user, Callback<User> response);
+    @POST("/login/")
+    public void postUser(@Body User user, Callback<PostUserRes> response);
+
+    @POST("/posts/")
+    public void postPost(@Body Post post, Callback<PostPostRes> response);
 
 }

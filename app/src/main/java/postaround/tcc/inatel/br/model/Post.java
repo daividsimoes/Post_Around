@@ -1,5 +1,7 @@
 package postaround.tcc.inatel.br.model;
 
+import postaround.tcc.inatel.br.Util.UserInformation;
+
 /**
  * Created by Paulo on 07/09/2015.
  */
@@ -8,8 +10,28 @@ public class Post {
     private String _id;
     private String description;
     private String title;
+    private String user_id;
+    private String image_url;
     private Integer __v;
     private Loc loc;
+
+    private String api_key = UserInformation.api_key;
+
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
+    }
+
+    public String getImage_url() {
+        return image_url;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
+    }
 
     public String get_id() {
         return _id;

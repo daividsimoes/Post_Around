@@ -1,5 +1,6 @@
 package postaround.tcc.inatel.br.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInstaller;
 import android.service.textservice.SpellCheckerService;
@@ -22,6 +23,7 @@ import com.facebook.LoggingBehavior;
 
 import com.facebook.Profile;
 import com.facebook.applinks.FacebookAppLinkResolver;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
@@ -33,10 +35,12 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
+import postaround.tcc.inatel.br.Util.UserInformation;
 import postaround.tcc.inatel.br.adapter.PostAoRedorAdapter;
 import postaround.tcc.inatel.br.interfaces.RestAPI;
 import postaround.tcc.inatel.br.model.LoginModel;
 import postaround.tcc.inatel.br.model.Post;
+import postaround.tcc.inatel.br.model.PostUserRes;
 import postaround.tcc.inatel.br.model.User;
 import postaround.tcc.inatel.br.postaround.BuildConfig;
 
@@ -55,10 +59,12 @@ public class LoginActivityFragment extends Fragment {
     private LoginModel loginModel;
     private Intent intent;
 
+    private boolean isLoggedIn;
+
     private CallbackManager mCallbackManager;
     private FacebookCallback<LoginResult> mFacebookCallback = new FacebookCallback<LoginResult>() {
         @Override
-        public void onSuccess(LoginResult loginResult) {
+        public void onSuccess(final LoginResult loginResult) {
             GraphRequest request = GraphRequest.newMeRequest(
                     AccessToken.getCurrentAccessToken(),
                     new GraphRequest.GraphJSONObjectCallback() {
@@ -89,31 +95,40 @@ public class LoginActivityFragment extends Fragment {
                                 Log.e("Access Token",loginModel.getAccessToken());
                                 Log.e("Nome", loginModel.getName());
 
-                               // RestAdapter retrofit = new RestAdapter.Builder()
-                              //          .setEndpoint("http://api-tccpostaround.rhcloud.com/api")
-                              //          .build();
+                                RestAdapter retrofit = new RestAdapter.Builder()
+                                        .setEndpoint("http://api-tccpostaround.rhcloud.com/api").setLogLevel(RestAdapter.LogLevel.FULL)
+                                        .build();
 
-                               // RestAPI restAPI = retrofit.create(RestAPI.class);
+                                RestAPI restAPI = retrofit.create(RestAPI.class);
 
-                              //  User user = new User();
+                               final User user = new User();
 
-                               // user.setToken(loginModel.getAccessToken());
+                                user.setToken(loginModel.getAccessToken());
+                                user.setName(loginModel.getName());
+                                user.setImage_url("https://graph.facebook.com/" + loginModel.getId() + "/picture?type=large");
+                                user.setId(String.valueOf(loginModel.getId()));
 
-                               // restAPI.postUser(user, new Callback<User>() {
-                                 //   @Override
-                                //    public void success(User user, Response response) {
+                                restAPI.postUser(user, new Callback<PostUserRes>() {
+                                    @Override
+                                   public void success(PostUserRes postUserRes, Response response) {
+                                        Log.v("Resposta: ",response.getBody().toString());
+                                        Log.v("apiKey: ", postUserRes.getApi_key());
+                                        UserInformation.api_key = postUserRes.getApi_key();//TODO salvar no sharedPreferences
+                                        UserInformation.user_id = user.getId();
 
-                               //     }
+                                    }
 
-                               //     @Override
-                               //     public void failure(RetrofitError error) {
+                                    @Override
+                                    public void failure(RetrofitError error) {
+                                        Log.v("Erro: ",error.getMessage());
+                                        isLoggedIn = false;
+                                    }
+                                });
 
-                               //     }
-                               // });
 
-                                intent = new Intent(getActivity(), NavigationActivity.class);
-                                startActivity(intent);
-                                getActivity().finish();
+                                    intent = new Intent(getActivity(), NavigationActivity.class);
+                                    startActivity(intent);
+                                    getActivity().finish();
                             }
                         }
                     });
@@ -133,7 +148,11 @@ public class LoginActivityFragment extends Fragment {
             Log.e("onError ", e.getMessage());
         }
     };
+    public static void callFacebookLogout() {
+        LoginManager loginManager = LoginManager.getInstance();
+        loginManager.logOut();
 
+    }
     public LoginActivityFragment() {
     }
 
