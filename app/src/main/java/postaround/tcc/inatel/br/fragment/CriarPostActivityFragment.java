@@ -43,7 +43,7 @@ public class CriarPostActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_criar_post, container, false);
 
-        imgViewPic = (ImageView) view.findViewById(R.id.imgViewPic);
+        //imageview = (ImageView) view.findViewById(R.id.imagemView);
 
         btnTakePic = (Button) view.findViewById(R.id.btnTakePic);
         btnTakePic.setOnClickListener(new View.OnClickListener() {

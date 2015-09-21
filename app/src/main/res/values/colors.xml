@@ -1,4 +1,6 @@
 <resources>
     <color name="red">#FF0000</color>
     <color name="blue">#00BCF2</color>
+    <color name="gray">#C0C0C0</color>
+    <color name="yellow">#FFD457</color>
 </resources>

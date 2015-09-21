@@ -52,10 +52,10 @@
     </LinearLayout>
 
     <ImageView
+        android:src="@drawable/tcc"
         android:layout_gravity="right"
         android:id="@+id/imageView_post_picture_meu_post"
         android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/tcc"/>
+        android:layout_height="50dp"/>
 
 </LinearLayout>

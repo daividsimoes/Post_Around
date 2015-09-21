@@ -7,13 +7,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 import postaround.tcc.inatel.br.adapter.MeuPostAdapter;
 import postaround.tcc.inatel.br.adapter.PostAoRedorAdapter;
+import postaround.tcc.inatel.br.interfaces.RoundedTransformation;
 import postaround.tcc.inatel.br.model.MeuPost;
 import postaround.tcc.inatel.br.model.PostAoRedor;
 import postaround.tcc.inatel.br.postaround.R;
@@ -50,6 +54,7 @@ public class MeusPostsFragment extends Fragment {
                 Toast.makeText(getActivity(), "Nome " + parent.getItemAtPosition(position).toString(), Toast.LENGTH_LONG).show();
             }
         });
+
         return view;
     }
 

@@ -16,14 +16,16 @@
         android:layout_height="wrap_content" />
 
     <EditText
-        android:maxLines="3"
+        android:maxLines="2"
         android:maxLength="50"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textCapSentences|textMultiLine"
         android:ems="10"
         android:hint="@string/hint_descricao"
-        android:id="@+id/editText_criar_descricao_post" />
+        android:id="@+id/editText_criar_descricao_post">
+        <requestFocus />
+    </EditText>
 
     <TextView
         android:paddingTop="10dp"
@@ -33,7 +35,7 @@
         android:layout_height="wrap_content" />
 
     <EditText
-        android:maxLines="3"
+        android:maxLines="2"
         android:maxLength="100"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -78,18 +80,46 @@
         android:text="Enviar"/>
 
     <LinearLayout
+        android:paddingTop="10dp"
         android:gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <ImageButton
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/button_add_post"
-            android:layout_gravity="bottom"
-            android:background="@drawable/round_button_add_post"
-            android:src="@drawable/ic_add"/>
+        <!--
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:id="@+id/imagemView"
+            /> -->
+        <fragment
+            android:id="@+id/map"
+            class="com.google.android.gms.maps.MapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+        <RelativeLayout
+            android:paddingTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:id="@+id/selectImagem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/select_imagem"
+                android:layout_alignParentLeft="true"/>
+
+            <ImageButton
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:id="@+id/button_add_post"
+                android:background="@drawable/round_button_add_post"
+                android:src="@drawable/ic_add"/>
+        </RelativeLayout>
     </LinearLayout>
 
 

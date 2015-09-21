@@ -1,1 +1,1 @@
-include ':app'
+include ':app', ':cloudinaryandroid-1.0.2'

@@ -101,8 +101,8 @@ public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.
 
         HashMap<String, Double> location = getLocation();
         if(location != null) {
-            String longitude = location.get("latitude").toString();
-            String latitude = location.get("longitude").toString();
+            String longitude = location.get("longitude").toString();
+            String latitude = location.get("latitude").toString();
 
 
             String maxDis = "3000";
