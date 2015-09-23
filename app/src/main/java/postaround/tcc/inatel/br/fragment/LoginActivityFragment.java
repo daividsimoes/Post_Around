@@ -2,6 +2,7 @@ package postaround.tcc.inatel.br.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInstaller;
 import android.service.textservice.SpellCheckerService;
 import android.support.v4.app.Fragment;
@@ -113,9 +114,16 @@ public class LoginActivityFragment extends Fragment {
                                    public void success(PostUserRes postUserRes, Response response) {
                                         Log.v("Resposta: ",response.getBody().toString());
                                         Log.v("apiKey: ", postUserRes.getApi_key());
-                                        UserInformation.api_key = postUserRes.getApi_key();//TODO salvar no sharedPreferences
+                                        UserInformation.api_key = postUserRes.getApi_key();
                                         UserInformation.user_id = user.getId();
 
+                                        Context context = getActivity();
+                                        SharedPreferences sharedPref = context.getSharedPreferences(
+                                                "loginpreferences", Context.MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = sharedPref.edit();
+                                        editor.putString("apikey",UserInformation.api_key);
+                                        editor.putString("userid", UserInformation.user_id);
+                                        editor.commit();
                                     }
 
                                     @Override
@@ -159,9 +167,11 @@ public class LoginActivityFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
-        mCallbackManager = CallbackManager.Factory.create();
-        loginModel = new LoginModel();
+
+            FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
+            mCallbackManager = CallbackManager.Factory.create();
+            loginModel = new LoginModel();
+
     }
 
     @Override

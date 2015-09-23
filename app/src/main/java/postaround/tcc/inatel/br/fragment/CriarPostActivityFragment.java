@@ -23,6 +23,8 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 import java.util.ArrayList;
@@ -45,14 +47,17 @@ import retrofit.client.Response;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class CriarPostActivityFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
+public class CriarPostActivityFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private EditText titulo;
     private EditText descricao;
     private ImageButton botao;
 
-    private Location mLastLocation;
+    private Location mCurrentLocation;
     private GoogleApiClient mGoogleApiClient;
+
+    private LocationRequest mLocationRequest;
 
 
     private static final int CAMERA_PIC_REQUEST = 1;
@@ -80,11 +85,11 @@ public class CriarPostActivityFragment extends Fragment implements GoogleApiClie
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_criar_post, container, false);
+        View view = inflater.inflate(R.layout.fragment_criar_post, container, false);
 
-        titulo = (EditText) v.findViewById(R.id.editText_criar_descricao_post);
-        descricao = (EditText) v.findViewById(R.id.editText_criar_comentario_post);
-        botao = (ImageButton) v.findViewById(R.id.button_add_post);
+        titulo = (EditText) view.findViewById(R.id.editText_criar_descricao_post);
+        descricao = (EditText) view.findViewById(R.id.editText_criar_comentario_post);
+        botao = (ImageButton) view.findViewById(R.id.button_add_post);
 
         botao.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,11 +140,6 @@ public class CriarPostActivityFragment extends Fragment implements GoogleApiClie
 
             }
         });
-
-
-        return v;
-
-        View view = inflater.inflate(R.layout.fragment_criar_post, container, false);
 
         imgViewPic = (ImageView) view.findViewById(R.id.imgViewPic);
 
@@ -274,14 +274,17 @@ public class CriarPostActivityFragment extends Fragment implements GoogleApiClie
 
 
     }
-
+    protected void createLocationRequest() {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(3000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
 
     private HashMap<String, Double> getLocation() {
         HashMap<String, Double> location = new HashMap<String, Double>();
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        if (mLastLocation != null) {
-            double latitude = mLastLocation.getLatitude();
-            double longitude = mLastLocation.getLongitude();
+        if (mCurrentLocation != null) {
+            double latitude = mCurrentLocation.getLatitude();
+            double longitude = mCurrentLocation.getLongitude();
             location.put("latitude", latitude);
             location.put("longitude", longitude);
             return location;
@@ -337,11 +340,26 @@ public class CriarPostActivityFragment extends Fragment implements GoogleApiClie
     @Override
     public void onConnected(Bundle arg0) {
         //getLocation();
+        createLocationRequest();
+        startLocationUpdates();
 
+    }
+
+    protected void startLocationUpdates() {
+
+        LocationServices.FusedLocationApi.requestLocationUpdates(
+                mGoogleApiClient, mLocationRequest, this);
     }
     @Override
     public void onConnectionSuspended(int arg0) {
         mGoogleApiClient.connect();
     }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        mCurrentLocation = location;
+    }
+
+
 }
 
