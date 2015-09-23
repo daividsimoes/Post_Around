@@ -33,7 +33,9 @@
             android:paddingTop="20dp">
 
 
-            <com.facebook.login.widget.ProfilePictureView
+            <ImageView
+                android:gravity="center"
+                android:layout_centerInParent="true"
                 android:layout_gravity="right"
                 android:id="@+id/imagemview_profile_picture_post_redor"
                 android:layout_width="50dp"
@@ -53,9 +55,10 @@
 
     <ImageView
         android:layout_gravity="right"
+        android:scaleType="centerCrop"
         android:id="@+id/imageView_post_picture_post_redor"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/android"/>
+        android:src="@drawable/tcc"/>
 
 </LinearLayout>

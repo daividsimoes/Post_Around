@@ -1,57 +1,44 @@
 package postaround.tcc.inatel.br.fragment;
 
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import postaround.tcc.inatel.br.adapter.ComentarioPostAdapter;
 import postaround.tcc.inatel.br.adapter.MeuPostAdapter;
 import postaround.tcc.inatel.br.model.MeuPost;
+import postaround.tcc.inatel.br.model.Post;
 import postaround.tcc.inatel.br.postaround.R;
 
 /**
- * A simple {@link Fragment} subclass.
+ * A placeholder fragment containing a simple view.
  */
-public class MeusPostsFragment extends Fragment {
+public class ComentarioPostFragment extends Fragment {
 
-   private ListView listView;
-   private ArrayList<MeuPost> postList;
-   private MeuPost post;
+    private MeuPost post;
+    private ArrayList<MeuPost> postList;
 
-    public MeusPostsFragment() {
-        // Required empty public constructor
+    private ListView listView;
+
+    public ComentarioPostFragment() {
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_meus_posts, container, false);
 
-        listView = (ListView) view.findViewById(R.id.listView_meu_post);
-
+        View view = inflater.inflate(R.layout.fragment_comentario_post, container, false);
+        listView = (ListView) view.findViewById(R.id.listView_comentario_post);
         postList = populaLista();
-
-        listView.setAdapter(new MeuPostAdapter(this.getActivity(), postList));
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(), "Nome " + parent.getItemAtPosition(position).toString(), Toast.LENGTH_LONG).show();
-            }
-        });
+        listView.setAdapter(new ComentarioPostAdapter(this.getActivity(), postList));
 
         return view;
     }
-
 
     public ArrayList<MeuPost> populaLista(){
         ArrayList<MeuPost> lista = new ArrayList<MeuPost>();
@@ -97,5 +84,4 @@ public class MeusPostsFragment extends Fragment {
 
         return  lista;
     }
-
 }

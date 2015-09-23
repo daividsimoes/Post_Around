@@ -1,0 +1,50 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context="postaround.tcc.inatel.br.postaround.PostComentadoFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+            <ImageView
+            android:layout_width="80dp "
+            android:layout_height="80dp"
+            android:src="@drawable/tcc"
+            android:id="@+id/imageView_post_comentado_picture"
+            android:layout_gravity="left|top"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:maxLength="50"
+                android:id="@+id/textView_descricao_post_comentado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLargePopupMenu"
+                android:text="Descrição do Post"/>
+
+            <TextView
+                android:maxLength="100"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView_comentario_post_comentado"
+                android:text="Comentário do criador do Post que não sei quantos caracteres podem ter" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_marginTop="10dp"
+        android:id="@+id/divisor1"
+        android:layout_width="fill_parent"
+        android:layout_height="2dip"
+        android:background="@color/gray" />
+
+</LinearLayout>
