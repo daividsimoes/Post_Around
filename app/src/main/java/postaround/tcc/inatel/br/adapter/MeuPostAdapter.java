@@ -8,13 +8,13 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.facebook.login.widget.ProfilePictureView;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 import postaround.tcc.inatel.br.model.MeuPost;
-import postaround.tcc.inatel.br.model.PostAoRedor;
 import postaround.tcc.inatel.br.postaround.R;
+import postaround.tcc.inatel.br.Utils.CircleImage;
 
 /**
  * Created by Daivid on 01/09/2015.
@@ -27,7 +27,7 @@ public class MeuPostAdapter extends BaseAdapter {
     private TextView tituloDescricao;
     private TextView comentarioDescricao;
     private TextView nomeUsuario;
-    private ProfilePictureView fotoProfile;
+    private ImageView fotoProfile;
     private ImageView fotoPost;
 
     public  MeuPostAdapter(Context context, ArrayList<MeuPost> listaPostAoRedor){
@@ -61,14 +61,16 @@ public class MeuPostAdapter extends BaseAdapter {
         tituloDescricao = (TextView) view.findViewById(R.id.textView_descricao_meu_post);
         comentarioDescricao = (TextView) view.findViewById(R.id.textView_comentario_meu_post);
         nomeUsuario = (TextView) view.findViewById(R.id.textView_nome_usuario_meu_post);
-        fotoProfile = (ProfilePictureView) view.findViewById(R.id.imagemview_profile_picture_meu_post);
+        fotoProfile = (ImageView) view.findViewById(R.id.imagemview_profile_picture_meu_post);
         fotoPost = (ImageView) view.findViewById(R.id.imageView_post_picture_meu_post);
 
         tituloDescricao.setText(post.getTituloDescricao());
         comentarioDescricao.setText(post.getComentarioDescricao());
-        fotoProfile.setProfileId(post.getIdUsuario());
+
         nomeUsuario.setText(post.getNomeUsuario());
 
+        Picasso.with(context).load(R.drawable.tcc).into(fotoPost);
+        Picasso.with(context).load("https://graph.facebook.com/" + post.getIdUsuario() + "/picture?type=large").transform(new CircleImage()).into(fotoProfile);
         return view;
     }
 }

@@ -29,7 +29,7 @@ public class PostAoRedorAdapter extends BaseAdapter{
     private TextView tituloDescricao;
     private TextView comentarioDescricao;
     private TextView nomeUsuario;
-    private ProfilePictureView fotoProfile;
+    private ImageView fotoProfile;
     private ImageView fotoPost;
 
     public  PostAoRedorAdapter(Context context, List<Post> listaPostAoRedor){
