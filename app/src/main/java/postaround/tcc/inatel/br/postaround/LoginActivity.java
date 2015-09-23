@@ -1,6 +1,7 @@
 package postaround.tcc.inatel.br.postaround;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -51,9 +52,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginStatus() {
-        //check login
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        if (accessToken == null) {
+        SharedPreferences prefs = this.getSharedPreferences("loginpreferences", this.MODE_PRIVATE);
+        String login = prefs.getString("apikey", "");
+        if (login == "") {
             Log.d("TAG", ">>>" + "Signed Out");
             setContentView(R.layout.activity_login);
         } else {

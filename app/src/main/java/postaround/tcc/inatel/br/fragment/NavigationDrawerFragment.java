@@ -72,6 +72,8 @@ public class NavigationDrawerFragment extends Fragment {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
 
+
+
         if (savedInstanceState != null) {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
             mFromSavedInstanceState = true;
@@ -100,14 +102,14 @@ public class NavigationDrawerFragment extends Fragment {
             }
         });
         mDrawerListView.setAdapter(new ArrayAdapter<String>(
-                getActionBar().getThemedContext(),
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
-                new String[]{
-                        getString(R.string.post_ao_redor),
-                        getString(R.string.meus_posts),
-                        getString(R.string.configuracoes),
-                        getString(R.string.sobre),
+               getActionBar().getThemedContext(),
+               android.R.layout.simple_list_item_activated_1,
+               android.R.id.text1,
+               new String[]{
+                       getString(R.string.post_ao_redor),
+                       getString(R.string.meus_posts),
+                       getString(R.string.configuracoes),
+                       getString(R.string.sobre),
                         getString(R.string.sair),
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
@@ -124,9 +126,14 @@ public class NavigationDrawerFragment extends Fragment {
      * @param fragmentId   The android:id of this postaround.tcc.inatel.br.fragment in its activity's layout.
      * @param drawerLayout The DrawerLayout containing this postaround.tcc.inatel.br.fragment's UI.
      */
+    
     public void setUp(int fragmentId, DrawerLayout drawerLayout) {
         mFragmentContainerView = getActivity().findViewById(fragmentId);
         mDrawerLayout = drawerLayout;
+
+        if(mUserLearnedDrawer){
+            drawerLayout.closeDrawers();
+        }
 
         // set a custom shadow that overlays the main content when the drawer opens
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);

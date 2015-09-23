@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.transition.Visibility;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,23 +17,30 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import postaround.tcc.inatel.br.Util.LocationManager;
 import postaround.tcc.inatel.br.adapter.PostAoRedorAdapter;
+import postaround.tcc.inatel.br.interfaces.LocationObserver;
 import postaround.tcc.inatel.br.interfaces.RestAPI;
 import postaround.tcc.inatel.br.model.LoginModel;
 import postaround.tcc.inatel.br.model.Post;
 import postaround.tcc.inatel.br.model.PostAoRedor;
+
 import postaround.tcc.inatel.br.postaround.ComentarioPostActivity;
 import postaround.tcc.inatel.br.postaround.CriarPostActivity;
 import postaround.tcc.inatel.br.postaround.R;
@@ -45,17 +53,17 @@ import retrofit.client.Response;
  * A simple {@link Fragment} subclass.
  */
 public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,
-        AdapterView.OnItemClickListener,GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
+        AdapterView.OnItemClickListener, LocationObserver{
 
     private ListView listView;
-    private List<Post> postList;
     private View view;
     private Activity activity;
     private SwipeRefreshLayout swipeView;
     private ImageButton button;
+    private RelativeLayout progressBar;
 
-    private Location mLastLocation;
-    private GoogleApiClient mGoogleApiClient;
+    private LocationManager locationManager;
+
 
 
     public PostAoRedorFragment() {
@@ -67,8 +75,9 @@ public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.
         activity = this.getActivity();
         FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
 
-        buildGoogleApiClient();
-
+        locationManager = new LocationManager(getActivity());
+        locationManager.addObserver(this);
+        locationManager.buildGoogleApiClient();
     }
 
     @Override
@@ -79,8 +88,9 @@ public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.
         listView = (ListView) view.findViewById(R.id.listView_post_redor);
         swipeView = (SwipeRefreshLayout) view.findViewById(R.id.swipe);
         button = (ImageButton) view.findViewById(R.id.button_add_post);
+        progressBar = (RelativeLayout) view.findViewById(R.id.loadingPanel);
 
-        populaLista();
+
 
         swipeView.setOnRefreshListener(this);
         listView.setOnItemClickListener(this);
@@ -89,7 +99,7 @@ public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(activity, CriarPostActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, 0);
             }
         });
 
@@ -98,15 +108,12 @@ public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.
     }
 
     private void populaLista() {
+        HashMap<String, Double> location = locationManager.getLocation();
 
-
-        HashMap<String, Double> location = getLocation();
         if(location != null) {
-            String longitude = location.get("longitude").toString();
-            String latitude = location.get("latitude").toString();
-
-
-            String maxDis = "300000";
+            String longitude = String.valueOf(location.get("longitude"));
+            String latitude = String.valueOf(location.get("latitude"));
+            String maxDis = "200";
 
             RestAdapter retrofit = new RestAdapter.Builder()
                     .setEndpoint("http://api-tccpostaround.rhcloud.com/api")
@@ -114,19 +121,22 @@ public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.
 
             RestAPI restAPI = retrofit.create(RestAPI.class);
 
-            restAPI.getPosts(longitude, latitude, maxDis, new Callback<List<Post>>() {
-                @Override
-                public void success(List<Post> posts, Response response) {
+    restAPI.getPosts(longitude, latitude, maxDis, new Callback<List<Post>>() {
+        @Override
+        public void success(List<Post> posts, Response response) {
 
-                    listView.setAdapter(new PostAoRedorAdapter(activity, posts));
-                    swipeView.setRefreshing(false);
-                }
+            listView.setAdapter(new PostAoRedorAdapter(activity, posts));
+            progressBar.setVisibility(View.GONE);
+            swipeView.setRefreshing(false);
+            locationManager.getmGoogleApiClient().disconnect();
+        }
 
-                @Override
-                public void failure(RetrofitError error) {
-                    Log.e("error", error.getMessage());
-                }
-            });
+        @Override
+        public void failure(RetrofitError error) {
+            Log.e("error", error.getMessage());
+        }
+        });
+
         }
     }
 
@@ -136,6 +146,9 @@ public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.
         (new Handler()).postDelayed(new Runnable() {
             @Override
             public void run() {
+                if (locationManager.getmGoogleApiClient() != null) {
+                    locationManager.getmGoogleApiClient().connect();
+                }
                 populaLista();
             }
         }, 3000);
@@ -147,72 +160,32 @@ public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.
         startActivity(intent);
     }
 
-    private HashMap<String, Double> getLocation() {
-        HashMap<String, Double> location = new HashMap<String, Double>();
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        if (mLastLocation != null) {
-            double latitude = mLastLocation.getLatitude();
-            double longitude = mLastLocation.getLongitude();
-            location.put("latitude", latitude);
-            location.put("longitude", longitude);
-            return location;
-        } else {
-            Log.w("FAIL: ", "(Couldn't get the location. Make sure location is enabled on the device)");
-            return null;
-        }
-    }
-
-    /**      * Creating google api client object      * */
-    /**      * Method to verify google play services on the device      * */
-    protected synchronized void buildGoogleApiClient() {
-        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API).build();
-    }
-
-    private boolean checkPlayServices() {
-        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getActivity());
-        if (resultCode != ConnectionResult.SUCCESS) {
-            Toast.makeText(getActivity().getApplicationContext(),
-                    "Falha ao receber localização.", Toast.LENGTH_LONG).show();
-            return false;
-        }
-        return true;
-    }
-
     @Override
     public void onStart() {
         super.onStart();
-        if (mGoogleApiClient != null) {
-            mGoogleApiClient.connect();
+        if (locationManager.getmGoogleApiClient() != null) {
+            locationManager.getmGoogleApiClient().connect();
         }
     }
     @Override
     public void onResume() {
         super.onResume();
-        checkPlayServices();
+        locationManager.checkPlayServices();
+        progressBar.setVisibility(View.VISIBLE);
+        if(locationManager.getLocation() != null){
+            populaLista();
+        }
     }
     @Override
     public void onStop() {
         super.onStop();
-        mGoogleApiClient.disconnect();
-    }
-    /**      * Google api callback methods      */
-    @Override
-    public void onConnectionFailed(ConnectionResult result) {
-        Log.w("FAIL: ", "Connection failed: ConnectionResult.getErrorCode() = "
-                + result.getErrorCode());
+
     }
 
     @Override
-    public void onConnected(Bundle arg0) {
-    //getLocation();
-    populaLista();
+    public void update() {
+        populaLista();
+
     }
-        @Override
-        public void onConnectionSuspended(int arg0) {
-            mGoogleApiClient.connect();
-        }
-    }
+}
 
