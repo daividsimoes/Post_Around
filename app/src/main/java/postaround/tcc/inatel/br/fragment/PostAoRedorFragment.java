@@ -3,33 +3,24 @@ package postaround.tcc.inatel.br.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.transition.Visibility;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -37,10 +28,7 @@ import postaround.tcc.inatel.br.Util.LocationManager;
 import postaround.tcc.inatel.br.adapter.PostAoRedorAdapter;
 import postaround.tcc.inatel.br.interfaces.LocationObserver;
 import postaround.tcc.inatel.br.interfaces.RestAPI;
-import postaround.tcc.inatel.br.model.LoginModel;
 import postaround.tcc.inatel.br.model.Post;
-import postaround.tcc.inatel.br.model.PostAoRedor;
-
 import postaround.tcc.inatel.br.postaround.ComentarioPostActivity;
 import postaround.tcc.inatel.br.postaround.CriarPostActivity;
 import postaround.tcc.inatel.br.postaround.R;
@@ -55,14 +43,16 @@ import retrofit.client.Response;
 public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,
         AdapterView.OnItemClickListener, LocationObserver{
 
-    private ListView listView;
+    private RecyclerView recyclerView;
     private View view;
     private Activity activity;
     private SwipeRefreshLayout swipeView;
-    private ImageButton button;
+    private FloatingActionButton button;
     private RelativeLayout progressBar;
 
     private LocationManager locationManager;
+
+    private RecyclerView.LayoutManager layoutManager;
 
 
 
@@ -85,23 +75,39 @@ public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_post_ao_redor, container, false);
-        listView = (ListView) view.findViewById(R.id.listView_post_redor);
+        recyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
+        recyclerView.setHasFixedSize(true);
         swipeView = (SwipeRefreshLayout) view.findViewById(R.id.swipe);
-        button = (ImageButton) view.findViewById(R.id.button_add_post);
+        button = (FloatingActionButton) view.findViewById(R.id.add_new_post);
         progressBar = (RelativeLayout) view.findViewById(R.id.loadingPanel);
+
+        view.setFitsSystemWindows(true);
+
+        // use a linear layout manager
+        layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
 
 
 
         swipeView.setOnRefreshListener(this);
-        listView.setOnItemClickListener(this);
+//        listView.setOnItemClickListener(this);
 
-        button.setOnClickListener(new View.OnClickListener() {
+
+        button.setOnClickListener(new FloatingActionButton.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(activity, CriarPostActivity.class);
-                startActivityForResult(intent, 0);
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), CriarPostActivity.class);
+                startActivity(intent);
             }
         });
+
+        //button.setOnClickListener(new View.OnClickListener() {
+         //   @Override
+         //   public void onClick(View v) {
+         //       Intent intent = new Intent(activity, CriarPostActivity.class);
+         //       startActivityForResult(intent, 0);
+       //     }
+      //  });
 
 
         return view;
@@ -113,7 +119,7 @@ public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.
         if(location != null) {
             String longitude = String.valueOf(location.get("longitude"));
             String latitude = String.valueOf(location.get("latitude"));
-            String maxDis = "200";
+            String maxDis = "100";
 
             RestAdapter retrofit = new RestAdapter.Builder()
                     .setEndpoint("http://api-tccpostaround.rhcloud.com/api")
@@ -125,7 +131,7 @@ public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.
         @Override
         public void success(List<Post> posts, Response response) {
 
-            listView.setAdapter(new PostAoRedorAdapter(activity, posts));
+            recyclerView.setAdapter(new PostAoRedorAdapter(activity, posts));
             progressBar.setVisibility(View.GONE);
             swipeView.setRefreshing(false);
             locationManager.getmGoogleApiClient().disconnect();
@@ -149,9 +155,9 @@ public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.
                 if (locationManager.getmGoogleApiClient() != null) {
                     locationManager.getmGoogleApiClient().connect();
                 }
-                populaLista();
+                //populaLista();
             }
-        }, 3000);
+        }, 1000);
     }
 
     @Override

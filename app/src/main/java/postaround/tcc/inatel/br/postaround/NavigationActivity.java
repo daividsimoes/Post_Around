@@ -4,23 +4,34 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.support.design.widget.NavigationView;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
+import android.support.v7.internal.widget.AdapterViewCompat;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
+import android.widget.AdapterView;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
+import com.squareup.picasso.Picasso;
 
+import postaround.tcc.inatel.br.Utils.CircleImage;
 import postaround.tcc.inatel.br.fragment.ConfiguracaoFragment;
 import postaround.tcc.inatel.br.fragment.MeusPostsFragment;
 import postaround.tcc.inatel.br.fragment.NavigationDrawerFragment;
@@ -36,9 +47,9 @@ public class NavigationActivity extends AppCompatActivity
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
-    /**
-     * Used to store the last screen title. For use in {@link #restoreActionBar()}.
-     */
+    private DrawerLayout mDrawerLayout;
+
+
     private CharSequence mTitle;
 
     @Override
@@ -46,16 +57,71 @@ public class NavigationActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
 
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-        mTitle = getTitle();
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        // Set up the drawer.
-        mNavigationDrawerFragment.setUp(
-                R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
+        Toolbar toolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
+        toolbar.setTitle("");
 
-        
+        setSupportActionBar(toolbar);
+
+        ImageButton menu = (ImageButton) toolbar.findViewById(R.id.menu_button);
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDrawerLayout.openDrawer(Gravity.LEFT);
+            }
+        });
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, PlaceholderFragment.newInstance(1))
+                .commit();
+
+        NavigationView navigationView =(NavigationView) findViewById(R.id.navigation_view);
+        ImageView imageView = (ImageView) navigationView.findViewById(R.id.drawer_profile_image);
+
+        Picasso.with(this).load(R.drawable.me).transform(new CircleImage()).into(imageView);
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+
+                int position = 0;
+
+                switch (menuItem.getItemId()) {
+
+                    case R.id.posts_ao_redor:
+                        menuItem.setChecked(true);
+                        position = 0;
+                        break;
+                    case R.id.meus_posts:
+                        menuItem.setChecked(true);
+                        position = 1;
+                        break;
+                    case R.id.configuracao:
+                        menuItem.setChecked(true);
+                        position = 2;
+                        break;
+                    case R.id.sobre:
+                        menuItem.setChecked(true);
+                        position = 3;
+                        break;
+                    case R.id.sair:
+                        menuItem.setChecked(true);
+                        position = 4;
+                        break;
+                }
+
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+                        .commit();
+                mDrawerLayout.closeDrawers();
+
+                return false;
+            }
+        });
+
     }
 
     @Override
@@ -93,22 +159,6 @@ public class NavigationActivity extends AppCompatActivity
                 break;
         }
     }
-
-    public void restoreActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(mTitle);
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_login, menu);
-        return true;
-    }
-
 
     /**
      * A placeholder postaround.tcc.inatel.br.fragment containing a simple view.

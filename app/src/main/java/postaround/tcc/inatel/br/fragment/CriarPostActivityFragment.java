@@ -26,6 +26,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -70,6 +73,8 @@ public class CriarPostActivityFragment extends Fragment implements GoogleApiClie
 
     private Uri imageUri;
 
+
+
     GetResponseAsync asyncTask = new GetResponseAsync(getActivity());
 
     public CriarPostActivityFragment() {
@@ -80,6 +85,7 @@ public class CriarPostActivityFragment extends Fragment implements GoogleApiClie
         super.onCreate(savedInstanceState);
 
         buildGoogleApiClient();
+
     }
 
     @Override
@@ -108,7 +114,6 @@ public class CriarPostActivityFragment extends Fragment implements GoogleApiClie
                 Post post = new Post();
                 Loc loc = new Loc();
 
-                post.setTitle(title);
                 post.setDescription(description);
                 post.setUser_id(UserInformation.user_id);
                 loc.setCoordinates(list);
@@ -357,7 +362,6 @@ public class CriarPostActivityFragment extends Fragment implements GoogleApiClie
     public void onLocationChanged(Location location) {
         mCurrentLocation = location;
     }
-
 
 }
 
