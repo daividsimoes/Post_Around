@@ -9,7 +9,6 @@ public class Post {
 
     private String _id;
     private String description;
-    private String title;
     private String user_id;
     private String image_url;
     private Integer __v;
@@ -65,11 +64,4 @@ public class Post {
         this.__v = __v;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
 }

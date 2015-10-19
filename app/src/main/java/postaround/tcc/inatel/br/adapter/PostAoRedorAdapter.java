@@ -94,7 +94,7 @@ public class PostAoRedorAdapter extends RecyclerView.Adapter<PostAoRedorAdapter.
 
         Picasso.with(context).load(("https://graph.facebook.com/" + UserInformation.user_id + "/picture?type=large")).transform(new CircleImage()).into(holder.fotoProfile);
 
-        holder.mTitulo.setText(post.getTitle());
+
         holder.mDescricao.setText(post.getDescription());
         holder.mUserName.setText(UserInformation.user_name);
     }
