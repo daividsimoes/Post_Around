@@ -63,8 +63,7 @@ public class CriarPostActivityFragment extends Fragment implements GoogleApiClie
     private LocationRequest mLocationRequest;
 
 
-    private static final int CAMERA_PIC_REQUEST = 1;
-    private static final int SELECT_PHOTO_REQUEST = 2;
+
 
     private Button btnTakePic;
     private Button btnChosePic;
@@ -72,7 +71,8 @@ public class CriarPostActivityFragment extends Fragment implements GoogleApiClie
     private ImageView imgViewPic;
 
     private Uri imageUri;
-
+    private static final int CAMERA_PIC_REQUEST = 1;
+    private static final int SELECT_PHOTO_REQUEST = 2;
 
 
     GetResponseAsync asyncTask = new GetResponseAsync(getActivity());
