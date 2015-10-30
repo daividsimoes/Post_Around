@@ -114,27 +114,29 @@ public class LoginActivityFragment extends Fragment {
                                    public void success(PostUserRes postUserRes, Response response) {
                                         Log.v("Resposta: ",response.getBody().toString());
                                         Log.v("apiKey: ", postUserRes.getApi_key());
-                                        UserInformation.api_key = postUserRes.getApi_key();
-                                        UserInformation.user_id = user.getId();
+                                        UserInformation.api_key = postUserRes.getApi_key()+"";
+                                        UserInformation.user_id = user.getId()+"";
+                                        UserInformation.user_name = user.getName()+"";
 
                                         Context context = getActivity();
                                         SharedPreferences sharedPref = context.getSharedPreferences(
-                                                "loginpreferences", Context.MODE_PRIVATE);
+                                                "loginpreferences", context.MODE_PRIVATE);
                                         SharedPreferences.Editor editor = sharedPref.edit();
                                         editor.putString("apikey",UserInformation.api_key);
                                         editor.putString("userid", UserInformation.user_id);
+                                        editor.putString("username", UserInformation.user_name+"");
                                         editor.commit();
                                     }
 
                                     @Override
                                     public void failure(RetrofitError error) {
                                         Log.v("Erro: ",error.getMessage());
-                                        isLoggedIn = false;
                                     }
                                 });
 
 
                                     intent = new Intent(getActivity(), NavigationActivity.class);
+                                    intent.putExtra("obj", user);
                                     startActivity(intent);
                                     getActivity().finish();
                             }

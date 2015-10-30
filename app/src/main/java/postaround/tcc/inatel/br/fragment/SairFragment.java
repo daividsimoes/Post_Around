@@ -7,22 +7,26 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 
+import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
 
+import postaround.tcc.inatel.br.postaround.NavigationActivity;
 import postaround.tcc.inatel.br.postaround.R;
 
 
@@ -36,7 +40,7 @@ public class SairFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        FacebookSdk.sdkInitialize(this.getActivity());
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
 
         alert.setTitle("Sair");
@@ -45,7 +49,9 @@ public class SairFragment extends Fragment {
         alert.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                alteraLoginStatus();
                 LoginManager.getInstance().logOut();
+                getFragmentManager().beginTransaction().commit();
                 getActivity().finish();
             }
         });
@@ -80,6 +86,7 @@ public class SairFragment extends Fragment {
 
     @Override
     public void onDestroyView(){
+
         super.onDestroyView();
     }
 
@@ -104,5 +111,14 @@ public class SairFragment extends Fragment {
         super.onStop();
     }
 
+
+    private void alteraLoginStatus() {
+        SharedPreferences prefs = getActivity().getSharedPreferences("loginpreferences", getActivity().MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("apikey","");
+        editor.putString("userid","");
+        editor.putString("username","");
+        editor.commit();
+    }
 
 }

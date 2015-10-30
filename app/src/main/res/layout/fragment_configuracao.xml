@@ -27,7 +27,7 @@
             android:id="@+id/divisor1"
             android:layout_width="fill_parent"
             android:layout_height="2dip"
-            android:background="@color/blue" />
+            android:background="@color/orange" />
 
         <LinearLayout
             android:paddingTop="5dp"
@@ -87,7 +87,7 @@
             android:id="@+id/divisor2"
             android:layout_width="fill_parent"
             android:layout_height="2dip"
-            android:background="@color/blue" />
+            android:background="@color/orange" />
 
         <Button
             android:layout_marginTop="10dp"

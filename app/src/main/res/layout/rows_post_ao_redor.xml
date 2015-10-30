@@ -28,11 +28,11 @@
         <ImageView
             android:gravity="center"
             android:id="@+id/imagemview_profile_picture_post_redor"
-            android:layout_width="40dp"
+            android:layout_width="50dp"
             android:paddingLeft="6dp"
             android:layout_gravity="center"
             android:paddingBottom="4dp"
-            android:layout_height="40dp"/>
+            android:layout_height="50dp"/>
         <TextView
             android:maxLength="18"
             android:paddingTop="4dp"

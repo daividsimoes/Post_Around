@@ -89,8 +89,6 @@ public class PostAoRedorAdapter extends RecyclerView.Adapter<PostAoRedorAdapter.
         Picasso.with(context).load(post.getImage_url()).placeholder(R.id.progress_circular).fit().centerCrop().into(holder.mImagemPost);
 
 
-        //ProfilePictureView profilePictureView = (ProfilePictureView) view.findViewById(R.id.imagemview_profile_picture_post_redor);
-        // profilePictureView.setProfileId(post.getUser_id());
 
         Picasso.with(context).load(("https://graph.facebook.com/" + UserInformation.user_id + "/picture?type=large")).transform(new CircleImage()).into(holder.fotoProfile);
 
@@ -98,6 +96,11 @@ public class PostAoRedorAdapter extends RecyclerView.Adapter<PostAoRedorAdapter.
         holder.mDescricao.setText(post.getDescription());
         holder.mUserName.setText(UserInformation.user_name);
     }
+
+
+
+
+
 
     @Override
     public long getItemId(int position) {
