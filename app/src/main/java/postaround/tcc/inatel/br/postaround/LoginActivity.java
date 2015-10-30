@@ -28,6 +28,11 @@ public class LoginActivity extends AppCompatActivity {
         super.onPause();
     }
 
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -54,13 +59,16 @@ public class LoginActivity extends AppCompatActivity {
     private void loginStatus() {
         SharedPreferences prefs = this.getSharedPreferences("loginpreferences", this.MODE_PRIVATE);
         String login = prefs.getString("apikey", "");
-        if (login == "") {
+        if (login.equals("")) {
             Log.d("TAG", ">>>" + "Signed Out");
             setContentView(R.layout.activity_login);
         } else {
             Log.d("TAG", ">>>" + "Signed In");
             Intent intent = new Intent(this, NavigationActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
+            this.finish();
+
         }
     }
 }

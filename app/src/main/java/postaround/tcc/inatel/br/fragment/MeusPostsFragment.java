@@ -1,101 +1,208 @@
 package postaround.tcc.inatel.br.fragment;
 
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import com.facebook.FacebookSdk;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import postaround.tcc.inatel.br.Util.LocationManager;
 import postaround.tcc.inatel.br.adapter.MeuPostAdapter;
+import postaround.tcc.inatel.br.adapter.PostAoRedorAdapter;
+import postaround.tcc.inatel.br.interfaces.LocationObserver;
+import postaround.tcc.inatel.br.interfaces.RestAPI;
 import postaround.tcc.inatel.br.model.MeuPost;
+import postaround.tcc.inatel.br.model.Post;
+import postaround.tcc.inatel.br.postaround.ComentarioPostActivity;
+import postaround.tcc.inatel.br.postaround.CriarPostActivity;
 import postaround.tcc.inatel.br.postaround.R;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MeusPostsFragment extends Fragment {
+public class MeusPostsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,
+        AdapterView.OnItemClickListener, LocationObserver {
 
-   private ListView listView;
-   private ArrayList<MeuPost> postList;
-   private MeuPost post;
+    private RecyclerView recyclerView;
+    private View view;
+    private Activity activity;
+    private SwipeRefreshLayout swipeView;
+    private FloatingActionButton button;
+    private RelativeLayout progressBar;
+
+    private LocationManager locationManager;
+
+    private RecyclerView.LayoutManager layoutManager;
+
+
 
     public MeusPostsFragment() {
         // Required empty public constructor
     }
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        activity = this.getActivity();
+        FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
 
+        locationManager = new LocationManager(getActivity());
+        locationManager.addObserver(this);
+        locationManager.buildGoogleApiClient();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_meus_posts, container, false);
 
-        listView = (ListView) view.findViewById(R.id.listView_meu_post);
+        view = inflater.inflate(R.layout.fragment_meus_posts, container, false);
+        recyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view_meu_post);
+        recyclerView.setHasFixedSize(true);
+        swipeView = (SwipeRefreshLayout) view.findViewById(R.id.swipe_meu_post);
+        button = (FloatingActionButton) view.findViewById(R.id.add_new_meu_post);
+        progressBar = (RelativeLayout) view.findViewById(R.id.loadingPanel_meu_post);
 
-        postList = populaLista();
+        view.setFitsSystemWindows(true);
 
-        listView.setAdapter(new MeuPostAdapter(this.getActivity(), postList));
+        // use a linear layout manager
+        layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+
+        swipeView.setOnRefreshListener(this);
+//        listView.setOnItemClickListener(this);
+
+
+        button.setOnClickListener(new FloatingActionButton.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(), "Nome " + parent.getItemAtPosition(position).toString(), Toast.LENGTH_LONG).show();
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), CriarPostActivity.class);
+                startActivity(intent);
             }
         });
+
+        //button.setOnClickListener(new View.OnClickListener() {
+        //   @Override
+        //   public void onClick(View v) {
+        //       Intent intent = new Intent(activity, CriarPostActivity.class);
+        //       startActivityForResult(intent, 0);
+        //     }
+        //  });
+
 
         return view;
     }
 
+    private void populaLista() {
+        HashMap<String, Double> location = locationManager.getLocation();
 
-    public ArrayList<MeuPost> populaLista(){
-        ArrayList<MeuPost> lista = new ArrayList<MeuPost>();
+        if(location != null) {
+            String longitude = String.valueOf(location.get("longitude"));
+            String latitude = String.valueOf(location.get("latitude"));
+            String maxDis = "100";
 
-        post = new MeuPost();
-        post.setIdUsuario("875726655854018");
-        post.setNomeUsuario("Daivid Simões");
-        post.setTituloDescricao("Desenvolvimento Android");
-        post.setComentarioDescricao("Como fazer um ListView personalizado?");
-        lista.add(post);
+            RestAdapter retrofit = new RestAdapter.Builder()
+                    .setEndpoint("http://api-tccpostaround.rhcloud.com/api")
+                    .build();
 
-        post = new MeuPost();
-        post.setIdUsuario("875726655854018");
-        post.setNomeUsuario("Daivid Simões");
-        post.setTituloDescricao("Provas");
-        post.setComentarioDescricao("Resolução provas antigas de Sistema de Controles Dinâmicos.");
-        lista.add(post);
+            RestAPI restAPI = retrofit.create(RestAPI.class);
+
+            restAPI.getPosts(longitude, latitude, maxDis, new Callback<List<Post>>() {
+                @Override
+                public void success(List<Post> posts, Response response) {
+
+                    recyclerView.setAdapter(new PostAoRedorAdapter(activity, posts));
+                    progressBar.setVisibility(View.GONE);
+                    swipeView.setRefreshing(false);
+                    locationManager.getmGoogleApiClient().disconnect();
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.e("error", error.getMessage());
+                }
+            });
+
+        }
+    }
+
+    @Override
+    public void onRefresh() {
+        swipeView.setRefreshing(true);
+        (new Handler()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (locationManager.getmGoogleApiClient() != null) {
+                    locationManager.getmGoogleApiClient().connect();
+                }
+                //populaLista();
+            }
+        }, 1000);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        Intent intent = new Intent(getActivity(), ComentarioPostActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (locationManager.getmGoogleApiClient() != null) {
+            locationManager.getmGoogleApiClient().connect();
+        }
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        locationManager.checkPlayServices();
+        progressBar.setVisibility(View.VISIBLE);
+        if(locationManager.getLocation() != null){
+            populaLista();
+        }
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+
+    }
+
+    @Override
+    public void update() {
+        populaLista();
+
+    }
+}
 
 
-        post = new MeuPost();
-        post.setIdUsuario("875726655854018");
-        post.setNomeUsuario("Daivid Simões");
-        post.setTituloDescricao("Como fazer o TCC");
-        post.setComentarioDescricao("Retire todas suas dúvidas sobre o TCC aqui.");
-        lista.add(post);
-
-
-        post = new MeuPost();
-        post.setIdUsuario("875726655854018");
-        post.setNomeUsuario("Daivid Simões");
-        post.setTituloDescricao("Estágio");
-        post.setComentarioDescricao("Está procurando vaga de estágio? Envie seu CV para post_around@hotmail.com");
-        lista.add(post);
-
-
-        post = new MeuPost();
+/*
+*         post = new MeuPost();
         post.setIdUsuario("875726655854018");
         post.setNomeUsuario("Daivid Simões");
         post.setTituloDescricao("Vaga Apto");
         post.setComentarioDescricao("Vaga para quarto individual em Campinas-SP");
-        lista.add(post);
-
-
-        return  lista;
-    }
-
-}
+        lista.add(post);*/

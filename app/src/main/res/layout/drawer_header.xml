@@ -19,7 +19,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/drawer_profile_image"
         android:layout_centerHorizontal="true"
-        android:text="Paulo Barbosa"
         android:textSize="23dp"
         android:textColor="#ffffff"
         android:layout_marginBottom="17dp"

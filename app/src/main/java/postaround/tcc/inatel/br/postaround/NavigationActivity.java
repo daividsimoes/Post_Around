@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.ActionBarActivity;
@@ -26,11 +27,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 import com.squareup.picasso.Picasso;
 
+import postaround.tcc.inatel.br.Util.UserInformation;
 import postaround.tcc.inatel.br.Utils.CircleImage;
 import postaround.tcc.inatel.br.fragment.ConfiguracaoFragment;
 import postaround.tcc.inatel.br.fragment.MeusPostsFragment;
@@ -49,6 +52,8 @@ public class NavigationActivity extends AppCompatActivity
 
     private DrawerLayout mDrawerLayout;
 
+    private String userId;
+    private String userName;
 
     private CharSequence mTitle;
 
@@ -62,7 +67,10 @@ public class NavigationActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
         toolbar.setTitle("");
 
+        getUserInfo();
+
         setSupportActionBar(toolbar);
+
 
         ImageButton menu = (ImageButton) toolbar.findViewById(R.id.menu_button);
         menu.setOnClickListener(new View.OnClickListener() {
@@ -78,9 +86,11 @@ public class NavigationActivity extends AppCompatActivity
                 .commit();
 
         NavigationView navigationView =(NavigationView) findViewById(R.id.navigation_view);
-        ImageView imageView = (ImageView) navigationView.findViewById(R.id.drawer_profile_image);
+        ImageView profilePicture = (ImageView) navigationView.findViewById(R.id.drawer_profile_image);
+        TextView userNameText = (TextView) navigationView.findViewById(R.id.drawer_username);
 
-        Picasso.with(this).load(R.drawable.me).transform(new CircleImage()).into(imageView);
+        userNameText.setText(userName);
+        Picasso.with(this).load("https://graph.facebook.com/" + userId + "/picture?type=large").placeholder(R.drawable.ic_user).transform(new CircleImage()).into(profilePicture);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -232,6 +242,20 @@ public class NavigationActivity extends AppCompatActivity
     public void onBackPressed(){
         super.onBackPressed();
 
+    }
+
+    @Override
+    public void onDestroy(){
+        userId = "";
+        userName = "";
+        super.onDestroy();
+
+    }
+
+    private void getUserInfo() {
+        SharedPreferences prefs = this.getSharedPreferences("loginpreferences", this.MODE_PRIVATE);
+        userId = prefs.getString("userid","");
+        userName = prefs.getString("username","");
     }
 
 }
