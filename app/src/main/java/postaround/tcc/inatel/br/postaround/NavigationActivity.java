@@ -90,7 +90,7 @@ public class NavigationActivity extends AppCompatActivity
         TextView userNameText = (TextView) navigationView.findViewById(R.id.drawer_username);
 
         userNameText.setText(userName);
-        Picasso.with(this).load("https://graph.facebook.com/" + userId + "/picture?type=large").placeholder(R.drawable.ic_user).transform(new CircleImage()).into(profilePicture);
+        ///Picasso.with(this).load("https://graph.facebook.com/" + userId + "/picture?type=large").placeholder(R.drawable.ic_user).transform(new CircleImage()).into(profilePicture);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override

@@ -59,9 +59,9 @@ public class GetResponseAsync extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... params) {
 
         Map config = new HashMap();
-        config.put("cloud_name", "dfnoff8kl"); //
-        config.put("api_key", "423312899336841"); //
-        config.put("api_secret", "PB7_3xXCf5Q-WURKEBpSf_IoiTM"); //
+        config.put("cloud_name", "dfnoff8kl");
+        config.put("api_key", "423312899336841");
+        config.put("api_secret", "PB7_3xXCf5Q-WURKEBpSf_IoiTM");
         config.put("transformation", new Transformation().width(200).height(200).crop("limit"));
 
         Cloudinary cloudinary = new Cloudinary(config);

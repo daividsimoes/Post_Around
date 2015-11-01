@@ -53,18 +53,16 @@ import retrofit.client.Response;
 public class CriarPostActivityFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
+    private static final int CAMERA_PIC_REQUEST = 1;
+    private static final int SELECT_PHOTO_REQUEST = 2;
+
     private EditText titulo;
     private EditText descricao;
     private ImageButton botao;
 
     private Location mCurrentLocation;
     private GoogleApiClient mGoogleApiClient;
-
     private LocationRequest mLocationRequest;
-
-
-    private static final int CAMERA_PIC_REQUEST = 1;
-    private static final int SELECT_PHOTO_REQUEST = 2;
 
     private Button btnTakePic;
     private Button btnChosePic;
@@ -72,8 +70,6 @@ public class CriarPostActivityFragment extends Fragment implements GoogleApiClie
     private ImageView imgViewPic;
 
     private Uri imageUri;
-
-
 
     GetResponseAsync asyncTask = new GetResponseAsync(getActivity());
 
@@ -188,11 +184,10 @@ public class CriarPostActivityFragment extends Fragment implements GoogleApiClie
                     try {
                         String path = getRealPathFromURI(imageUri);
 
-                        String urlResult = asyncTask.execute(path).get();
-                        //new DownloadImageAsync(imgViewPic).execute(urlResult);
+                        asyncTask.execute(path);
 
-                        Toast t = Toast.makeText(getActivity(), urlResult, Toast.LENGTH_LONG);
-                        t.show();
+                        //new DownloadImageAsync(imgViewPic).execute(urlResult);
+                        // Toast.makeText(getActivity(), urlResult, Toast.LENGTH_LONG).show();
                     }
                     catch (Exception ex)
                     {
