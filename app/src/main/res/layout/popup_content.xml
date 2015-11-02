@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" android:paddingLeft="@dimen/activity_horizontal_margin"
+    tools:context="postaround.tcc.inatel.br.postaround.PopupActivity"
+    android:orientation="vertical"
+ >
+
+    <RelativeLayout
+        android:id="@+id/botaoCamera"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:paddingBottom="20dp"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Câmera"
+            android:padding="2dp"
+            android:textSize="15sp"
+            android:layout_centerVertical="true"
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/botaoAlbum"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:paddingBottom="20dp"
+        android:paddingTop="8dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Albúm"
+            android:padding="2dp"
+            android:layout_centerVertical="true"
+            android:textSize="15sp"/>
+    </RelativeLayout>
+</LinearLayout>

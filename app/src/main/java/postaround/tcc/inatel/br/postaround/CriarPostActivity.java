@@ -1,10 +1,16 @@
 package postaround.tcc.inatel.br.postaround;
 
 import android.app.Fragment;
+import android.content.ContentValues;
+import android.content.Intent;
+import android.database.Cursor;
 import android.location.Location;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -12,6 +18,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -28,6 +36,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import postaround.tcc.inatel.br.Util.UserInformation;
 import postaround.tcc.inatel.br.interfaces.RestAPI;
@@ -43,12 +52,21 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
 
     private EditText mDescription;
     private ImageButton mSendButton;
+    private ImageButton mImageButton;
+    private CardView fotoCard;
 
     private Location mLocation;
 
     private GoogleMap mGoogleMap;
     private Circle mCircle;
     private Marker mMarker;
+
+    private Uri mImageUri;
+    private ImageView mImgViewPic;
+    private static final int CAMERA_PIC_REQUEST = 1;
+    private static final int SELECT_PHOTO_REQUEST = 2;
+
+    GetResponseAsync asyncTask = new GetResponseAsync(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +75,17 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
 
         mDescription = (EditText) findViewById(R.id.description);
         mSendButton = (ImageButton) findViewById(R.id.send_button);
+        mImageButton = (ImageButton) findViewById(R.id.imageButton);
+        mImgViewPic = (ImageView) findViewById(R.id.postImage);
+        fotoCard = (CardView) findViewById(R.id.fotoCard);
+
+        mImageButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), PopupActivity.class);
+                startActivityForResult(intent,0);
+            }
+        });
 
         mSendButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -193,5 +222,90 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
             Log.w("FAIL: ", "(Couldn't get the location. Make sure location is enabled on the device)");
             return null;
         }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == CAMERA_PIC_REQUEST){
+            try {
+                mImgViewPic.setVisibility(View.VISIBLE);
+                fotoCard.setVisibility(View.GONE);
+                mImgViewPic.setImageURI(mImageUri);
+                sendPictureToCloudnary(mImageUri);
+            } catch (Exception e) {
+                e.printStackTrace();
+
+                Toast t = Toast.makeText(this, "Fail", Toast.LENGTH_LONG);
+                t.show();
+            }
+        }else if(requestCode == SELECT_PHOTO_REQUEST){
+
+            try {
+                mImageUri = data.getData();
+                mImgViewPic.setImageURI(mImageUri);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+
+                Toast t = Toast.makeText(this, "Fail", Toast.LENGTH_LONG);
+                t.show();
+            }
+
+        }else if(resultCode==3){
+            try {
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Images.Media.TITLE, "Image from PostAí");
+                mImageUri = this.getContentResolver().insert(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
+                startActivityForResult(intent, CAMERA_PIC_REQUEST);
+            }
+            catch (Exception ex)
+            {
+                Toast t = Toast.makeText(this, "Fail", Toast.LENGTH_LONG);
+                t.show();
+            }
+        }else if(resultCode == 4){
+            Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+            photoPickerIntent.setType("image/*");
+            startActivityForResult(photoPickerIntent, SELECT_PHOTO_REQUEST);
+        }
+
+    }
+
+    private void sendPictureToCloudnary(Uri imageUri) {
+        if (imageUri != null) {
+            try {
+                String path = getRealPathFromURI(imageUri);
+
+                String urlResult = asyncTask.execute(path).get();
+                //new DownloadImageAsync(imgViewPic).execute(urlResult);
+
+                Toast t = Toast.makeText(this, urlResult, Toast.LENGTH_LONG);
+                t.show();
+            } catch (ExecutionException e) {
+                Log.e("Exception", "Erro ao enviar imagem");
+            }catch(InterruptedException e){
+                Log.e("Exception", "Erro ao enviar imagem");
+            }
+        }
+    }
+
+    private String getRealPathFromURI(Uri contentURI) {
+        String result;
+        Cursor cursor = this.getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) { // Source is Dropbox or other similar local file path
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+        return result;
     }
 }

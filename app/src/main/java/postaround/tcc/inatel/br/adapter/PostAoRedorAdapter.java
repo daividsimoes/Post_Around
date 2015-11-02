@@ -86,7 +86,7 @@ public class PostAoRedorAdapter extends RecyclerView.Adapter<PostAoRedorAdapter.
         View view =  inflater.inflate(R.layout.rows_post_ao_redor, null);
 
 
-        Picasso.with(context).load(post.getImage_url()).placeholder(R.drawable.tcc).fit().centerCrop().into(holder.mImagemPost);
+        Picasso.with(context).load(post.getImage_url()).placeholder(R.id.progress_circular).fit().centerCrop().into(holder.mImagemPost);
 
 
 
