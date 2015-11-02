@@ -135,10 +135,10 @@ public class LoginActivityFragment extends Fragment {
                                 });
 
 
-                                    intent = new Intent(getActivity(), NavigationActivity.class);
+                                    /*intent = new Intent(getActivity(), NavigationActivity.class);
                                     intent.putExtra("obj", user);
                                     startActivity(intent);
-                                    getActivity().finish();
+                                    getActivity().finish();*/
                             }
                         }
                     });

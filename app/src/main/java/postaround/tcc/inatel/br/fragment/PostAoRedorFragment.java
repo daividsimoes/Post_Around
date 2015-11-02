@@ -15,8 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.facebook.FacebookSdk;
@@ -59,6 +57,7 @@ public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.
     public PostAoRedorFragment() {
         // Required empty public constructor
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,8 +85,6 @@ public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.
         // use a linear layout manager
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-
-
 
         swipeView.setOnRefreshListener(this);
 //        listView.setOnItemClickListener(this);
@@ -127,22 +124,32 @@ public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.
 
             RestAPI restAPI = retrofit.create(RestAPI.class);
 
-    restAPI.getPosts(longitude, latitude, maxDis, new Callback<List<Post>>() {
-        @Override
-        public void success(List<Post> posts, Response response) {
+            restAPI.getPosts(longitude, latitude, maxDis, new Callback<List<Post>>() {
+                @Override
+                public void success(List<Post> posts, Response response) {
 
-            recyclerView.setAdapter(new PostAoRedorAdapter(activity, posts));
+                    if(posts.size() > 0) {
+                        recyclerView.setAdapter(new PostAoRedorAdapter(activity, posts));
+                        progressBar.setVisibility(View.GONE);
+                        swipeView.setRefreshing(false);
+                        locationManager.getmGoogleApiClient().disconnect();
+                    } else {
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.container, new NenhumPostEncontradoFragment())
+                                .commit();
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    progressBar.setVisibility(View.GONE);
+                    Log.e("error", error.getMessage());
+                }
+            });
+
+        } else {
             progressBar.setVisibility(View.GONE);
-            swipeView.setRefreshing(false);
-            locationManager.getmGoogleApiClient().disconnect();
-        }
-
-        @Override
-        public void failure(RetrofitError error) {
-            Log.e("error", error.getMessage());
-        }
-        });
-
+            Log.e("error", "location not found!");
         }
     }
 
