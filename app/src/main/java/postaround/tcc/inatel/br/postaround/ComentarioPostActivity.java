@@ -1,9 +1,11 @@
 package postaround.tcc.inatel.br.postaround;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class ComentarioPostActivity extends AppCompatActivity {
 
@@ -11,6 +13,12 @@ public class ComentarioPostActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comentario_post);
+
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        String postId = bundle.getString("post_id");
+
+
     }
 
 

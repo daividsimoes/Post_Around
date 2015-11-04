@@ -230,6 +230,7 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
             try {
                 mImageUri = data.getData();
                 mImgViewPic.setImageURI(mImageUri);
+                sendPictureToCloudnary(mImageUri);
 
             } catch (Exception e) {
                 e.printStackTrace();

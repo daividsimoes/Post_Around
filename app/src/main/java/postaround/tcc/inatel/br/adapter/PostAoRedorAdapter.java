@@ -1,14 +1,18 @@
 package postaround.tcc.inatel.br.adapter;
 
+import android.content.ClipData;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.login.widget.ProfilePictureView;
 import com.squareup.picasso.Picasso;
@@ -20,6 +24,7 @@ import postaround.tcc.inatel.br.Util.UserInformation;
 import postaround.tcc.inatel.br.Utils.CircleImage;
 import postaround.tcc.inatel.br.model.Post;
 import postaround.tcc.inatel.br.model.PostAoRedor;
+import postaround.tcc.inatel.br.postaround.ComentarioPostActivity;
 import postaround.tcc.inatel.br.postaround.R;
 
 
@@ -28,7 +33,7 @@ import postaround.tcc.inatel.br.postaround.R;
  */
 public class PostAoRedorAdapter extends RecyclerView.Adapter<PostAoRedorAdapter.ViewHolder>{
 
-    private Context context;
+    private static Context context;
     private List<Post> postAoRedorArrayList;
 
     private TextView tituloDescricao;
@@ -53,15 +58,29 @@ public class PostAoRedorAdapter extends RecyclerView.Adapter<PostAoRedorAdapter.
         public CardView cv;
         public ImageView fotoProfile;
         public ImageView mImagemPost;
+        public Integer mPostTag;
+        public View view;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
+            view = itemView;
+
             cv = (CardView) itemView.findViewById(R.id.cv);
+            cv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, ComentarioPostActivity.class);
+                    intent.putExtra("post_id",cv.getTag().toString());
+                    context.startActivity(intent);
+                }
+            });
             mTitulo = (TextView) cv.findViewById(R.id.post_titulo);
             mImagemPost = (ImageView) cv.findViewById(R.id.imageView_post_picture_post_redor);
             mDescricao = (TextView) cv.findViewById(R.id.post_descricao);
             mUserName = (TextView) cv.findViewById(R.id.post_nomeUsuario);
             fotoProfile = (ImageView) cv.findViewById(R.id.imagemview_profile_picture_post_redor);
+
         }
     }
 
@@ -86,15 +105,16 @@ public class PostAoRedorAdapter extends RecyclerView.Adapter<PostAoRedorAdapter.
         View view =  inflater.inflate(R.layout.rows_post_ao_redor, null);
 
 
-        Picasso.with(context).load(post.getImage_url()).placeholder(R.id.progress_circular).fit().centerCrop().into(holder.mImagemPost);
+        Picasso.with(context).load(post.getImage_url()).fit().centerCrop().into(holder.mImagemPost);
 
 
 
         Picasso.with(context).load(("https://graph.facebook.com/" + UserInformation.user_id + "/picture?type=large")).transform(new CircleImage()).into(holder.fotoProfile);
 
-
+        holder.cv.setTag(post.get_id());
         holder.mDescricao.setText(post.getDescription());
         holder.mUserName.setText(UserInformation.user_name);
+
     }
 
 
