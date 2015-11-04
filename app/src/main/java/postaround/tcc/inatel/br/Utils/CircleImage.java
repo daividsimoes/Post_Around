@@ -21,6 +21,8 @@ public class CircleImage implements Transformation {
     public Bitmap transform(Bitmap source) {
         int size = Math.min(source.getWidth(), source.getHeight());
 
+        Bitmap.Config config = source.getConfig();
+
         int x = (source.getWidth() - size) / 2;
         int y = (source.getHeight() - size) / 2;
 
@@ -29,7 +31,7 @@ public class CircleImage implements Transformation {
             source.recycle();
         }
 
-        Bitmap bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = Bitmap.createBitmap(size, size, config);
 
         Canvas canvas = new Canvas(bitmap);
         Paint paint = new Paint();

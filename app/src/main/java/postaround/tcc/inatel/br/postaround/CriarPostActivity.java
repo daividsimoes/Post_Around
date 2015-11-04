@@ -2,6 +2,7 @@ package postaround.tcc.inatel.br.postaround;
 
 import android.app.Fragment;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.location.Location;
@@ -54,6 +55,7 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
     private ImageButton mSendButton;
     private ImageButton mImageButton;
     private CardView fotoCard;
+    private ImageButton mImageButtonBack;
 
     private Location mLocation;
 
@@ -73,11 +75,20 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.criar_post);
 
+
         mDescription = (EditText) findViewById(R.id.description);
         mSendButton = (ImageButton) findViewById(R.id.send_button);
         mImageButton = (ImageButton) findViewById(R.id.imageButton);
         mImgViewPic = (ImageView) findViewById(R.id.postImage);
         fotoCard = (CardView) findViewById(R.id.fotoCard);
+        mImageButtonBack = (ImageButton) findViewById(R.id.menu_button);
+
+        mImageButtonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         mImageButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -137,28 +148,6 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
 
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_criar_post, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     public void closeActivity(){
         this.finish();

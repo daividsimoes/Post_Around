@@ -89,8 +89,6 @@ public class NavigationActivity extends AppCompatActivity
         ImageView profilePicture = (ImageView) navigationView.findViewById(R.id.drawer_profile_image);
         TextView userNameText = (TextView) navigationView.findViewById(R.id.drawer_username);
 
-        userNameText.setText(userName);
-        Picasso.with(this).load("https://graph.facebook.com/" + userId + "/picture?type=large").placeholder(R.drawable.ic_user).transform(new CircleImage()).into(profilePicture);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -131,6 +129,10 @@ public class NavigationActivity extends AppCompatActivity
                 return false;
             }
         });
+
+        userNameText.setText(userName);
+        Picasso.with(this).load("https://graph.facebook.com/" + userId + "/picture?type=large").transform(new CircleImage()).into(profilePicture);
+
 
     }
 

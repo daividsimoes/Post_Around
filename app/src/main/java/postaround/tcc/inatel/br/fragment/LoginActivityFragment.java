@@ -45,6 +45,7 @@ import postaround.tcc.inatel.br.model.PostUserRes;
 import postaround.tcc.inatel.br.model.User;
 import postaround.tcc.inatel.br.postaround.BuildConfig;
 
+import postaround.tcc.inatel.br.postaround.LoginActivity;
 import postaround.tcc.inatel.br.postaround.NavigationActivity;
 import postaround.tcc.inatel.br.postaround.R;
 import retrofit.Callback;
@@ -59,6 +60,8 @@ public class LoginActivityFragment extends Fragment {
 
     private LoginModel loginModel;
     private Intent intent;
+
+    private Context contexto;
 
     private boolean isLoggedIn;
 
@@ -118,9 +121,8 @@ public class LoginActivityFragment extends Fragment {
                                         UserInformation.user_id = user.getId()+"";
                                         UserInformation.user_name = user.getName()+"";
 
-                                        Context context = getActivity();
-                                        SharedPreferences sharedPref = context.getSharedPreferences(
-                                                "loginpreferences", context.MODE_PRIVATE);
+                                        Context context = contexto;
+                                        SharedPreferences sharedPref = context.getSharedPreferences("loginpreferences", context.MODE_PRIVATE);
                                         SharedPreferences.Editor editor = sharedPref.edit();
                                         editor.putString("apikey",UserInformation.api_key);
                                         editor.putString("userid", UserInformation.user_id);
@@ -136,7 +138,6 @@ public class LoginActivityFragment extends Fragment {
 
 
                                     intent = new Intent(getActivity(), NavigationActivity.class);
-                                    intent.putExtra("obj", user);
                                     startActivity(intent);
                                     getActivity().finish();
                             }
@@ -173,6 +174,8 @@ public class LoginActivityFragment extends Fragment {
             FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
             mCallbackManager = CallbackManager.Factory.create();
             loginModel = new LoginModel();
+
+            contexto = this.getActivity();
 
     }
 
