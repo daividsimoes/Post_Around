@@ -271,11 +271,10 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
             try {
                 String path = getRealPathFromURI(imageUri);
 
-                String urlResult = asyncTask.execute(path).get();
+                asyncTask.execute(path);
                 //new DownloadImageAsync(imgViewPic).execute(urlResult);
 
-                Toast t = Toast.makeText(this, urlResult, Toast.LENGTH_LONG);
-                t.show();
+                // Toast.makeText(this, urlResult, Toast.LENGTH_LONG).show();
             } catch (ExecutionException e) {
                 Log.e("Exception", "Erro ao enviar imagem");
             }catch(InterruptedException e){
