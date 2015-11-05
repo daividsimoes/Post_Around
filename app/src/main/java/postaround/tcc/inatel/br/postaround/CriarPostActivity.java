@@ -89,7 +89,7 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
                 finish();
             }
         });
-
+        //Teste de push
         mImageButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
