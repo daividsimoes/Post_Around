@@ -4,45 +4,72 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
-    tools:context="postaround.tcc.inatel.br.postaround.PostComentadoFragment">
+    tools:context="postaround.tcc.inatel.br.postaround.PostComentadoFragment"
+    android:background="#FFFFFF">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-            <ImageView
-            android:layout_width="80dp "
-            android:layout_height="80dp"
-            android:src="@drawable/tcc"
-            android:id="@+id/imageView_post_comentado_picture"
-            android:layout_gravity="left|top"/>
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/imageView_post_comentado_imagem"
+            android:layout_width="458dp"
+            android:layout_height="214dp"
+            android:src="@drawable/ic_21x9_sample"
+            android:scaleType="centerCrop"/>
 
         <LinearLayout
+            android:id="@+id/post_comentado_dados_usuario"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="190dp"
+            android:paddingLeft="10dp">
+
+            <ImageView
+                android:id="@+id/imageView_post_comentado_foto"
+                android:gravity="center"
+                android:layout_gravity="right"
+                android:layout_width="60dp"
+                android:layout_height="60dp"/>
+
+            <TextView
+                android:id="@+id/textView_post_comentado_nome"
+                android:maxLength="100"
+                android:text="José da Silva Sauro"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/imageView_post_comentado_foto"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_below="@+id/post_comentado_dados_usuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingLeft="@dimen/activity_horizontal_margin">
 
             <TextView
-                android:maxLength="50"
-                android:id="@+id/textView_descricao_post_comentado"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLargePopupMenu"
-                android:text="Descrição do Post"/>
-
-            <TextView
+                android:id="@+id/textView_post_comentado_comentario"
                 android:maxLength="100"
+                android:text="Comentário do criador do Post que não sei quantos caracteres podem ter"
+                android:textSize="18sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView_comentario_post_comentado"
-                android:text="Comentário do criador do Post que não sei quantos caracteres podem ter" />
+                android:paddingTop="10dp" />
+
         </LinearLayout>
-    </LinearLayout>
+
+    </RelativeLayout>
 
     <View
-        android:layout_marginTop="10dp"
         android:id="@+id/divisor1"
+        android:layout_marginTop="10dp"
         android:layout_width="fill_parent"
         android:layout_height="2dip"
         android:background="@color/gray" />

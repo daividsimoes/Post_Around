@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import postaround.tcc.inatel.br.Utils.CircleImage;
 import postaround.tcc.inatel.br.postaround.R;
 
 
@@ -19,10 +20,11 @@ import postaround.tcc.inatel.br.postaround.R;
  */
 public class PostComentadoFragment extends Fragment {
 
-
-    private TextView comentarioPost;
-    private TextView nomeUsuario;
     private ImageView fotoPost;
+    private ImageView fotoUsuario;
+    private TextView nomeUsuario;
+    private TextView comentarioPost;
+
     public PostComentadoFragment() {
     }
 
@@ -31,12 +33,26 @@ public class PostComentadoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-       View view = inflater.inflate(R.layout.fragment_post_comentado, container, false);
+        View view = inflater.inflate(R.layout.fragment_post_comentado, container, false);
 
-        comentarioPost = (TextView)view.findViewById(R.id.textView_novo_comentario_post_comentado);
-        nomeUsuario = (TextView) view.findViewById(R.id.textView_novo_nome_post_comentado);
-        fotoPost = (ImageView) view.findViewById(R.id.imageView_post_comentado_picture);
+        fotoPost = (ImageView) view.findViewById(R.id.imageView_post_comentado_imagem);
+        fotoUsuario = (ImageView) view.findViewById(R.id.imageView_post_comentado_foto);
+        nomeUsuario = (TextView) view.findViewById(R.id.textView_post_comentado_nome);
+        comentarioPost = (TextView)view.findViewById(R.id.textView_post_comentado_comentario);
 
+
+        String id = "1586076827";
+        String nome = "Carol Tenório";
+        String comentario = "Como fazer um ListView personalizado?";
+
+        fotoPost.setImageDrawable(getResources().getDrawable(R.drawable.ic_21x9_sample));
+
+        Picasso.with(getActivity())
+                .load("https://graph.facebook.com/" + id + "/picture?type=large")
+                .transform(new CircleImage()).into(fotoUsuario);
+
+        nomeUsuario.setText(nome);
+        comentarioPost.setText(comentario);
 
         return view;
     }
