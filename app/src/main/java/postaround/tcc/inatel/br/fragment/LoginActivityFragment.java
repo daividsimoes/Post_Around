@@ -3,8 +3,6 @@ package postaround.tcc.inatel.br.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInstaller;
-import android.service.textservice.SpellCheckerService;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,7 +12,6 @@ import android.view.ViewGroup;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookActivity;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
@@ -22,8 +19,6 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.LoggingBehavior;
 
-import com.facebook.Profile;
-import com.facebook.applinks.FacebookAppLinkResolver;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
@@ -31,21 +26,15 @@ import com.facebook.login.widget.LoginButton;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
-import java.io.Serializable;
 import java.util.Arrays;
-import java.util.List;
 
 import postaround.tcc.inatel.br.Util.UserInformation;
-import postaround.tcc.inatel.br.adapter.PostAoRedorAdapter;
 import postaround.tcc.inatel.br.interfaces.RestAPI;
 import postaround.tcc.inatel.br.model.LoginModel;
-import postaround.tcc.inatel.br.model.Post;
 import postaround.tcc.inatel.br.model.PostUserRes;
 import postaround.tcc.inatel.br.model.User;
 import postaround.tcc.inatel.br.postaround.BuildConfig;
 
-import postaround.tcc.inatel.br.postaround.LoginActivity;
 import postaround.tcc.inatel.br.postaround.NavigationActivity;
 import postaround.tcc.inatel.br.postaround.R;
 import retrofit.Callback;
@@ -53,9 +42,6 @@ import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-/**
- * A placeholder fragment containing a simple view.
- */
 public class LoginActivityFragment extends Fragment {
 
     private LoginModel loginModel;
@@ -116,7 +102,7 @@ public class LoginActivityFragment extends Fragment {
                                     @Override
                                    public void success(PostUserRes postUserRes, Response response) {
                                         Log.v("Resposta: ",response.getBody().toString());
-                                        Log.v("apiKey: ", postUserRes.getApi_key());
+                                        //Log.v("apiKey: ", postUserRes.getApi_key());
                                         UserInformation.api_key = postUserRes.getApi_key()+"";
                                         UserInformation.user_id = user.getId()+"";
                                         UserInformation.user_name = user.getName()+"";

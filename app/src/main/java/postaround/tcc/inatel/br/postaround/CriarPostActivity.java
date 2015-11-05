@@ -101,51 +101,48 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
         mSendButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                String description = mDescription.getText().toString();
-                HashMap<String, Double> location = getLocation();
-                List<Double> list = new ArrayList<Double>();
-                if (location != null) {
-                    list.add(location.get("longitude"));
-                    list.add(location.get("latitude"));
+            String description = mDescription.getText().toString();
+            HashMap<String, Double> location = getLocation();
+            List<Double> list = new ArrayList<Double>();
+            if (location != null) {
+                list.add(location.get("longitude"));
+                list.add(location.get("latitude"));
+            }
+
+            Post post = new Post();
+            Loc loc = new Loc();
+
+            post.setDescription(description);
+            post.setUser_id(UserInformation.user_id);
+            loc.setCoordinates(list);
+            loc.setType("Point");
+            post.setLoc(loc);
+
+            RestAdapter retrofit = new RestAdapter.Builder()
+                    .setEndpoint("http://api-tccpostaround.rhcloud.com/api")
+                    .build();
+
+            RestAPI restAPI = retrofit.create(RestAPI.class);
+
+            restAPI.postPost(post, new Callback<PostPostRes>() {
+                @Override
+                public void success(PostPostRes post, Response response) {
+                    Log.v("Resposta : ", response.getBody().toString());
+                    if (post != null) {
+                        Log.v("res:", "" + post.getMessage());
+                        closeActivity();
+                    }
                 }
 
-                Post post = new Post();
-                Loc loc = new Loc();
-
-                post.setDescription(description);
-                post.setUser_id(UserInformation.user_id);
-                loc.setCoordinates(list);
-                loc.setType("Point");
-                post.setLoc(loc);
-
-                RestAdapter retrofit = new RestAdapter.Builder()
-                        .setEndpoint("http://api-tccpostaround.rhcloud.com/api")
-                        .build();
-
-                RestAPI restAPI = retrofit.create(RestAPI.class);
-
-                restAPI.postPost(post, new Callback<PostPostRes>() {
-                    @Override
-                    public void success(PostPostRes post, Response response) {
-                        Log.v("Resposta : ", response.getBody().toString());
-                        if (post != null) {
-                            Log.v("res:", "" + post.getMessage());
-                            closeActivity();
-                        }
-                    }
-
-                    @Override
-                    public void failure(RetrofitError error) {
-                        Log.v("Erro : ", error.getMessage());
-                    }
-                });
-
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.v("Erro : ", error.getMessage());
+                }
+            });
             }
         });
 
         ((MapFragment) getFragmentManager().findFragmentById(R.id.mapFragment)).getMapAsync(this);
-
-
     }
 
 
@@ -170,8 +167,6 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
                 }
             }
         });
-
-
     }
 
     private void updateMarker(LatLng position) {
@@ -275,10 +270,8 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
                 //new DownloadImageAsync(imgViewPic).execute(urlResult);
 
                 // Toast.makeText(this, urlResult, Toast.LENGTH_LONG).show();
-            } catch (ExecutionException e) {
-                Log.e("Exception", "Erro ao enviar imagem");
-            }catch(InterruptedException e){
-                Log.e("Exception", "Erro ao enviar imagem");
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -286,7 +279,7 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
     private String getRealPathFromURI(Uri contentURI) {
         String result;
         Cursor cursor = this.getContentResolver().query(contentURI, null, null, null, null);
-        if (cursor == null) { // Source is Dropbox or other similar local file path
+        if (cursor == null) {
             result = contentURI.getPath();
         } else {
             cursor.moveToFirst();

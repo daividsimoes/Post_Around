@@ -127,22 +127,31 @@ public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.
 
             RestAPI restAPI = retrofit.create(RestAPI.class);
 
-    restAPI.getPosts(longitude, latitude, maxDis, new Callback<List<Post>>() {
-        @Override
-        public void success(List<Post> posts, Response response) {
+            restAPI.getPosts(longitude, latitude, maxDis, new Callback<List<Post>>() {
+                @Override
+                public void success(List<Post> posts, Response response) {
 
-            recyclerView.setAdapter(new PostAoRedorAdapter(activity, posts));
+                    if(posts.size() > 0) {
+                        recyclerView.setAdapter(new PostAoRedorAdapter(activity, posts));
+                        progressBar.setVisibility(View.GONE);
+                        swipeView.setRefreshing(false);
+                        locationManager.getmGoogleApiClient().disconnect();
+                    } else {
+                        getFragmentManager().beginTransaction()
+                            .replace(R.id.container, new NenhumPostEncontradoFragment())
+                            .commit();
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    progressBar.setVisibility(View.GONE);
+                    Log.e("error", error.getMessage());
+                }
+            });
+        } else {
             progressBar.setVisibility(View.GONE);
-            swipeView.setRefreshing(false);
-            locationManager.getmGoogleApiClient().disconnect();
-        }
-
-        @Override
-        public void failure(RetrofitError error) {
-            Log.e("error", error.getMessage());
-        }
-        });
-
+            Log.e("error", "location not found!");
         }
     }
 
