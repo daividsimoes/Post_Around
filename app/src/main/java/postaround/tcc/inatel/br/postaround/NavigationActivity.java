@@ -2,39 +2,25 @@ package postaround.tcc.inatel.br.postaround;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.support.design.widget.NavigationView;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
-import android.support.v7.internal.widget.AdapterViewCompat;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
-import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.facebook.login.LoginManager;
 import com.squareup.picasso.Picasso;
 
-import postaround.tcc.inatel.br.Util.UserInformation;
-import postaround.tcc.inatel.br.Utils.CircleImage;
 import postaround.tcc.inatel.br.fragment.ConfiguracaoFragment;
 import postaround.tcc.inatel.br.fragment.MeusPostsFragment;
 import postaround.tcc.inatel.br.fragment.NavigationDrawerFragment;
@@ -90,7 +76,10 @@ public class NavigationActivity extends AppCompatActivity
         TextView userNameText = (TextView) navigationView.findViewById(R.id.drawer_username);
 
         userNameText.setText(userName);
-        Picasso.with(this).load("https://graph.facebook.com/" + userId + "/picture?type=large").transform(new CircleImage()).into(profilePicture);
+
+        Picasso.with(this).load("https://graph.facebook.com/" + userId + "/picture?type=large")
+                //.transform(new CircleImage())
+                .into(profilePicture);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -133,7 +122,10 @@ public class NavigationActivity extends AppCompatActivity
         });
 
         userNameText.setText(userName);
-        Picasso.with(this).load("https://graph.facebook.com/" + userId + "/picture?type=large").transform(new CircleImage()).into(profilePicture);
+
+        Picasso.with(this).load("https://graph.facebook.com/" + userId + "/picture?type=large")
+                //.transform(new CircleImage())
+                .into(profilePicture);
 
 
     }

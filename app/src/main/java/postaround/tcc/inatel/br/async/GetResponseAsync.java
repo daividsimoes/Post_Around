@@ -1,29 +1,15 @@
-package postaround.tcc.inatel.br.postaround;
+package postaround.tcc.inatel.br.async;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.Window;
 import android.widget.Toast;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.Transformation;
-//import com.cloudinary.utils.ObjectUtils;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-
-import postaround.tcc.inatel.br.fragment.CriarPostActivityFragment;
 
 /**
  * Created by Carol on 13/09/2015.
@@ -38,15 +24,15 @@ public class GetResponseAsync extends AsyncTask<String, Void, String> {
     public GetResponseAsync(Context c) {
         this.context = c;
 
-        mProgressDialog = new ProgressDialog(context);
-        mProgressDialog.setIndeterminate(true);
+        // mProgressDialog = new ProgressDialog(context);
+        // mProgressDialog.setIndeterminate(true);
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
 
-        mProgressDialog =ProgressDialog.show(context, "", "Criando o post...");
+        // mProgressDialog =ProgressDialog.show(context, "", "Criando o post...");
     }
 
     @Override
@@ -85,6 +71,6 @@ public class GetResponseAsync extends AsyncTask<String, Void, String> {
         super.onPostExecute(result);
 
         Toast.makeText(context, result, Toast.LENGTH_LONG).show();
-        mProgressDialog.dismiss();
+        //mProgressDialog.dismiss();
     }
 }

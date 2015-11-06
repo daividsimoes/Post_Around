@@ -28,7 +28,7 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 
-import postaround.tcc.inatel.br.Util.UserInformation;
+import postaround.tcc.inatel.br.Utils.UserInformation;
 import postaround.tcc.inatel.br.interfaces.RestAPI;
 import postaround.tcc.inatel.br.model.LoginModel;
 import postaround.tcc.inatel.br.model.PostUserRes;

@@ -1,32 +1,31 @@
 package postaround.tcc.inatel.br.postaround;
 
-import android.app.Fragment;
+import android.content.ComponentName;
 import android.content.ContentValues;
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import android.app.AlertDialog;
+
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
@@ -34,13 +33,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
-import postaround.tcc.inatel.br.Util.UserInformation;
+import postaround.tcc.inatel.br.Utils.UserInformation;
+import postaround.tcc.inatel.br.adapter.CropImageAdapter;
+import postaround.tcc.inatel.br.async.GetResponseAsync;
 import postaround.tcc.inatel.br.interfaces.RestAPI;
+import postaround.tcc.inatel.br.model.CropImage;
 import postaround.tcc.inatel.br.model.Loc;
 import postaround.tcc.inatel.br.model.Post;
 import postaround.tcc.inatel.br.model.PostPostRes;
@@ -50,6 +52,12 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCallback{
+
+    private static final int CAMERA_PIC_REQUEST = 1;
+    private static final int SELECT_PHOTO_REQUEST = 2;
+    private static final int CAMERA_CHOOSE = 3;
+    private static final int SELECT_PHOTO_CHOOSE = 4;
+    private static final int CROP_FROM_CAMERA = 5;
 
     private EditText mDescription;
     private ImageButton mSendButton;
@@ -65,15 +73,13 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
 
     private Uri mImageUri;
     private ImageView mImgViewPic;
-    private static final int CAMERA_PIC_REQUEST = 1;
-    private static final int SELECT_PHOTO_REQUEST = 2;
 
     GetResponseAsync asyncTask = new GetResponseAsync(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.criar_post);
+        setContentView(R.layout.activity_criar_post);
 
 
         mDescription = (EditText) findViewById(R.id.description);
@@ -94,7 +100,7 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), PopupActivity.class);
-                startActivityForResult(intent,0);
+                startActivityForResult(intent, 0);
             }
         });
 
@@ -213,12 +219,11 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == CAMERA_PIC_REQUEST){
+        if(requestCode == CAMERA_PIC_REQUEST) {
             try {
-                mImgViewPic.setVisibility(View.VISIBLE);
-                fotoCard.setVisibility(View.GONE);
-                mImgViewPic.setImageURI(mImageUri);
-                sendPictureToCloudnary(mImageUri);
+                doCrop();
+                // mImgViewPic.setImageURI(mImageUri);
+                //sendPictureToCloudnary(mImageUri);
             } catch (Exception e) {
                 e.printStackTrace();
 
@@ -229,8 +234,9 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
 
             try {
                 mImageUri = data.getData();
-                mImgViewPic.setImageURI(mImageUri);
-                sendPictureToCloudnary(mImageUri);
+                doCrop();
+                //mImgViewPic.setImageURI(mImageUri);
+                //sendPictureToCloudnary(mImageUri);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -239,7 +245,8 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
                 t.show();
             }
 
-        }else if(resultCode==3){
+        }
+        else if (resultCode == CAMERA_CHOOSE) {
             try {
                 ContentValues values = new ContentValues();
                 values.put(MediaStore.Images.Media.TITLE, "Image from PostAí");
@@ -254,12 +261,124 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
                 Toast t = Toast.makeText(this, "Fail", Toast.LENGTH_LONG);
                 t.show();
             }
-        }else if(resultCode == 4){
+        }
+        else if (resultCode == SELECT_PHOTO_CHOOSE) {
             Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
             photoPickerIntent.setType("image/*");
             startActivityForResult(photoPickerIntent, SELECT_PHOTO_REQUEST);
         }
+        else if (requestCode == CROP_FROM_CAMERA) {
+            //Bundle extras = data.getExtras();
 
+            mImageUri = data.getData();
+            mImgViewPic.setImageURI(mImageUri);
+
+            mImgViewPic.setVisibility(View.VISIBLE);
+            fotoCard.setVisibility(View.GONE);
+
+            /* if (extras != null) {
+                Bitmap photo = extras.getParcelable("data");
+                mImgViewPic.setImageBitmap(photo);
+            } */
+
+            /* File f = new File(mImageUri.getPath());
+            if (f.exists())
+                f.delete(); */
+        }
+    }
+
+    private void doCrop() {
+        final ArrayList<CropImage> cropOptions = new ArrayList<CropImage>();
+
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setType("image/*");
+
+        List<ResolveInfo> list = getPackageManager().queryIntentActivities(
+                intent, 0);
+
+        int size = list.size();
+
+        if (size == 0) {
+
+            Toast.makeText(this, "Can not find image crop app",
+                    Toast.LENGTH_SHORT).show();
+
+            return;
+        } else {
+            intent.setData(mImageUri);
+
+            //intent.putExtra("outputX", 200);
+            //intent.putExtra("outputY", 200);
+            intent.putExtra("aspectX", 21);
+            intent.putExtra("aspectY", 9);
+            intent.putExtra("scale", true);
+            intent.putExtra("return-data", true);
+
+            /**
+             * There is posibility when more than one image cropper app exist,
+             * so we have to check for it first. If there is only one app, open
+             * then app.
+             */
+            if (size == 1) {
+                Intent i = new Intent(intent);
+                ResolveInfo res = list.get(0);
+
+                i.setComponent(new ComponentName(res.activityInfo.packageName,
+                        res.activityInfo.name));
+
+                startActivityForResult(i, CROP_FROM_CAMERA);
+            } else {
+                /**
+                 * If there are several app exist, create a custom chooser to
+                 * let user selects the app.
+                 */
+                for (ResolveInfo res : list) {
+                    final CropImage co = new CropImage();
+
+                    co.title = getPackageManager().getApplicationLabel(
+                            res.activityInfo.applicationInfo);
+                    co.icon = getPackageManager().getApplicationIcon(
+                            res.activityInfo.applicationInfo);
+                    co.appIntent = new Intent(intent);
+
+                    co.appIntent
+                            .setComponent(new ComponentName(
+                                    res.activityInfo.packageName,
+                                    res.activityInfo.name));
+
+                    cropOptions.add(co);
+                }
+
+                CropImageAdapter adapter = new CropImageAdapter(
+                        getApplicationContext(), cropOptions);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Choose Crop App");
+                builder.setAdapter(adapter,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int item) {
+                                startActivityForResult(
+                                        cropOptions.get(item).appIntent,
+                                        CROP_FROM_CAMERA);
+                            }
+                        });
+
+                builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+
+                        if (mImageUri != null) {
+                            getContentResolver().delete(mImageUri, null,
+                                    null);
+                            mImageUri = null;
+                        }
+                    }
+                });
+
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        }
     }
 
     private void sendPictureToCloudnary(Uri imageUri) {

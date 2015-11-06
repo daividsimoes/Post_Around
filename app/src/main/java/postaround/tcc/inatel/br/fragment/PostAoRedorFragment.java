@@ -15,8 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.facebook.FacebookSdk;
@@ -24,7 +22,7 @@ import com.facebook.FacebookSdk;
 import java.util.HashMap;
 import java.util.List;
 
-import postaround.tcc.inatel.br.Util.LocationManager;
+import postaround.tcc.inatel.br.Utils.LocationManager;
 import postaround.tcc.inatel.br.adapter.PostAoRedorAdapter;
 import postaround.tcc.inatel.br.interfaces.LocationObserver;
 import postaround.tcc.inatel.br.interfaces.RestAPI;

@@ -1,29 +1,22 @@
 package postaround.tcc.inatel.br.adapter;
 
-import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.facebook.login.widget.ProfilePictureView;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import postaround.tcc.inatel.br.Util.UserInformation;
+import postaround.tcc.inatel.br.Utils.UserInformation;
 import postaround.tcc.inatel.br.Utils.CircleImage;
 import postaround.tcc.inatel.br.model.Post;
-import postaround.tcc.inatel.br.model.PostAoRedor;
 import postaround.tcc.inatel.br.postaround.ComentarioPostActivity;
 import postaround.tcc.inatel.br.postaround.R;
 
