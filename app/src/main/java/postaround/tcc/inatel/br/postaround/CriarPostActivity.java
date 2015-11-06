@@ -1,5 +1,6 @@
 package postaround.tcc.inatel.br.postaround;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.DialogInterface;
@@ -42,6 +43,7 @@ import postaround.tcc.inatel.br.Utils.UserInformation;
 import postaround.tcc.inatel.br.adapter.CropImageAdapter;
 import postaround.tcc.inatel.br.async.GetResponseAsync;
 import postaround.tcc.inatel.br.interfaces.RestAPI;
+import postaround.tcc.inatel.br.model.AsyncTaskArguments;
 import postaround.tcc.inatel.br.model.CropImage;
 import postaround.tcc.inatel.br.model.Loc;
 import postaround.tcc.inatel.br.model.Post;
@@ -53,10 +55,10 @@ import retrofit.client.Response;
 
 public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCallback{
 
-    private static final int CAMERA_PIC_REQUEST = 1;
-    private static final int SELECT_PHOTO_REQUEST = 2;
-    private static final int CAMERA_CHOOSE = 3;
-    private static final int SELECT_PHOTO_CHOOSE = 4;
+    private static final int CAMERA_RESULT = 1;
+    private static final int SELECT_PHOTO_RESULT = 2;
+    private static final int CAMERA_PIC_REQUEST = 3;
+    private static final int SELECT_PHOTO_REQUEST = 4;
     private static final int CROP_FROM_CAMERA = 5;
 
     private EditText mDescription;
@@ -81,7 +83,6 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_criar_post);
 
-
         mDescription = (EditText) findViewById(R.id.description);
         mSendButton = (ImageButton) findViewById(R.id.send_button);
         mImageButton = (ImageButton) findViewById(R.id.imageButton);
@@ -95,7 +96,7 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
                 finish();
             }
         });
-        //Teste de push
+
         mImageButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -107,44 +108,55 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
         mSendButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-            String description = mDescription.getText().toString();
-            HashMap<String, Double> location = getLocation();
-            List<Double> list = new ArrayList<Double>();
-            if (location != null) {
-                list.add(location.get("longitude"));
-                list.add(location.get("latitude"));
-            }
+                String description = mDescription.getText().toString();
+                HashMap<String, Double> location = getLocation();
+                List<Double> list = new ArrayList<Double>();
+                if (location != null) {
+                    list.add(location.get("longitude"));
+                    list.add(location.get("latitude"));
+                }
 
-            Post post = new Post();
-            Loc loc = new Loc();
+                Post post = new Post();
+                Loc loc = new Loc();
 
-            post.setDescription(description);
-            post.setUser_id(UserInformation.user_id);
-            loc.setCoordinates(list);
-            loc.setType("Point");
-            post.setLoc(loc);
+                post.setDescription(description);
+                post.setUser_id(UserInformation.user_id);
+                loc.setCoordinates(list);
+                loc.setType("Point");
+                post.setLoc(loc);
 
-            RestAdapter retrofit = new RestAdapter.Builder()
-                    .setEndpoint("http://api-tccpostaround.rhcloud.com/api")
-                    .build();
-
-            RestAPI restAPI = retrofit.create(RestAPI.class);
-
-            restAPI.postPost(post, new Callback<PostPostRes>() {
-                @Override
-                public void success(PostPostRes post, Response response) {
-                    Log.v("Resposta : ", response.getBody().toString());
-                    if (post != null) {
-                        Log.v("res:", "" + post.getMessage());
-                        closeActivity();
+                String path = null;
+                if (mImageUri != null) {
+                    try {
+                        path = getRealPathFromURI(mImageUri);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
 
-                @Override
-                public void failure(RetrofitError error) {
-                    Log.v("Erro : ", error.getMessage());
-                }
-            });
+                asyncTask.execute(new AsyncTaskArguments(path, post));
+
+                /*RestAdapter retrofit = new RestAdapter.Builder()
+                        .setEndpoint("http://api-tccpostaround.rhcloud.com/api")
+                        .build();
+
+                RestAPI restAPI = retrofit.create(RestAPI.class);
+
+                restAPI.postPost(post, new Callback<PostPostRes>() {
+                    @Override
+                    public void success(PostPostRes post, Response response) {
+                        Log.v("Resposta : ", response.getBody().toString());
+                        if (post != null) {
+                            Log.v("res:", "" + post.getMessage());
+                            closeActivity();
+                        }
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.v("Erro : ", error.getMessage());
+                    }
+                });*/
             }
         });
 
@@ -218,35 +230,12 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.w("actResult", "-----------------------------");
+        Log.w("actResult REQUEST CODE", requestCode + "");
+        Log.w("actResult RESULT CODE", resultCode+"");
+        Log.w("actResult ok", this.RESULT_OK+"");
 
-        if(requestCode == CAMERA_PIC_REQUEST) {
-            try {
-                doCrop();
-                // mImgViewPic.setImageURI(mImageUri);
-                //sendPictureToCloudnary(mImageUri);
-            } catch (Exception e) {
-                e.printStackTrace();
-
-                Toast t = Toast.makeText(this, "Fail", Toast.LENGTH_LONG);
-                t.show();
-            }
-        }else if(requestCode == SELECT_PHOTO_REQUEST){
-
-            try {
-                mImageUri = data.getData();
-                doCrop();
-                //mImgViewPic.setImageURI(mImageUri);
-                //sendPictureToCloudnary(mImageUri);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-
-                Toast t = Toast.makeText(this, "Fail", Toast.LENGTH_LONG);
-                t.show();
-            }
-
-        }
-        else if (resultCode == CAMERA_CHOOSE) {
+        if (resultCode == CAMERA_RESULT) {
             try {
                 ContentValues values = new ContentValues();
                 values.put(MediaStore.Images.Media.TITLE, "Image from PostAí");
@@ -261,29 +250,37 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
                 Toast t = Toast.makeText(this, "Fail", Toast.LENGTH_LONG);
                 t.show();
             }
-        }
-        else if (resultCode == SELECT_PHOTO_CHOOSE) {
+        } else if (resultCode == SELECT_PHOTO_RESULT) {
             Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
             photoPickerIntent.setType("image/*");
             startActivityForResult(photoPickerIntent, SELECT_PHOTO_REQUEST);
-        }
-        else if (requestCode == CROP_FROM_CAMERA) {
-            //Bundle extras = data.getExtras();
+        } else if(data != null) {
+            if (requestCode == CAMERA_PIC_REQUEST) {
+                try {
+                    doCrop();
+                } catch (Exception e) {
+                    e.printStackTrace();
 
-            mImageUri = data.getData();
-            mImgViewPic.setImageURI(mImageUri);
+                    Toast t = Toast.makeText(this, "Fail", Toast.LENGTH_LONG);
+                    t.show();
+                }
+            } else if (requestCode == SELECT_PHOTO_REQUEST) {
+                try {
+                    mImageUri = data.getData();
+                    doCrop();
+                } catch (Exception e) {
+                    e.printStackTrace();
 
-            mImgViewPic.setVisibility(View.VISIBLE);
-            fotoCard.setVisibility(View.GONE);
+                    Toast t = Toast.makeText(this, "Fail", Toast.LENGTH_LONG);
+                    t.show();
+                }
+            } else if (requestCode == CROP_FROM_CAMERA) {
+                mImageUri = data.getData();
+                mImgViewPic.setImageURI(mImageUri);
 
-            /* if (extras != null) {
-                Bitmap photo = extras.getParcelable("data");
-                mImgViewPic.setImageBitmap(photo);
-            } */
-
-            /* File f = new File(mImageUri.getPath());
-            if (f.exists())
-                f.delete(); */
+                mImgViewPic.setVisibility(View.VISIBLE);
+                fotoCard.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -386,7 +383,7 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
             try {
                 String path = getRealPathFromURI(imageUri);
 
-                asyncTask.execute(path);
+                //asyncTask.execute(path);
                 //new DownloadImageAsync(imgViewPic).execute(urlResult);
 
                 // Toast.makeText(this, urlResult, Toast.LENGTH_LONG).show();

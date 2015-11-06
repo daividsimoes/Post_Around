@@ -11,8 +11,8 @@ import android.widget.RelativeLayout;
 
 public class PopupActivity extends AppCompatActivity {
 
-    private static final int CAMERA_CHOOSE = 3;
-    private static final int SELECT_PHOTO_CHOOSE = 4;
+    private static final int CAMERA_RESULT = 1;
+    private static final int SELECT_PHOTO_RESULT = 2;
 
     private RelativeLayout camera;
     private RelativeLayout album;
@@ -27,7 +27,7 @@ public class PopupActivity extends AppCompatActivity {
         camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setResult(CAMERA_CHOOSE);
+                setResult(CAMERA_RESULT);
                 finish();
             }
         });
@@ -37,7 +37,7 @@ public class PopupActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                setResult(SELECT_PHOTO_CHOOSE);
+                setResult(SELECT_PHOTO_RESULT);
                 finish();
             }
         });
