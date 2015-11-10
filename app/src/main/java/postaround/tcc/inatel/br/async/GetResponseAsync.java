@@ -1,5 +1,6 @@
 package postaround.tcc.inatel.br.async;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -7,7 +8,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.cloudinary.Cloudinary;
-import com.cloudinary.Transformation;
+
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,22 +27,21 @@ import retrofit.client.Response;
  */
 public class GetResponseAsync extends AsyncTask<AsyncTaskArguments, Void, String> {
 
-    private Context context;
-
+    String API = "http://api-tccpostaround.rhcloud.com/api";
+    private Activity context;
     private ProgressDialog mProgressDialog;
-    int progress;
 
-    public GetResponseAsync(Context c) {
+    public GetResponseAsync(Activity c) {
         this.context = c;
 
-        // mProgressDialog = new ProgressDialog(context);
-        // mProgressDialog.setIndeterminate(true);
+        mProgressDialog = new ProgressDialog(c);
+        mProgressDialog.setIndeterminate(true);
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        // mProgressDialog =ProgressDialog.show(context, "", "Criando o post...");
+        mProgressDialog =ProgressDialog.show(context, "", "Criando o post...\nPor favor aguarde!");
     }
 
     @Override
@@ -53,7 +54,7 @@ public class GetResponseAsync extends AsyncTask<AsyncTaskArguments, Void, String
     protected String doInBackground(AsyncTaskArguments... params) {
 
         Post post = params[0].getAsyncTaskPost();
-        String imagePath = params[0].getAsyncTaskImagePath();
+        final String imagePath = params[0].getAsyncTaskImagePath();
 
         Map config = new HashMap();
         config.put("cloud_name", "dfnoff8kl");
@@ -66,27 +67,32 @@ public class GetResponseAsync extends AsyncTask<AsyncTaskArguments, Void, String
         try {
             Map result = cloudinary.uploader().upload(imagePath, config);
             String urlResult = result.get("url").toString();
-            Boolean error = false;
+            post.setImage_url(urlResult);
 
             RestAdapter retrofit = new RestAdapter.Builder()
-                        .setEndpoint("http://api-tccpostaround.rhcloud.com/api")
+                        .setEndpoint(API)
                         .build();
 
-                RestAPI restAPI = retrofit.create(RestAPI.class);
+            RestAPI restAPI = retrofit.create(RestAPI.class);
 
-                restAPI.postPost(post, new Callback<PostPostRes>() {
-                    @Override
-                    public void success(PostPostRes post, Response response) {
-                        if (post != null) {
-                            Log.v("res:", "" + post.getMessage());
-                        }
-                    }
+            restAPI.postPost(post, new Callback<PostPostRes>() {
+                @Override
+                public void success(PostPostRes post, Response response) {
+                    Log.v("ASYNC SUCCESS:", "" + response.toString());
 
-                    @Override
-                    public void failure(RetrofitError error) {
-                        Log.v("Erro : ", error.getMessage());
+                    //File file = new File(imagePath);
+                    //file.delete();
+
+                    if (post != null) {
+                        Log.v("res:", "" + post.getMessage());
                     }
-                });
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.v("ASYNC ERROR : ", error.getMessage());
+                }
+            });
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -102,6 +108,6 @@ public class GetResponseAsync extends AsyncTask<AsyncTaskArguments, Void, String
         super.onPostExecute(result);
 
         Toast.makeText(context, result, Toast.LENGTH_LONG).show();
-        // mProgressDialog.dismiss();
+        mProgressDialog.dismiss();
     }
 }

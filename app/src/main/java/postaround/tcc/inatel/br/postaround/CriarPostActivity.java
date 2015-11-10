@@ -64,8 +64,9 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
     private EditText mDescription;
     private ImageButton mSendButton;
     private ImageButton mImageButton;
-    private CardView fotoCard;
     private ImageButton mImageButtonBack;
+    private CardView fotoCard;
+    private CardView postImageCard;
 
     private Location mLocation;
 
@@ -76,19 +77,22 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
     private Uri mImageUri;
     private ImageView mImgViewPic;
 
-    GetResponseAsync asyncTask = new GetResponseAsync(this);
+    private GetResponseAsync asyncTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_criar_post);
 
+        asyncTask = new GetResponseAsync(this);
+
         mDescription = (EditText) findViewById(R.id.description);
         mSendButton = (ImageButton) findViewById(R.id.send_button);
         mImageButton = (ImageButton) findViewById(R.id.imageButton);
         mImgViewPic = (ImageView) findViewById(R.id.postImage);
-        fotoCard = (CardView) findViewById(R.id.fotoCard);
         mImageButtonBack = (ImageButton) findViewById(R.id.menu_button);
+        fotoCard = (CardView) findViewById(R.id.fotoCard);
+        postImageCard = (CardView) findViewById(R.id.postImageCard);
 
         mImageButtonBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,28 +139,6 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
                 }
 
                 asyncTask.execute(new AsyncTaskArguments(path, post));
-
-                /*RestAdapter retrofit = new RestAdapter.Builder()
-                        .setEndpoint("http://api-tccpostaround.rhcloud.com/api")
-                        .build();
-
-                RestAPI restAPI = retrofit.create(RestAPI.class);
-
-                restAPI.postPost(post, new Callback<PostPostRes>() {
-                    @Override
-                    public void success(PostPostRes post, Response response) {
-                        Log.v("Resposta : ", response.getBody().toString());
-                        if (post != null) {
-                            Log.v("res:", "" + post.getMessage());
-                            closeActivity();
-                        }
-                    }
-
-                    @Override
-                    public void failure(RetrofitError error) {
-                        Log.v("Erro : ", error.getMessage());
-                    }
-                });*/
             }
         });
 
@@ -232,7 +214,7 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
         super.onActivityResult(requestCode, resultCode, data);
         Log.w("actResult", "-----------------------------");
         Log.w("actResult REQUEST CODE", requestCode + "");
-        Log.w("actResult RESULT CODE", resultCode+"");
+        Log.w("actResult RESULT CODE", resultCode + "");
         Log.w("actResult ok", this.RESULT_OK+"");
 
         if (resultCode == CAMERA_RESULT) {
@@ -254,7 +236,7 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
             Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
             photoPickerIntent.setType("image/*");
             startActivityForResult(photoPickerIntent, SELECT_PHOTO_REQUEST);
-        } else if(data != null) {
+        } else if(resultCode == this.RESULT_OK) {
             if (requestCode == CAMERA_PIC_REQUEST) {
                 try {
                     doCrop();
@@ -278,7 +260,7 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
                 mImageUri = data.getData();
                 mImgViewPic.setImageURI(mImageUri);
 
-                mImgViewPic.setVisibility(View.VISIBLE);
+                postImageCard.setVisibility(View.VISIBLE);
                 fotoCard.setVisibility(View.GONE);
             }
         }
@@ -311,11 +293,6 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
             intent.putExtra("scale", true);
             intent.putExtra("return-data", true);
 
-            /**
-             * There is posibility when more than one image cropper app exist,
-             * so we have to check for it first. If there is only one app, open
-             * then app.
-             */
             if (size == 1) {
                 Intent i = new Intent(intent);
                 ResolveInfo res = list.get(0);
@@ -325,10 +302,6 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
 
                 startActivityForResult(i, CROP_FROM_CAMERA);
             } else {
-                /**
-                 * If there are several app exist, create a custom chooser to
-                 * let user selects the app.
-                 */
                 for (ResolveInfo res : list) {
                     final CropImage co = new CropImage();
 
@@ -374,21 +347,6 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
 
                 AlertDialog alert = builder.create();
                 alert.show();
-            }
-        }
-    }
-
-    private void sendPictureToCloudnary(Uri imageUri) {
-        if (imageUri != null) {
-            try {
-                String path = getRealPathFromURI(imageUri);
-
-                //asyncTask.execute(path);
-                //new DownloadImageAsync(imgViewPic).execute(urlResult);
-
-                // Toast.makeText(this, urlResult, Toast.LENGTH_LONG).show();
-            } catch (Exception e) {
-                e.printStackTrace();
             }
         }
     }
