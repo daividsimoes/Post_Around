@@ -38,15 +38,13 @@ public class GetResponseAsync extends AsyncTask<String, Void, String> {
     public GetResponseAsync(Context c) {
         this.context = c;
 
-        mProgressDialog = new ProgressDialog(context);
-        mProgressDialog.setIndeterminate(true);
+
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
 
-        mProgressDialog =ProgressDialog.show(context, "", "Criando o post...");
     }
 
     @Override
@@ -85,6 +83,6 @@ public class GetResponseAsync extends AsyncTask<String, Void, String> {
         super.onPostExecute(result);
 
         Toast.makeText(context, result, Toast.LENGTH_LONG).show();
-        mProgressDialog.dismiss();
+
     }
 }

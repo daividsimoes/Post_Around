@@ -137,9 +137,9 @@ public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.
                         swipeView.setRefreshing(false);
                         locationManager.getmGoogleApiClient().disconnect();
                     } else {
-                        getFragmentManager().beginTransaction()
-                            .replace(R.id.container, new NenhumPostEncontradoFragment())
-                            .commit();
+//                        getFragmentManager().beginTransaction()
+//                            .replace(R.id.container, new NenhumPostEncontradoFragment())
+//                            .commit();
                     }
                 }
 

@@ -35,6 +35,7 @@ import postaround.tcc.inatel.br.model.PostUserRes;
 import postaround.tcc.inatel.br.model.User;
 import postaround.tcc.inatel.br.postaround.BuildConfig;
 
+import postaround.tcc.inatel.br.postaround.LoginActivity;
 import postaround.tcc.inatel.br.postaround.NavigationActivity;
 import postaround.tcc.inatel.br.postaround.R;
 import retrofit.Callback;

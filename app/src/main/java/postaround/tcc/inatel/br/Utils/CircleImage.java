@@ -31,7 +31,7 @@ public class CircleImage implements Transformation {
             source.recycle();
         }
 
-        Bitmap bitmap = Bitmap.createBitmap(size, size, config);
+        Bitmap bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_4444 );
 
         Canvas canvas = new Canvas(bitmap);
         Paint paint = new Paint();
