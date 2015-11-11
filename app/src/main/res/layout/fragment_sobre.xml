@@ -8,7 +8,17 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingTop="100dp">
+
+
+        <ImageView
+            android:layout_height="300dp"
+            android:layout_width="wrap_content"
+            android:src="@drawable/logo_about"
+            android:layout_gravity="center"
+            />
+
 
         <TextView
             android:paddingTop="10dp"
@@ -16,16 +26,11 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:gravity="center_horizontal"
-            android:text="@string/versao_post_around" />
+            android:text="@string/versao_post_around"
+            android:textColor="#979797"/>
 
-        <TextView
-            android:paddingTop="20dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/sobre_post_around" />
+
+
 
     </LinearLayout>
 

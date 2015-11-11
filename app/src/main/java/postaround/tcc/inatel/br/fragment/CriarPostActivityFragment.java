@@ -116,6 +116,7 @@ public class CriarPostActivityFragment extends Fragment implements GoogleApiClie
 
                 post.setDescription(description);
                 post.setUser_id(UserInformation.user_id);
+                post.setUser_name(UserInformation.user_name);
                 loc.setCoordinates(list);
                 loc.setType("Point");
                 post.setLoc(loc);
