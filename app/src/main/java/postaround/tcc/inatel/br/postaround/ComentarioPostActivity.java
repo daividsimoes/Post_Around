@@ -33,14 +33,11 @@ public class ComentarioPostActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(layoutManager);
 
-        CollapsingToolbarLayout collapsingToolbar =
-                (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbar.setTitle("PostAí");
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
+//        setSupportActionBar(toolbar);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
 
         loadBackdrop();
 
@@ -52,8 +49,8 @@ public class ComentarioPostActivity extends AppCompatActivity {
     }
 
     private void loadBackdrop() {
-        final ImageView imageView = (ImageView) findViewById(R.id.backdrop);
-        Picasso.with(this).load(R.drawable.tcc).into(imageView);
+        //final ImageView imageView = (ImageView) findViewById(R.id.backdrop);
+       // Picasso.with(this).load(R.drawable.tcc).into(imageView);
     }
 
 
