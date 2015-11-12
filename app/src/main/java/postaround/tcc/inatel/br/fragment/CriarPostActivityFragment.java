@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import postaround.tcc.inatel.br.Util.UserInformation;
+import postaround.tcc.inatel.br.Utils.UserInformation;
 import postaround.tcc.inatel.br.interfaces.RestAPI;
 import postaround.tcc.inatel.br.model.Loc;
 import postaround.tcc.inatel.br.model.Post;

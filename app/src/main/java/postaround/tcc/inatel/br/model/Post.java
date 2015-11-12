@@ -1,6 +1,6 @@
 package postaround.tcc.inatel.br.model;
 
-import postaround.tcc.inatel.br.Util.UserInformation;
+import postaround.tcc.inatel.br.Utils.UserInformation;
 
 /**
  * Created by Paulo on 07/09/2015.

@@ -15,22 +15,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import postaround.tcc.inatel.br.Util.LocationManager;
-import postaround.tcc.inatel.br.adapter.MeuPostAdapter;
+import postaround.tcc.inatel.br.Utils.LocationManager;
 import postaround.tcc.inatel.br.adapter.PostAoRedorAdapter;
 import postaround.tcc.inatel.br.interfaces.LocationObserver;
 import postaround.tcc.inatel.br.interfaces.RestAPI;
-import postaround.tcc.inatel.br.model.MeuPost;
 import postaround.tcc.inatel.br.model.Post;
 import postaround.tcc.inatel.br.postaround.ComentarioPostActivity;
 import postaround.tcc.inatel.br.postaround.CriarPostActivity;

@@ -1,4 +1,4 @@
-package postaround.tcc.inatel.br.postaround;
+package postaround.tcc.inatel.br.async;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
