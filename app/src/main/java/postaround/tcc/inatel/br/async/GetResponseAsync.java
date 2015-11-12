@@ -30,6 +30,7 @@ public class GetResponseAsync extends AsyncTask<AsyncTaskArguments, Void, String
     String API = "http://api-tccpostaround.rhcloud.com/api";
     private Activity context;
     private ProgressDialog mProgressDialog;
+    private Boolean postCreated = false;
 
     public GetResponseAsync(Activity c) {
         this.context = c;
@@ -65,8 +66,14 @@ public class GetResponseAsync extends AsyncTask<AsyncTaskArguments, Void, String
         Cloudinary cloudinary = new Cloudinary(config);
 
         try {
-            Map result = cloudinary.uploader().upload(imagePath, config);
-            String urlResult = result.get("url").toString();
+            Map result = null;
+            String urlResult = null;
+            if(imagePath != null) {
+                result = cloudinary.uploader().upload(imagePath, config);
+                urlResult = result.get("url").toString();
+            }else {
+                urlResult = " ";
+            }
             post.setImage_url(urlResult);
 
             RestAdapter retrofit = new RestAdapter.Builder()
@@ -79,7 +86,7 @@ public class GetResponseAsync extends AsyncTask<AsyncTaskArguments, Void, String
                 @Override
                 public void success(PostPostRes post, Response response) {
                     Log.v("ASYNC SUCCESS:", "" + response.toString());
-
+                    postCreated = true;
                     //File file = new File(imagePath);
                     //file.delete();
 
@@ -106,8 +113,11 @@ public class GetResponseAsync extends AsyncTask<AsyncTaskArguments, Void, String
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
-
-        Toast.makeText(context, result, Toast.LENGTH_LONG).show();
-        mProgressDialog.dismiss();
-    }
+        if(postCreated){
+            context.finish();
+        }else {
+            Toast.makeText(context, "Problema ao tentar criar um Post.", Toast.LENGTH_LONG).show();
+            mProgressDialog.dismiss();
+        }
+        }
 }

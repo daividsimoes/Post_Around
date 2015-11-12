@@ -91,11 +91,11 @@ public class CriarPostActivityFragment extends Fragment implements GoogleApiClie
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_criar_post, container, false);
-
-        titulo = (EditText) view.findViewById(R.id.editText_criar_descricao_post);
-        descricao = (EditText) view.findViewById(R.id.editText_criar_comentario_post);
-        botao = (ImageButton) view.findViewById(R.id.button_add_post);
+        View view = inflater.inflate(R.layout.activity_criar_post, container, false);
+//
+//        titulo = (EditText) view.findViewById(R.id.editText_criar_descricao_post);
+//        descricao = (EditText) view.findViewById(R.id.editText_criar_comentario_post);
+//        botao = (ImageButton) view.findViewById(R.id.button_add_post);
 
         botao.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,9 +147,9 @@ public class CriarPostActivityFragment extends Fragment implements GoogleApiClie
             }
         });
 
-        imgViewPic = (ImageView) view.findViewById(R.id.imgViewPic);
+        //imgViewPic = (ImageView) view.findViewById(R.id.imgViewPic);
 
-        btnTakePic = (Button) view.findViewById(R.id.btnTakePic);
+      //  btnTakePic = (Button) view.findViewById(R.id.btnTakePic);
         btnTakePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -170,7 +170,7 @@ public class CriarPostActivityFragment extends Fragment implements GoogleApiClie
             }
         });
 
-        btnChosePic = (Button) view.findViewById(R.id.btnGetPicFromFile);
+      //  btnChosePic = (Button) view.findViewById(R.id.btnGetPicFromFile);
         btnChosePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -180,29 +180,29 @@ public class CriarPostActivityFragment extends Fragment implements GoogleApiClie
             }
         });
 
-        btnSend = (Button) view.findViewById(R.id.btnSend);
-        btnSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (imageUri != null)
-                {
-                    try {
-                        String path = getRealPathFromURI(imageUri);
-
-                        String urlResult = asyncTask.execute(path).get();
-                        //new DownloadImageAsync(imgViewPic).execute(urlResult);
-
-                        Toast t = Toast.makeText(getActivity(), urlResult, Toast.LENGTH_LONG);
-                        t.show();
-                    }
-                    catch (Exception ex)
-                    {
-                        Toast t = Toast.makeText(getActivity(), "Falha ao carregar imagem.", Toast.LENGTH_LONG);
-                        t.show();
-                    }
-                }
-            }
-        });
+       // btnSend = (Button) view.findViewById(R.id.btnSend);
+//      //  btnSend.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (imageUri != null)
+//                {
+//                    try {
+//                        String path = getRealPathFromURI(imageUri);
+//
+//                        String urlResult = asyncTask.execute(path).get();
+//                        //new DownloadImageAsync(imgViewPic).execute(urlResult);
+//
+//                        Toast t = Toast.makeText(getActivity(), urlResult, Toast.LENGTH_LONG);
+//                        t.show();
+//                    }
+//                    catch (Exception ex)
+//                    {
+//                        Toast t = Toast.makeText(getActivity(), "Falha ao carregar imagem.", Toast.LENGTH_LONG);
+//                        t.show();
+//                    }
+//                }
+//            }
+//        });
 
         if(dispositivoPossuiCamera())
             btnTakePic.setVisibility(view.VISIBLE);
