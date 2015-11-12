@@ -118,6 +118,7 @@ public class SairFragment extends Fragment {
         editor.putString("apikey","");
         editor.putString("userid","");
         editor.putString("username","");
+        editor.putBoolean("firstlogin",true);
         editor.commit();
     }
 

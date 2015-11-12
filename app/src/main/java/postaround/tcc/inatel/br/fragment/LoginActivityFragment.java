@@ -49,7 +49,8 @@ public class LoginActivityFragment extends Fragment {
 
     private Context contexto;
 
-    private boolean isLoggedIn;
+    public static String userName;
+    public static String userID;
 
     private CallbackManager mCallbackManager;
     private FacebookCallback<LoginResult> mFacebookCallback = new FacebookCallback<LoginResult>() {
@@ -84,6 +85,9 @@ public class LoginActivityFragment extends Fragment {
                                 Log.e("ID",String.valueOf(loginModel.getId()));
                                 Log.e("Access Token",loginModel.getAccessToken());
                                 Log.e("Nome", loginModel.getName());
+
+                                userName = loginModel.getName();
+                                userID = String.valueOf(loginModel.getId());
 
                                 RestAdapter retrofit = new RestAdapter.Builder()
                                         .setEndpoint("http://api-tccpostaround.rhcloud.com/api").setLogLevel(RestAdapter.LogLevel.FULL)
