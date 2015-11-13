@@ -10,9 +10,18 @@ public class Post {
     private String _id;
     private String description;
     private String user_id;
+    private String user_name;
     private String image_url;
     private Integer __v;
     private Loc loc;
+
+    public String getUser_name() {
+        return user_name;
+    }
+
+    public void setUser_name(String user_name) {
+        this.user_name = user_name;
+    }
 
     private String api_key = UserInformation.api_key;
 

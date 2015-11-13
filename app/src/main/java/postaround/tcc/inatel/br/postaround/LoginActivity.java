@@ -12,6 +12,7 @@ import com.facebook.FacebookSdk;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private boolean firstLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,11 +51,18 @@ public class LoginActivity extends AppCompatActivity {
 
     private void loginStatus() {
         SharedPreferences prefs = this.getSharedPreferences("loginpreferences", this.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
         String login = prefs.getString("apikey", "");
         if (login.equals("")) {
+            firstLogin = true;
+            editor.putBoolean("firstlogin",firstLogin);
+            editor.commit();
             Log.d("TAG", ">>>" + "Signed Out");
             setContentView(R.layout.activity_login);
         } else {
+            firstLogin = false;
+            editor.putBoolean("firstlogin",firstLogin);
+            editor.commit();
             Log.d("TAG", ">>>" + "Signed In");
             Intent intent = new Intent(this, NavigationActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);

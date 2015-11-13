@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -21,7 +22,9 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import postaround.tcc.inatel.br.Utils.CircleImage;
 import postaround.tcc.inatel.br.fragment.ConfiguracaoFragment;
+import postaround.tcc.inatel.br.fragment.LoginActivityFragment;
 import postaround.tcc.inatel.br.fragment.MeusPostsFragment;
 import postaround.tcc.inatel.br.fragment.NavigationDrawerFragment;
 import postaround.tcc.inatel.br.fragment.PostAoRedorFragment;
@@ -40,6 +43,8 @@ public class NavigationActivity extends AppCompatActivity
 
     private String userId;
     private String userName;
+
+    private boolean firstLogin;
 
     private CharSequence mTitle;
 
@@ -75,12 +80,13 @@ public class NavigationActivity extends AppCompatActivity
         ImageView profilePicture = (ImageView) navigationView.findViewById(R.id.drawer_profile_image);
         TextView userNameText = (TextView) navigationView.findViewById(R.id.drawer_username);
 
-        userNameText.setText(userName);
-
-        Picasso.with(this).load("https://graph.facebook.com/" + userId + "/picture?type=large")
-                //.transform(new CircleImage())
-                .into(profilePicture);
-
+        if (firstLogin) {
+            userNameText.setText(LoginActivityFragment.userName);
+            Picasso.with(this).load("https://graph.facebook.com/" + LoginActivityFragment.userID + "/picture?type=large").transform(new CircleImage()).into(profilePicture);
+        }else {
+            userNameText.setText(userName);
+            Picasso.with(this).load("https://graph.facebook.com/" + userId + "/picture?type=large").transform(new CircleImage()).into(profilePicture);
+        }
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -120,12 +126,6 @@ public class NavigationActivity extends AppCompatActivity
                 return false;
             }
         });
-
-        userNameText.setText(userName);
-
-        Picasso.with(this).load("https://graph.facebook.com/" + userId + "/picture?type=large")
-                //.transform(new CircleImage())
-                .into(profilePicture);
 
 
     }
@@ -242,16 +242,20 @@ public class NavigationActivity extends AppCompatActivity
 
     @Override
     public void onDestroy(){
-        userId = "";
-        userName = "";
         super.onDestroy();
-
+        firstLogin = false;
+        SharedPreferences prefs = this.getSharedPreferences("loginpreferences", this.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean("firstlogin",firstLogin);
+        editor.commit();
     }
 
     private void getUserInfo() {
         SharedPreferences prefs = this.getSharedPreferences("loginpreferences", this.MODE_PRIVATE);
         userId = prefs.getString("userid","");
         userName = prefs.getString("username","");
+        firstLogin = prefs.getBoolean("firstlogin",false);
+        Log.e("FIRST_LOGIN", firstLogin+"");
     }
 
 }
