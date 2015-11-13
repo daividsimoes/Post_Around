@@ -7,12 +7,6 @@ public class AsyncTaskArguments {
 
     private Post atPost;
     private String atImagePath;
-
-    public AsyncTaskArguments(String imagePath, Post post) {
-        this.atImagePath = imagePath;
-        this.atPost = post;
-    }
-
     public Post getAsyncTaskPost() {
         return atPost;
     }
