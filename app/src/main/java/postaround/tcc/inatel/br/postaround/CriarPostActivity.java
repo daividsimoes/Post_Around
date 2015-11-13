@@ -138,7 +138,7 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
                     }
                 }
 
-                asyncTask.execute(new AsyncTaskArguments(path, post));
+                asyncTask.execute(new AsyncTaskArguments());
             }
         });
 

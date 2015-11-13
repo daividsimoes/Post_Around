@@ -17,13 +17,13 @@
 
 
         <TextView
+            android:textColor="@color/orange"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/notificacao" />
 
         <View
-            android:layout_marginTop="10dp"
             android:id="@+id/divisor1"
             android:layout_width="fill_parent"
             android:layout_height="2dip"
@@ -35,47 +35,33 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
-            <LinearLayout
-                android:orientation="horizontal"
+            <RadioGroup
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
+                android:layout_height="wrap_content">
+                <RadioButton
+                    android:textColor="@color/orange"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/novos_posts_ao_redor" />
-                <Switch
-                    android:paddingTop="20dp"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:id="@+id/switch_novo_post_retor"
+                    android:text="@string/raio_um"
+                    android:id="@+id/raio_um"
                     android:checked="true"/>
-            </LinearLayout>
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                <RadioButton
+                    android:id="@+id/raio_dois"
+                    android:textColor="@color/orange"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/raio_dois"/>
+                <RadioButton
+                    android:textColor="@color/orange"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/raio_tres"
+                    android:id="@+id/raio_tres" />
+            </RadioGroup>
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/novos_comentarios" />
-                <Switch
-                    android:paddingTop="20dp"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:id="@+id/switch_novos_comentarios"
-                    android:checked="true"/>
-            </LinearLayout>
         </LinearLayout>
-
         <TextView
+            android:textColor="@color/orange"
             android:paddingTop="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -83,7 +69,6 @@
             android:text="@string/conta" />
 
         <View
-            android:layout_marginTop="10dp"
             android:id="@+id/divisor2"
             android:layout_width="fill_parent"
             android:layout_height="2dip"
