@@ -8,6 +8,7 @@ import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,8 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 
 import com.facebook.FacebookSdk;
@@ -43,8 +46,20 @@ public class SairFragment extends Fragment {
         FacebookSdk.sdkInitialize(this.getActivity());
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
 
-        alert.setTitle("Sair");
-        alert.setMessage("Deseja sair?");
+        final Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "fonts/WalkwaySemiBold.ttf");
+
+        TextView title = new TextView(getActivity());
+        title.setText("Sair");
+        title.setTextSize(50);
+        title.setTypeface(tf);
+
+        TextView content = new TextView(getActivity());
+        content.setText("Deseja sair?");
+        title.setTextSize(17);
+        content.setTypeface(tf);
+
+        alert.setCustomTitle(title);
+        alert.setView(content);
         alert.setCancelable(false);
         alert.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
             @Override
@@ -64,6 +79,8 @@ public class SairFragment extends Fragment {
             }
 
         });
+
+        final AlertDialog alertdialog = alert.create();
         alert.show();
 
     }

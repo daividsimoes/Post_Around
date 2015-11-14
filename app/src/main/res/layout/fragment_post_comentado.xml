@@ -33,7 +33,7 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"/>
 
-            <TextView
+            <postaround.tcc.inatel.br.Utils.PostAiTextView
                 android:id="@+id/textView_post_comentado_nome"
                 android:maxLength="100"
                 android:text="José da Silva Sauro"
@@ -54,7 +54,7 @@
             android:orientation="vertical"
             android:paddingLeft="@dimen/activity_horizontal_margin">
 
-            <TextView
+            <postaround.tcc.inatel.br.Utils.PostAiTextView
                 android:id="@+id/textView_post_comentado_comentario"
                 android:maxLength="100"
                 android:text="Comentário do criador do Post que não sei quantos caracteres podem ter"

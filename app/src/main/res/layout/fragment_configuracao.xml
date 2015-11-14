@@ -16,7 +16,7 @@
         android:paddingRight="20dp">
 
 
-        <TextView
+        <postaround.tcc.inatel.br.Utils.PostAiTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -40,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
 
-                <TextView
+                <postaround.tcc.inatel.br.Utils.PostAiTextView
                     android:layout_width="0dp"
                     android:layout_weight="2"
                     android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
 
-                <TextView
+                <postaround.tcc.inatel.br.Utils.PostAiTextView
                     android:layout_width="0dp"
                     android:layout_weight="2"
                     android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
             </LinearLayout>
         </LinearLayout>
 
-        <TextView
+        <postaround.tcc.inatel.br.Utils.PostAiTextView
             android:paddingTop="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

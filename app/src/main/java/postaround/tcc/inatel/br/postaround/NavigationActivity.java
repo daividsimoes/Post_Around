@@ -3,16 +3,21 @@ package postaround.tcc.inatel.br.postaround;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
@@ -23,6 +28,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import postaround.tcc.inatel.br.Utils.CircleImage;
+import postaround.tcc.inatel.br.Utils.CustomTypefaceSpan;
 import postaround.tcc.inatel.br.fragment.ConfiguracaoFragment;
 import postaround.tcc.inatel.br.fragment.LoginActivityFragment;
 import postaround.tcc.inatel.br.fragment.MeusPostsFragment;
@@ -80,6 +86,24 @@ public class NavigationActivity extends AppCompatActivity
         ImageView profilePicture = (ImageView) navigationView.findViewById(R.id.drawer_profile_image);
         TextView userNameText = (TextView) navigationView.findViewById(R.id.drawer_username);
 
+        Menu m = navigationView.getMenu();
+        for (int i=0;i<m.size();i++) {
+            MenuItem mi = m.getItem(i);
+
+            //for aapplying a font to subMenu ...
+            SubMenu subMenu = mi.getSubMenu();
+            if (subMenu != null && subMenu.size() > 0) {
+                for (int j = 0; j < subMenu.size(); j++) {
+                    MenuItem subMenuItem = subMenu.getItem(j);
+                    applyFontToMenuItem(subMenuItem);
+                }
+            }
+
+            //the method we have create in activity
+            applyFontToMenuItem(mi);
+        }
+
+
         if (firstLogin) {
             userNameText.setText(LoginActivityFragment.userName);
             Picasso.with(this).load("https://graph.facebook.com/" + LoginActivityFragment.userID + "/picture?type=large").transform(new CircleImage()).into(profilePicture);
@@ -129,6 +153,19 @@ public class NavigationActivity extends AppCompatActivity
 
 
     }
+
+
+
+
+    private void applyFontToMenuItem(MenuItem mi) {
+        Typeface font = Typeface.createFromAsset(getAssets(), "fonts/WalkwaySemiBold.ttf");
+        SpannableString mNewTitle = new SpannableString(mi.getTitle());
+        mNewTitle.setSpan(new CustomTypefaceSpan("", font), 0, mNewTitle.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        mi.setTitle(mNewTitle);
+    }
+
+
+
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {

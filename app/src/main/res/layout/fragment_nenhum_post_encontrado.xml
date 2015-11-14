@@ -22,7 +22,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="20dp" />
 
-        <TextView
+        <postaround.tcc.inatel.br.Utils.PostAiTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/nenhum_post_encontrado"
@@ -30,7 +30,7 @@
             android:paddingTop="10dp"
             android:layout_gravity="center" />
 
-        <TextView
+        <postaround.tcc.inatel.br.Utils.PostAiTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/compartilhe_facebook"
@@ -38,7 +38,7 @@
             android:paddingTop="10dp"
             android:layout_gravity="center" />
 
-        <TextView
+        <postaround.tcc.inatel.br.Utils.PostAiTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/crie_novo_post"

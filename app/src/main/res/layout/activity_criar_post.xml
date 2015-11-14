@@ -10,16 +10,16 @@
         android:id="@+id/my_awesome_toolbar"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:background="#FF9800"
+        android:background="@color/ff_orange"
        >
         <ImageButton
             android:id="@+id/menu_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_arrow_back_white_24dp"
-            android:background="#FF9800"/>
+            android:background="@color/ff_orange"/>
 
-        <TextView
+        <postaround.tcc.inatel.br.Utils.PostAiTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="PostAí"
@@ -35,7 +35,7 @@
             android:layout_gravity="right"
             android:paddingRight="10dp"
             android:src="@drawable/ic_send_white_36dp"
-            android:background="#FF9800"/>
+            android:background="@color/ff_orange"/>
 
     </android.support.v7.widget.Toolbar>
 
@@ -99,7 +99,7 @@
             android:padding="6dp"
             >
 
-        <EditText
+        <postaround.tcc.inatel.br.Utils.PostAiEditText
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
