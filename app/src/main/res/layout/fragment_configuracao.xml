@@ -16,7 +16,7 @@
         android:paddingRight="20dp">
 
 
-        <TextView
+        <postaround.tcc.inatel.br.Utils.PostAiTextView
             android:textColor="@color/orange"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -38,20 +38,20 @@
             <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <RadioButton
+                <postaround.tcc.inatel.br.Utils.PostAiRadioButton
                     android:textColor="@color/orange"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/raio_um"
                     android:id="@+id/raio_um"
                     android:checked="true"/>
-                <RadioButton
+                <postaround.tcc.inatel.br.Utils.PostAiRadioButton
                     android:id="@+id/raio_dois"
                     android:textColor="@color/orange"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/raio_dois"/>
-                <RadioButton
+                <postaround.tcc.inatel.br.Utils.PostAiRadioButton
                     android:textColor="@color/orange"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
             </RadioGroup>
 
         </LinearLayout>
-        <TextView
+        <postaround.tcc.inatel.br.Utils.PostAiTextView
             android:textColor="@color/orange"
             android:paddingTop="30dp"
             android:layout_width="wrap_content"
@@ -74,7 +74,7 @@
             android:layout_height="2dip"
             android:background="@color/orange" />
 
-        <Button
+        <postaround.tcc.inatel.br.Utils.PostAiButton
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

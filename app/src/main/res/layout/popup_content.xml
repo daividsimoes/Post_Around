@@ -20,10 +20,10 @@
 
         <postaround.tcc.inatel.br.Utils.PostAiTextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="25dp"
             android:text="Câmera"
             android:padding="2dp"
-            android:textSize="15sp"
+            android:textSize="17sp"
             android:layout_centerVertical="true"
             />
     </RelativeLayout>
@@ -39,10 +39,10 @@
         android:paddingTop="8dp">
         <postaround.tcc.inatel.br.Utils.PostAiTextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Albúm"
+            android:layout_height="25dp"
+            android:text="Galeria"
             android:padding="2dp"
             android:layout_centerVertical="true"
-            android:textSize="15sp"/>
+            android:textSize="17sp"/>
     </RelativeLayout>
 </LinearLayout>
