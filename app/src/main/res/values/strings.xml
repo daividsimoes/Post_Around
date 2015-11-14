@@ -20,8 +20,8 @@
     <string name="versao_post_around">PostAí - Versão 1.0</string>
     <string name="sobre_post_around">EXPLICAÇÃO SOBRE PostAí AQUI</string>
 
-    <string name="notificacao">Notificações</string>
-    <string name="conta">Conta</string>
+    <string name="notificacao">RAIO</string>
+    <string name="conta">CONTA</string>
 
     <string name="novos_posts_ao_redor">Novos Posts ao redor</string>
     <string name="novos_comentarios">Novos comentários</string>
@@ -61,5 +61,9 @@
     the big cheese.</string>
     <string name="checkin">Checkin</string>
     <string name="menu_settings">Settings</string>
+
+    <string name="raio_um">300 m</string>
+    <string name="raio_dois">1 Km</string>
+    <string name="raio_tres">2 Km</string>
 
 </resources>

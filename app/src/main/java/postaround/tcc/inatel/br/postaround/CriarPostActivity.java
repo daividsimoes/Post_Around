@@ -39,7 +39,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import postaround.tcc.inatel.br.Utils.PostAiEditText;
 import postaround.tcc.inatel.br.Utils.UserInformation;
 import postaround.tcc.inatel.br.adapter.CropImageAdapter;
 import postaround.tcc.inatel.br.async.GetResponseAsync;
@@ -62,7 +61,7 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
     private static final int SELECT_PHOTO_REQUEST = 4;
     private static final int CROP_FROM_CAMERA = 5;
 
-    private PostAiEditText mDescription;
+    private EditText mDescription;
     private ImageButton mSendButton;
     private ImageButton mImageButton;
     private ImageButton mImageButtonBack;
@@ -87,7 +86,7 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
 
         asyncTask = new GetResponseAsync(this);
 
-        mDescription = (PostAiEditText) findViewById(R.id.description);
+        mDescription = (EditText) findViewById(R.id.description);
         mSendButton = (ImageButton) findViewById(R.id.send_button);
         mImageButton = (ImageButton) findViewById(R.id.imageButton);
         mImgViewPic = (ImageView) findViewById(R.id.postImage);
@@ -139,7 +138,7 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
                     }
                 }
 
-                //asyncTask.execute(new AsyncTaskArguments(path, post));
+                asyncTask.execute(new AsyncTaskArguments());
             }
         });
 
