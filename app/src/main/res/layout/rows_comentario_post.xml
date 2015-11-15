@@ -17,7 +17,7 @@
         android:padding="10dp"
         android:layout_marginBottom="10dp">
 
-        <TextView
+        <postaround.tcc.inatel.br.Utils.PostAiTextView
             android:text="Comentário do post"
             android:textSize="18sp"
             android:maxLength="100"
@@ -40,7 +40,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"/>
 
-            <TextView
+            <postaround.tcc.inatel.br.Utils.PostAiTextView
                 android:text="Nome"
                 android:textSize="15sp"
                 android:maxLength="18"

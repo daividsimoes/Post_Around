@@ -1,30 +1,27 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-<group android:checkableBehavior="single">
-    <item
-        android:id="@+id/posts_ao_redor"
-        android:checked="true"
-        android:icon="@drawable/ic_place_black_48dp"
-        android:title="Posts ao redor"/>
-    <item
-        android:id="@+id/meus_posts"
-        android:icon="@drawable/ic_person_pin_black_48dp"
-        android:title="Meus posts"/>
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/posts_ao_redor"
+            android:checked="true"
+            android:icon="@drawable/ic_place_black_48dp"
+            android:title="Posts ao redor" />
+        <item
+            android:id="@+id/meus_posts"
+            android:icon="@drawable/ic_person_pin_black_48dp"
+            android:title="Meus posts"/>
 
-    <item
-        android:id="@+id/configuracao"
-        android:icon="@drawable/ic_settings_black_48dp"
-        android:title="Configurações"
-        ></item>
-    <item
-        android:id="@+id/sobre"
-        android:icon="@drawable/ic_info_black_48dp"
-        android:title="Sobre"
-        ></item>
+        <item
+            android:id="@+id/configuracao"
+            android:icon="@drawable/ic_settings_black_48dp"
+            android:title="Configurações" />
+        <item
+            android:id="@+id/sobre"
+            android:icon="@drawable/ic_info_black_48dp"
+            android:title="Sobre" />
 
-    <item
-        android:id="@+id/sair"
-        android:icon="@drawable/ic_exit_to_app_black_48dp"
-        android:title="Sair"
-        ></item>
-</group>
+        <item
+            android:id="@+id/sair"
+            android:icon="@drawable/ic_exit_to_app_black_48dp"
+            android:title="Sair" />
+    </group>
 </menu>

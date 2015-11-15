@@ -83,7 +83,7 @@
                 android:paddingBottom="8dp"
                 android:orientation="horizontal">
 
-                <TextView
+                <postaround.tcc.inatel.br.Utils.PostAiTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="21 curtidas"
@@ -100,13 +100,13 @@
                         android:src="@drawable/ic_thumb_up_black_18dp"
                         />
 
-                    <TextView
+                    <postaround.tcc.inatel.br.Utils.PostAiTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Curtir"
                         android:paddingLeft="5dp"/>
                 </LinearLayout>
-                <TextView
+                <postaround.tcc.inatel.br.Utils.PostAiTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="3 comentários"
