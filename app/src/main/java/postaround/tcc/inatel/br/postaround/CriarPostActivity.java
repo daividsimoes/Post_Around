@@ -129,6 +129,7 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
                 loc.setType("Point");
                 post.setLoc(loc);
 
+
                 String path = null;
                 if (mImageUri != null) {
                     try {
@@ -137,8 +138,8 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
                         e.printStackTrace();
                     }
                 }
-
-                asyncTask.execute(new AsyncTaskArguments());
+                post.setImage_url(path);
+                asyncTask.execute(post);
             }
         });
 
@@ -239,7 +240,12 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
         } else if(resultCode == this.RESULT_OK) {
             if (requestCode == CAMERA_PIC_REQUEST) {
                 try {
-                    doCrop();
+                    mImageUri = data.getData();
+                    mImgViewPic.setImageURI(mImageUri);
+                    postImageCard.setVisibility(View.VISIBLE);
+                    mImgViewPic.setVisibility(View.VISIBLE);
+
+                  //  doCrop();
                 } catch (Exception e) {
                     e.printStackTrace();
 
@@ -249,7 +255,11 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
             } else if (requestCode == SELECT_PHOTO_REQUEST) {
                 try {
                     mImageUri = data.getData();
-                    doCrop();
+                    mImgViewPic.setImageURI(mImageUri);
+                    postImageCard.setVisibility(View.VISIBLE);
+                    mImgViewPic.setVisibility(View.VISIBLE);
+                    fotoCard.setVisibility(View.GONE);
+                    //doCrop();
                 } catch (Exception e) {
                     e.printStackTrace();
 
@@ -262,7 +272,7 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
 
                 postImageCard.setVisibility(View.VISIBLE);
                 fotoCard.setVisibility(View.GONE);
-            }
+        }
         }
     }
 

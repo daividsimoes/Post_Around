@@ -9,10 +9,7 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-import postaround.tcc.inatel.br.adapter.ComentarioPostAdapter;
-import postaround.tcc.inatel.br.adapter.MeuPostAdapter;
 import postaround.tcc.inatel.br.model.MeuPost;
-import postaround.tcc.inatel.br.model.Post;
 import postaround.tcc.inatel.br.postaround.R;
 
 /**
@@ -35,7 +32,7 @@ public class ComentarioPostFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_comentario_post, container, false);
         listView = (ListView) view.findViewById(R.id.listView_comentario_post);
         postList = populaLista();
-        listView.setAdapter(new ComentarioPostAdapter(this.getActivity(), postList));
+
 
         return view;
     }

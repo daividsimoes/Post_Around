@@ -124,7 +124,7 @@ public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.
         if (mLastLocation != null) {
             String longitude = String.valueOf(mLastLocation.getLongitude());
             String latitude = String.valueOf(mLastLocation.getLatitude());
-            String maxDis = "100"; // TODO Get from Config
+            String maxDis = "500"; // TODO Get from Config
 
             RestAdapter retrofit = new RestAdapter.Builder()
                     .setEndpoint(API)

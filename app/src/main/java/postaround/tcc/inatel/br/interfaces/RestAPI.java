@@ -2,6 +2,7 @@ package postaround.tcc.inatel.br.interfaces;
 
 import java.util.List;
 
+import postaround.tcc.inatel.br.model.Comment;
 import postaround.tcc.inatel.br.model.Post;
 import postaround.tcc.inatel.br.model.PostPostRes;
 import postaround.tcc.inatel.br.model.PostUserRes;
@@ -26,5 +27,8 @@ public interface RestAPI {
 
     @POST("/posts/")
     public void postPost(@Body Post post, Callback<PostPostRes> response);
+
+    @GET("/comments/post_id")
+    public void getComments(@Path("post_id") String post_id, Callback<List<Comment>> response);
 
 }

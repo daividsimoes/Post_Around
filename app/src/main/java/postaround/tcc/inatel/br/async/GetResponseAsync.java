@@ -25,12 +25,12 @@ import retrofit.client.Response;
 /**
  * Created by Carol on 13/09/2015.
  */
-public class GetResponseAsync extends AsyncTask<AsyncTaskArguments, Void, String> {
+public class GetResponseAsync extends AsyncTask<Post, Void, Post> {
 
     String API = "http://api-tccpostaround.rhcloud.com/api";
     private Activity context;
     private ProgressDialog mProgressDialog;
-    private Boolean postCreated = false;
+    private Boolean postCreated;
 
     public GetResponseAsync(Activity c) {
         this.context = c;
@@ -52,10 +52,10 @@ public class GetResponseAsync extends AsyncTask<AsyncTaskArguments, Void, String
     }
 
     @Override
-    protected String doInBackground(AsyncTaskArguments... params) {
+    protected Post doInBackground(Post... params) {
 
-        Post post = params[0].getAsyncTaskPost();
-        final String imagePath = params[0].getAsyncTaskImagePath();
+        Post post = params[0];
+       // final String imagePath = params[0].getAsyncTaskImagePath();
 
         Map config = new HashMap();
         config.put("cloud_name", "dfnoff8kl");
@@ -68,38 +68,16 @@ public class GetResponseAsync extends AsyncTask<AsyncTaskArguments, Void, String
         try {
             Map result = null;
             String urlResult = null;
-            if(imagePath != null) {
-                result = cloudinary.uploader().upload(imagePath, config);
-                urlResult = result.get("url").toString();
+            if(post.getImage_url() != null) {
+                result = cloudinary.uploader().upload(post.getImage_url(), config);
+               urlResult = result.get("url").toString();
             }else {
                 urlResult = " ";
-            }
+          }
             post.setImage_url(urlResult);
 
-            RestAdapter retrofit = new RestAdapter.Builder()
-                        .setEndpoint(API)
-                        .build();
 
-            RestAPI restAPI = retrofit.create(RestAPI.class);
 
-            restAPI.postPost(post, new Callback<PostPostRes>() {
-                @Override
-                public void success(PostPostRes post, Response response) {
-                    Log.v("ASYNC SUCCESS:", "" + response.toString());
-                    postCreated = true;
-                    //File file = new File(imagePath);
-                    //file.delete();
-
-                    if (post != null) {
-                        Log.v("res:", "" + post.getMessage());
-                    }
-                }
-
-                @Override
-                public void failure(RetrofitError error) {
-                    Log.v("ASYNC ERROR : ", error.getMessage());
-                }
-            });
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -107,17 +85,43 @@ public class GetResponseAsync extends AsyncTask<AsyncTaskArguments, Void, String
             return null;
         }
 
-        return null;
+        return post;
     }
 
     @Override
-    protected void onPostExecute(String result) {
-        super.onPostExecute(result);
-        if(postCreated){
-            context.finish();
-        }else {
-            Toast.makeText(context, "Problema ao tentar criar um Post.", Toast.LENGTH_LONG).show();
-            mProgressDialog.dismiss();
+    protected void onPostExecute(Post post) {
+        super.onPostExecute(post);
+        if(post != null) {
+            RestAdapter retrofit = new RestAdapter.Builder()
+                    .setEndpoint(API)
+                    .build();
+
+            RestAPI restAPI = retrofit.create(RestAPI.class);
+
+
+            restAPI.postPost(post, new Callback<PostPostRes>() {
+                @Override
+                public void success(PostPostRes post, Response response) {
+                    Log.v("ASYNC SUCCESS:", "" + response.toString());
+                    postCreated = true;
+                    context.finish();
+                    //File file = new File(imagePath);
+                    //file.delete();
+
+                    if (post != null) {
+                        //    Log.v("res:", "" + post.getMessage());
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    postCreated = false;
+                    Log.v("ASYNC ERROR : ", error.getMessage());
+                    Toast.makeText(context, "Problema ao tentar criar um Post.", Toast.LENGTH_LONG).show();
+                    mProgressDialog.dismiss();
+                }
+            });
+
         }
-        }
+    }
 }

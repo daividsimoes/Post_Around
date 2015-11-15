@@ -1,5 +1,6 @@
 package postaround.tcc.inatel.br.postaround;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -16,43 +17,59 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
+import postaround.tcc.inatel.br.adapter.CommentsAdapter;
+import postaround.tcc.inatel.br.interfaces.RestAPI;
+import postaround.tcc.inatel.br.model.Comment;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
 public class ComentarioPostActivity extends AppCompatActivity {
 
-    private RecyclerView recyclerView;
+    private RecyclerView mRecyclerView;
+    private String mPostId;
+    private Activity mActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.comentarios_layout);
 
-        recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view_comments);
+        mActivity = this;
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view_comments);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        recyclerView.setLayoutManager(layoutManager);
-
-
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
-//        setSupportActionBar(toolbar);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
-
-        loadBackdrop();
+        mRecyclerView.setLayoutManager(layoutManager);
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        String postId = bundle.getString("post_id");
+        mPostId = bundle.getString("post_id");
 
+        RestAdapter retrofit = new RestAdapter.Builder()
+                .setEndpoint("http://api-tccpostaround.rhcloud.com/api")
+                .build();
 
+        RestAPI restAPI = retrofit.create(RestAPI.class);
+        if(mPostId != null) {
+            restAPI.getComments(mPostId, new Callback<List<Comment>>() {
+                @Override
+                public void success(List<Comment> comments, Response response) {
+                    mRecyclerView.setAdapter(new CommentsAdapter(mActivity, comments));
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+
+                }
+            });
+        }
     }
-
-    private void loadBackdrop() {
-        //final ImageView imageView = (ImageView) findViewById(R.id.backdrop);
-       // Picasso.with(this).load(R.drawable.tcc).into(imageView);
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
