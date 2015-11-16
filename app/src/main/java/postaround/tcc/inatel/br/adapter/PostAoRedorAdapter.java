@@ -97,9 +97,9 @@ public class PostAoRedorAdapter extends RecyclerView.Adapter<PostAoRedorAdapter.
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view =  inflater.inflate(R.layout.rows_post_ao_redor, null);
 
-
-        Picasso.with(context).load(post.getImage_url()).fit().centerCrop().into(holder.mImagemPost);
-
+        if(!post.getImage_url().trim().equals("")) {
+            Picasso.with(context).load(post.getImage_url()).fit().centerCrop().into(holder.mImagemPost);
+        }
 
 
         Picasso.with(context).load(("https://graph.facebook.com/" + UserInformation.user_id + "/picture?type=large")).transform(new CircleImage()).into(holder.fotoProfile);
