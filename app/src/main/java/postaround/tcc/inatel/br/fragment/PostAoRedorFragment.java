@@ -98,7 +98,7 @@ public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.
         recyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
         recyclerView.setHasFixedSize(true);
         swipeView = (SwipeRefreshLayout) view.findViewById(R.id.swipe);
-        button = (FloatingActionButton) view.findViewById(R.id.add_new_post);
+        button = (FloatingActionButton) view.findViewById(R.id.add_new_post_redor);
         progressBar = (RelativeLayout) view.findViewById(R.id.loadingPanel);
 
         view.setFitsSystemWindows(true);
@@ -141,9 +141,9 @@ public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.
                         progressBar.setVisibility(View.GONE);
                         swipeView.setRefreshing(false);
                     } else {
-                            /*getFragmentManager().beginTransaction()
+                            getFragmentManager().beginTransaction()
                                     .replace(R.id.container, new NenhumPostEncontradoFragment())
-                                    .commit();*/
+                                    .commit();
                     }
                 }
 

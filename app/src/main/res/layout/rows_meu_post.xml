@@ -85,29 +85,6 @@
                 <postaround.tcc.inatel.br.Utils.PostAiTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="21 curtidas"
-                    android:paddingLeft="3dp"/>
-                <LinearLayout
-                    android:id="@+id/meu_post_curtir"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingLeft="59dp">
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_thumb_up_black_18dp"
-                        />
-
-                    <postaround.tcc.inatel.br.Utils.PostAiTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Curtir"
-                        android:paddingLeft="5dp"/>
-                </LinearLayout>
-                <postaround.tcc.inatel.br.Utils.PostAiTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="3 comentários"
                     android:paddingLeft="40dp"/>
 

@@ -33,14 +33,6 @@
         <postaround.tcc.inatel.br.Utils.PostAiTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/compartilhe_facebook"
-            android:textSize="20sp"
-            android:paddingTop="10dp"
-            android:layout_gravity="center" />
-
-        <postaround.tcc.inatel.br.Utils.PostAiTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:text="@string/crie_novo_post"
             android:textSize="20sp"
             android:layout_gravity="center"

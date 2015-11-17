@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -62,7 +63,7 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
     private static final int SELECT_PHOTO_REQUEST = 4;
     private static final int CROP_FROM_CAMERA = 5;
 
-    private PostAiEditText mDescription;
+    private EditText mDescription;
     private ImageButton mSendButton;
     private ImageButton mImageButton;
     private ImageButton mImageButtonBack;
@@ -87,7 +88,7 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
 
         asyncTask = new GetResponseAsync(this);
 
-        mDescription = (PostAiEditText) findViewById(R.id.description);
+        mDescription = (EditText) findViewById(R.id.description);
         mSendButton = (ImageButton) findViewById(R.id.send_button);
         mImageButton = (ImageButton) findViewById(R.id.imageButton);
         mImgViewPic = (ImageView) findViewById(R.id.postImage);
