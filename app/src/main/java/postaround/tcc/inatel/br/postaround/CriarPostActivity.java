@@ -126,6 +126,7 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
 
                 post.setDescription(description);
                 post.setUser_id(UserInformation.user_id);
+                post.setUser_name(UserInformation.user_name);
                 loc.setCoordinates(list);
                 loc.setType("Point");
                 post.setLoc(loc);
