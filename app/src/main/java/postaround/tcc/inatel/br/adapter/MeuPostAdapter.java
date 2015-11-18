@@ -1,8 +1,10 @@
 package postaround.tcc.inatel.br.adapter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,11 +30,7 @@ public class MeuPostAdapter extends RecyclerView.Adapter<MeuPostAdapter.ViewHold
     private Context context;
     private List<Post> meuPostArrayList;
 
-    private TextView tituloDescricao;
-    private TextView comentarioDescricao;
-    private TextView nomeUsuario;
-    private ImageView fotoProfile;
-    private ImageView fotoPost;
+    private String userID;
 
     public  MeuPostAdapter(Context context, List<Post> listaMeuPost){
         this.context = context;
@@ -56,7 +54,7 @@ public class MeuPostAdapter extends RecyclerView.Adapter<MeuPostAdapter.ViewHold
             cv = (CardView) itemView.findViewById(R.id.cv_meu_post);
             mTitulo = (TextView) cv.findViewById(R.id.meu_post_titulo);
             mImagemPost = (ImageView) cv.findViewById(R.id.imageView_post_picture_meu_post);
-            mDescricao = (TextView) cv.findViewById(R.id.post_nomeUsuario);
+            mDescricao = (TextView) cv.findViewById(R.id.meu_post_descricao);
             mUserName = (TextView) cv.findViewById(R.id.meu_post_nomeUsuario);
             fotoProfile = (ImageView) cv.findViewById(R.id.imagemview_profile_picture_meu_post);
         }
@@ -77,23 +75,21 @@ public class MeuPostAdapter extends RecyclerView.Adapter<MeuPostAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(MeuPostAdapter.ViewHolder holder, int position) {
+
         Post post = meuPostArrayList.get(position);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view =  inflater.inflate(R.layout.rows_meu_post, null);
 
+            if(!post.getImage_url().trim().equals("")) {
+                Picasso.with(context).load(post.getImage_url()).fit().centerCrop().into(holder.mImagemPost);
+            }
+            Picasso.with(context).load(("https://graph.facebook.com/" + post.getUser_id() + "/picture?type=large")).transform(new CircleImage()).into(holder.fotoProfile);
+            holder.cv.setTag(post.get_id());
+            holder.mDescricao.setText(post.getDescription());
+            holder.mUserName.setText(post.getUser_name());
 
-        Picasso.with(context).load(post.getImage_url()).placeholder(R.drawable.tcc).fit().centerCrop().into(holder.mImagemPost);
 
-
-        //ProfilePictureView profilePictureView = (ProfilePictureView) view.findViewById(R.id.imagemview_profile_picture_post_redor);
-        // profilePictureView.setProfileId(post.getUser_id());
-
-        Picasso.with(context).load(("https://graph.facebook.com/" + UserInformation.user_id + "/picture?type=large")).transform(new CircleImage()).into(holder.fotoProfile);
-
-
-        holder.mDescricao.setText(post.getDescription());
-        holder.mUserName.setText(UserInformation.user_name);
     }
 
     @Override
