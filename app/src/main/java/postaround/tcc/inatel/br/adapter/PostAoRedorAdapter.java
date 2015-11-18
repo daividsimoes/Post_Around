@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,11 +103,11 @@ public class PostAoRedorAdapter extends RecyclerView.Adapter<PostAoRedorAdapter.
         }
 
 
-        Picasso.with(context).load(("https://graph.facebook.com/" + UserInformation.user_id + "/picture?type=large")).transform(new CircleImage()).into(holder.fotoProfile);
+        Picasso.with(context).load(("https://graph.facebook.com/" + post.getUser_id() + "/picture?type=large")).transform(new CircleImage()).into(holder.fotoProfile);
 
         holder.cv.setTag(post.get_id());
         holder.mDescricao.setText(post.getDescription());
-        holder.mUserName.setText(UserInformation.user_name);
+        holder.mUserName.setText(post.getUser_name());
 
     }
 

@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:paddingLeft="10dp"
-                android:id="@+id/post_descricao" />
+                android:id="@+id/meu_post_descricao" />
 
             <LinearLayout
                 android:layout_width="match_parent"

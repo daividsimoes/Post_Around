@@ -3,6 +3,7 @@ package postaround.tcc.inatel.br.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -23,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import postaround.tcc.inatel.br.Utils.LocationManager;
+import postaround.tcc.inatel.br.adapter.MeuPostAdapter;
 import postaround.tcc.inatel.br.adapter.PostAoRedorAdapter;
 import postaround.tcc.inatel.br.interfaces.LocationObserver;
 import postaround.tcc.inatel.br.interfaces.RestAPI;
@@ -45,7 +47,6 @@ public class MeusPostsFragment extends Fragment implements SwipeRefreshLayout.On
     private View view;
     private Activity activity;
     private SwipeRefreshLayout swipeView;
-    private FloatingActionButton button;
     private RelativeLayout progressBar;
 
     private LocationManager locationManager;
@@ -76,7 +77,6 @@ public class MeusPostsFragment extends Fragment implements SwipeRefreshLayout.On
         recyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view_meu_post);
         recyclerView.setHasFixedSize(true);
         swipeView = (SwipeRefreshLayout) view.findViewById(R.id.swipe_meu_post);
-        button = (FloatingActionButton) view.findViewById(R.id.add_new_meu_post);
         progressBar = (RelativeLayout) view.findViewById(R.id.loadingPanel_meu_post);
 
         view.setFitsSystemWindows(true);
@@ -88,25 +88,6 @@ public class MeusPostsFragment extends Fragment implements SwipeRefreshLayout.On
 
 
         swipeView.setOnRefreshListener(this);
-//        listView.setOnItemClickListener(this);
-
-
-        button.setOnClickListener(new FloatingActionButton.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), CriarPostActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        //button.setOnClickListener(new View.OnClickListener() {
-        //   @Override
-        //   public void onClick(View v) {
-        //       Intent intent = new Intent(activity, CriarPostActivity.class);
-        //       startActivityForResult(intent, 0);
-        //     }
-        //  });
-
 
         return view;
     }
@@ -128,8 +109,7 @@ public class MeusPostsFragment extends Fragment implements SwipeRefreshLayout.On
             restAPI.getPosts(longitude, latitude, maxDis, new Callback<List<Post>>() {
                 @Override
                 public void success(List<Post> posts, Response response) {
-
-                    recyclerView.setAdapter(new PostAoRedorAdapter(activity, posts));
+                    recyclerView.setAdapter(new MeuPostAdapter(activity, posts));
                     progressBar.setVisibility(View.GONE);
                     swipeView.setRefreshing(false);
                     locationManager.getmGoogleApiClient().disconnect();

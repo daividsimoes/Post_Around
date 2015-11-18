@@ -81,10 +81,16 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
 
     private GetResponseAsync asyncTask;
 
+    private String userId;
+    private String userName;
+    private String userURL;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_criar_post);
+
+        getUserInfo();
 
         asyncTask = new GetResponseAsync(this);
 
@@ -126,7 +132,8 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
                 Loc loc = new Loc();
 
                 post.setDescription(description);
-                post.setUser_id(UserInformation.user_id);
+                post.setUser_id(userId);
+                post.setUser_name(userName);
                 loc.setCoordinates(list);
                 loc.setType("Point");
                 post.setLoc(loc);
@@ -375,5 +382,11 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
             cursor.close();
         }
         return result;
+    }
+
+    private void getUserInfo() {
+        SharedPreferences prefs = this.getSharedPreferences("loginpreferences", this.MODE_PRIVATE);
+        userId = prefs.getString("userid","");
+        userName = prefs.getString("username","");
     }
 }
