@@ -19,6 +19,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import postaround.tcc.inatel.br.Utils.PostAiTextView;
 import postaround.tcc.inatel.br.adapter.CommentsAdapter;
 import postaround.tcc.inatel.br.interfaces.RestAPI;
 import postaround.tcc.inatel.br.model.Comment;
@@ -32,6 +33,10 @@ public class ComentarioPostActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private String mPostId;
     private Activity mActivity;
+    private ImageView mPostImage;
+    private PostAiTextView mDescription;
+    private String mPostImageUrl;
+    private String mPostDescription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +47,9 @@ public class ComentarioPostActivity extends AppCompatActivity {
 
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view_comments);
 
+        mPostImage = (ImageView) findViewById(R.id.postImage);
+        mDescription = (PostAiTextView) findViewById(R.id.tv_description);
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
@@ -50,6 +58,12 @@ public class ComentarioPostActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         mPostId = bundle.getString("post_id");
+        mPostImageUrl = bundle.getString("image_url");
+        mPostDescription = bundle.getString("description");
+
+        Picasso.with(this).load(mPostImageUrl).into(mPostImage);
+
+        mDescription.setText(mPostDescription);
 
         RestAdapter retrofit = new RestAdapter.Builder()
                 .setEndpoint("http://api-tccpostaround.rhcloud.com/api")

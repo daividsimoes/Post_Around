@@ -33,19 +33,4 @@
             android:layout_height="match_parent"/>
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/add_new_meu_post"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="bottom"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="16dp"
-        android:clickable="true"
-        app:pressedTranslationZ="12dp"
-        app:borderWidth="0dp"
-        app:elevation="6dp"
-        app:rippleColor="@android:color/white"
-        android:src="@drawable/ic_create_white_48dp"/>
-
 </RelativeLayout>

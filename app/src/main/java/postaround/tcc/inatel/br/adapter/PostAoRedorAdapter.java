@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,8 @@ public class PostAoRedorAdapter extends RecyclerView.Adapter<PostAoRedorAdapter.
     private ImageView fotoProfile;
     private ImageView fotoPost;
 
+    private Post mPost;
+
     public  PostAoRedorAdapter(Context context, List<Post> listaPostAoRedor){
         this.context = context;
         this. postAoRedorArrayList = listaPostAoRedor;
@@ -60,14 +63,7 @@ public class PostAoRedorAdapter extends RecyclerView.Adapter<PostAoRedorAdapter.
             view = itemView;
 
             cv = (CardView) itemView.findViewById(R.id.cv);
-            cv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(context, ComentarioPostActivity.class);
-                    intent.putExtra("post_id",cv.getTag().toString());
-                    context.startActivity(intent);
-                }
-            });
+
             mTitulo = (TextView) cv.findViewById(R.id.post_titulo);
             mImagemPost = (ImageView) cv.findViewById(R.id.imageView_post_picture_post_redor);
             mDescricao = (TextView) cv.findViewById(R.id.post_descricao);
@@ -92,27 +88,38 @@ public class PostAoRedorAdapter extends RecyclerView.Adapter<PostAoRedorAdapter.
 
     @Override
     public void onBindViewHolder(PostAoRedorAdapter.ViewHolder holder, int position) {
-        Post post = postAoRedorArrayList.get(position);
+        mPost = postAoRedorArrayList.get(position);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view =  inflater.inflate(R.layout.rows_post_ao_redor, null);
 
-        if(!post.getImage_url().trim().equals("")) {
-            Picasso.with(context).load(post.getImage_url()).fit().centerCrop().into(holder.mImagemPost);
+        if(!mPost.getImage_url().trim().equals("")) {
+            Picasso.with(context).load(mPost.getImage_url()).fit().centerCrop().into(holder.mImagemPost);
         }
+        holder.cv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+                       Intent intent = createIntent(view.getTag());
+                        context.startActivity(intent);
+            }
+        });
 
+        Picasso.with(context).load(("https://graph.facebook.com/" + mPost.getUser_id() + "/picture?type=large")).transform(new CircleImage()).into(holder.fotoProfile);
 
-        Picasso.with(context).load(("https://graph.facebook.com/" + UserInformation.user_id + "/picture?type=large")).transform(new CircleImage()).into(holder.fotoProfile);
-
-        holder.cv.setTag(post.get_id());
-        holder.mDescricao.setText(post.getDescription());
-        holder.mUserName.setText(UserInformation.user_name);
+        holder.cv.setTag(mPost.get_id());
+        holder.mDescricao.setText(mPost.getDescription());
+        holder.mUserName.setText(mPost.getUser_name());
 
     }
 
+    private Intent createIntent(Object tag) {
+        Intent intent = new Intent(context, ComentarioPostActivity.class);
+        intent.putExtra("post_id",tag.toString());
+        intent.putExtra("image_url", mPost.getImage_url());
+        intent.putExtra("description", mPost.getDescription());
 
-
-
+        return intent;
+    }
 
 
     @Override
