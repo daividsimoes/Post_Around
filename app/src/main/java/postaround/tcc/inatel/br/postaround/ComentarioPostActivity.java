@@ -37,6 +37,7 @@ public class ComentarioPostActivity extends AppCompatActivity {
     private PostAiTextView mDescription;
     private String mPostImageUrl;
     private String mPostDescription;
+    private ImageButton mImageButtonBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,15 @@ public class ComentarioPostActivity extends AppCompatActivity {
         mPostId = bundle.getString("post_id");
         mPostImageUrl = bundle.getString("image_url");
         mPostDescription = bundle.getString("description");
+
+        mImageButtonBack = (ImageButton) findViewById(R.id.back_button);
+
+        mImageButtonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         Picasso.with(this).load(mPostImageUrl).into(mPostImage);
 

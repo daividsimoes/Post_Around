@@ -6,6 +6,30 @@
     android:orientation="vertical"
     >
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/comments_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FF9800">
+
+        <ImageButton
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#FF9800"
+            android:src="@drawable/ic_arrow_back_white_24dp" />
+
+        <postaround.tcc.inatel.br.Utils.PostAiTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="18dp"
+            android:text="PostAí"
+            android:textColor="#ffffff"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+    </android.support.v7.widget.Toolbar>
+
     <LinearLayout
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
@@ -14,6 +38,7 @@
         <ImageView
             android:id="@+id/postImage"
             android:layout_height="wrap_content"
+            android:maxHeight="300dp"
             android:layout_width="match_parent"
             android:src="@drawable/tcc"/>
 
