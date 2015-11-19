@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 
 import com.facebook.FacebookSdk;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -53,7 +54,9 @@ public class MeusPostsFragment extends Fragment implements SwipeRefreshLayout.On
 
     private RecyclerView.LayoutManager layoutManager;
 
-
+    public  static SharedPreferences prefs;
+    public  static ArrayList<Post> meuPostList;
+    public static  String userID;
 
     public MeusPostsFragment() {
         // Required empty public constructor
@@ -63,6 +66,10 @@ public class MeusPostsFragment extends Fragment implements SwipeRefreshLayout.On
         super.onCreate(savedInstanceState);
         activity = this.getActivity();
         FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
+
+        prefs = activity.getSharedPreferences("loginpreferences", activity.MODE_PRIVATE);
+        meuPostList = new ArrayList();
+        userID = prefs.getString("userid","");
 
         locationManager = new LocationManager(getActivity());
         locationManager.addObserver(this);
@@ -109,10 +116,19 @@ public class MeusPostsFragment extends Fragment implements SwipeRefreshLayout.On
             restAPI.getPosts(longitude, latitude, maxDis, new Callback<List<Post>>() {
                 @Override
                 public void success(List<Post> posts, Response response) {
-                    recyclerView.setAdapter(new MeuPostAdapter(activity, posts));
-                    progressBar.setVisibility(View.GONE);
-                    swipeView.setRefreshing(false);
-                    locationManager.getmGoogleApiClient().disconnect();
+                    for(int i=0; i<posts.size();i++){
+                        if (posts.get(i).getUser_id().equals(userID)){
+                            meuPostList.add(posts.get(i));
+                        }
+                    }
+                    if (meuPostList.size()>0){
+                        recyclerView.setAdapter(new MeuPostAdapter(activity, meuPostList));
+                        progressBar.setVisibility(View.GONE);
+                        swipeView.setRefreshing(false);
+                        locationManager.getmGoogleApiClient().disconnect();
+                    }else {
+
+                    }
                 }
 
                 @Override

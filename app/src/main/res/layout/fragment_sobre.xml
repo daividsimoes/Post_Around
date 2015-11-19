@@ -7,12 +7,13 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="100dp">
+        android:paddingTop="50dp">
 
 
         <ImageView
-            android:layout_height="300dp"
+            android:layout_height="0dp"
             android:layout_width="wrap_content"
+            android:layout_weight="3"
             android:src="@drawable/logo_about"
             android:layout_gravity="center"
             />
@@ -20,8 +21,10 @@
 
         <postaround.tcc.inatel.br.Utils.PostAiTextView
             android:paddingTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:layout_gravity="center"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:gravity="center_horizontal"
             android:text="@string/versao_post_around"

@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import postaround.tcc.inatel.br.Utils.UserInformation;
@@ -27,12 +28,11 @@ import postaround.tcc.inatel.br.postaround.R;
  */
 public class MeuPostAdapter extends RecyclerView.Adapter<MeuPostAdapter.ViewHolder>{
 
-    private Context context;
-    private List<Post> meuPostArrayList;
-
-    private String userID;
+    public Context context;
+    public List<Post> meuPostArrayList;
 
     public  MeuPostAdapter(Context context, List<Post> listaMeuPost){
+
         this.context = context;
         this.meuPostArrayList = listaMeuPost;
     }
@@ -41,6 +41,7 @@ public class MeuPostAdapter extends RecyclerView.Adapter<MeuPostAdapter.ViewHold
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder {
+
         // each data item is just a string in this case
         public TextView mTitulo;
         public TextView mDescricao;
@@ -76,20 +77,18 @@ public class MeuPostAdapter extends RecyclerView.Adapter<MeuPostAdapter.ViewHold
     @Override
     public void onBindViewHolder(MeuPostAdapter.ViewHolder holder, int position) {
 
-        Post post = meuPostArrayList.get(position);
+            Post post = meuPostArrayList.get(position);
 
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view =  inflater.inflate(R.layout.rows_meu_post, null);
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View view = inflater.inflate(R.layout.rows_meu_post, null);
 
-            if(!post.getImage_url().trim().equals("")) {
+            if (!post.getImage_url().trim().equals("")) {
                 Picasso.with(context).load(post.getImage_url()).fit().centerCrop().into(holder.mImagemPost);
             }
             Picasso.with(context).load(("https://graph.facebook.com/" + post.getUser_id() + "/picture?type=large")).transform(new CircleImage()).into(holder.fotoProfile);
             holder.cv.setTag(post.get_id());
             holder.mDescricao.setText(post.getDescription());
             holder.mUserName.setText(post.getUser_name());
-
-
     }
 
     @Override
@@ -106,4 +105,5 @@ public class MeuPostAdapter extends RecyclerView.Adapter<MeuPostAdapter.ViewHold
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
     }
+
 }

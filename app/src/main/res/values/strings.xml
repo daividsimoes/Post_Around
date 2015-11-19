@@ -9,7 +9,7 @@
     <string name="meus_posts">Meus Posts</string>
     <string name="configuracoes">Configurações</string>
     <string name="sobre">Sobre</string>
-    <string name="sair">Sair</string>
+    <string name="sair">Logout</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
