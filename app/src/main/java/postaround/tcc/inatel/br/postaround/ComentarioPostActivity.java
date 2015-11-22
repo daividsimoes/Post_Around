@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -71,8 +72,9 @@ public class ComentarioPostActivity extends AppCompatActivity {
             }
         });
 
-        Picasso.with(this).load(mPostImageUrl).into(mPostImage);
-
+        if(!mPostImageUrl.trim().equals("")) {
+            Picasso.with(this).load(mPostImageUrl).into(mPostImage);
+        }
         mDescription.setText(mPostDescription);
 
         RestAdapter retrofit = new RestAdapter.Builder()
@@ -84,12 +86,13 @@ public class ComentarioPostActivity extends AppCompatActivity {
             restAPI.getComments(mPostId, new Callback<List<Comment>>() {
                 @Override
                 public void success(List<Comment> comments, Response response) {
+                    Log.e("tag", response.toString());
                     mRecyclerView.setAdapter(new CommentsAdapter(mActivity, comments));
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-
+                    Log.e("erro", "erro");
                 }
             });
         }

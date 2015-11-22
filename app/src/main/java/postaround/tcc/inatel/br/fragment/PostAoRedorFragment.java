@@ -141,9 +141,11 @@ public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.
                         progressBar.setVisibility(View.GONE);
                         swipeView.setRefreshing(false);
                     } else {
+                        if(getFragmentManager() != null){
                             getFragmentManager().beginTransaction()
                                     .replace(R.id.container, new NenhumPostEncontradoFragment())
                                     .commit();
+                    }
                     }
                 }
 
