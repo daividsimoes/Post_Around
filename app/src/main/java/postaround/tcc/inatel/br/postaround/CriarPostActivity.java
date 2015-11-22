@@ -83,7 +83,6 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
 
     private String userId;
     private String userName;
-    private String userURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,35 +120,39 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
             @Override
             public void onClick(View view) {
                 String description = mDescription.getText().toString();
-                HashMap<String, Double> location = getLocation();
-                List<Double> list = new ArrayList<Double>();
-                if (location != null) {
-                    list.add(location.get("longitude"));
-                    list.add(location.get("latitude"));
-                }
-
-                Post post = new Post();
-                Loc loc = new Loc();
-
-                post.setDescription(description);
-                post.setUser_id(userId);
-                post.setUser_name(userName);
-                loc.setCoordinates(list);
-                loc.setType("Point");
-                post.setLoc(loc);
-
-
-                String path = null;
-                if (mImageUri != null) {
-                    try {
-                        path = getRealPathFromURI(mImageUri);
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                if (description.equals(null) || description.equals("")) {
+                    Toast.makeText(getApplication(), "Post deve possuir uma descrição", Toast.LENGTH_LONG).show();
+                } else {
+                    HashMap<String, Double> location = getLocation();
+                    List<Double> list = new ArrayList<Double>();
+                    if (location != null) {
+                        list.add(location.get("longitude"));
+                        list.add(location.get("latitude"));
                     }
+
+                    Post post = new Post();
+                    Loc loc = new Loc();
+
+                    post.setDescription(description);
+                    post.setUser_id(userId);
+                    post.setUser_name(userName);
+                    loc.setCoordinates(list);
+                    loc.setType("Point");
+                    post.setLoc(loc);
+
+                    String path = null;
+                    if (mImageUri != null) {
+                        try {
+                            path = getRealPathFromURI(mImageUri);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    post.setImage_url(path);
+                    asyncTask.execute(post);
                 }
-                post.setImage_url(path);
-                asyncTask.execute(post);
             }
+
         });
 
         ((MapFragment) getFragmentManager().findFragmentById(R.id.mapFragment)).getMapAsync(this);
@@ -185,7 +188,28 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
     }
 
     private void drawMarkerWithCircleAndZoom(LatLng position){
-        double radiusInMeters = 300.0;
+        SharedPreferences prefs = this.getSharedPreferences("raio_confg", this.MODE_PRIVATE);
+        String maxDis;
+        int raio = prefs.getInt("raio",R.id.raio_um);
+        switch (raio){
+            case  R.id.raio_um:
+                maxDis = "300";
+                break;
+
+            case  R.id.raio_dois:
+                maxDis = "1000";
+                break;
+
+            case  R.id.raio_tres:
+                maxDis = "2000";
+                break;
+
+            default:
+                maxDis = "300";
+                break;
+        }
+
+        double radiusInMeters = Double.parseDouble(maxDis);
         int strokeColor = 0xffF57C00;
         int shadeColor = 0x44FFCC80;
 
@@ -198,7 +222,14 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
 
         CameraUpdate center=
                 CameraUpdateFactory.newLatLng(position);
-        CameraUpdate zoom=CameraUpdateFactory.zoomTo(15);
+        CameraUpdate zoom;
+        if(radiusInMeters == 300.0){
+            zoom=CameraUpdateFactory.zoomTo(15);
+        }else if (radiusInMeters == 1000.0){
+            zoom=CameraUpdateFactory.zoomTo(14);
+        }else {
+            zoom=CameraUpdateFactory.zoomTo(13);
+        }
 
         mGoogleMap.moveCamera(center);
         mGoogleMap.animateCamera(zoom);
