@@ -22,6 +22,9 @@ public interface RestAPI {
     public void getPosts(@Path("longitude") String longitude, @Path("latitude") String latitude,
                          @Path("maxDis") String maxDis, Callback<List<Post>> response);
 
+    @GET("/posts/{userid}")
+    public void getPosts(@Path("userid") String userid, Callback<List<Post>> response);
+
     @POST("/login/")
     public void postUser(@Body User user, Callback<PostUserRes> response);
 
