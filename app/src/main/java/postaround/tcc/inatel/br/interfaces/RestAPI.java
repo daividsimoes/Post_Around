@@ -31,7 +31,7 @@ public interface RestAPI {
     @POST("/posts/")
     public void postPost(@Body Post post, Callback<PostPostRes> response);
 
-    @GET("/comments/post_id")
+    @GET("/comments/{post_id}")
     public void getComments(@Path("post_id") String post_id, Callback<List<Comment>> response);
 
 }

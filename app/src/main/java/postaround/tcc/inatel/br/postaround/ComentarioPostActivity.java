@@ -86,7 +86,7 @@ public class ComentarioPostActivity extends AppCompatActivity {
             restAPI.getComments(mPostId, new Callback<List<Comment>>() {
                 @Override
                 public void success(List<Comment> comments, Response response) {
-                    Log.e("tag", response.toString());
+                    Log.e("tag", response.getReason().toString());
                     mRecyclerView.setAdapter(new CommentsAdapter(mActivity, comments));
                 }
 

@@ -38,6 +38,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
         private View view;
         private TextView comment;
         private TextView nome;
+        private ImageView userImage;
 
     public ViewHolder(View itemView) {
         super(itemView);
@@ -45,6 +46,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
 
         comment = (TextView) view.findViewById(R.id.textView_novo_comentario_post_comentado);
         nome = (TextView) view.findViewById(R.id.textView_novo_nome_post_comentado);
+        userImage = (ImageView) view.findViewById(R.id.imageView_post_picture_comentario_post);
 
     }
 
@@ -71,7 +73,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
         View view =  inflater.inflate(R.layout.rows_comentario_post, null);
 
         holder.comment.setText(comment.getText());
-      //  Picasso.with(mActivity).load(("https://graph.facebook.com/" + comment.getUser_id() + "/picture?type=large")).transform(new CircleImage()).into(holder.userImage);
+        Picasso.with(mActivity).load(("https://graph.facebook.com/" + comment.getUser_id() + "/picture?type=large")).transform(new CircleImage()).into(holder.userImage);
 
 
 
