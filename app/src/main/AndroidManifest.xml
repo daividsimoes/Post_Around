@@ -75,6 +75,7 @@
             android:name=".ComentarioPostActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait" >
         </activity>
         <activity

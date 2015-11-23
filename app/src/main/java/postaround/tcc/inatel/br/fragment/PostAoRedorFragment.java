@@ -295,8 +295,10 @@ public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.
 
     // Stopping location updates
     protected void stopLocationUpdates() {
-        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-    }
+        if(mGoogleApiClient.isConnected()) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        }
+        }
 
     @Override
     public void onLocationChanged(Location location) {

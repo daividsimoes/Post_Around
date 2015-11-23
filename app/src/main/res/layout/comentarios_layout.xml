@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+
     >
 
     <android.support.v7.widget.Toolbar
@@ -55,25 +56,29 @@
         android:id="@+id/my_recycler_view_comments"
         android:scrollbars="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="300dp"
+        android:layout_weight="0.8"/>
 
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
-    <postaround.tcc.inatel.br.Utils.PostAiEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="5"
+        android:fitsSystemWindows="true"
+        >
+    <postaround.tcc.inatel.br.Utils.PostAiEditText
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:hint="Digite aqui..."
-        android:layout_weight="0.8"/>
+
+        android:layout_weight="4"/>
 
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Enviar"
-            android:layout_weight="0.2"
+            android:layout_weight="1"
             />
 
     </LinearLayout>
