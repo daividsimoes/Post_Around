@@ -2,10 +2,15 @@ package postaround.tcc.inatel.br.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +50,9 @@ public class NenhumPostEncontradoFragment extends Fragment
     private GoogleApiClient mGoogleApiClient;
     private boolean mRequestingLocationUpdates = true;
     private LocationRequest mLocationRequest;
+    private SwipeRefreshLayout swipeView;
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
 
     // Location updates intervals in sec
     private static int UPDATE_INTERVAL = 10000; // 10 segundos
@@ -73,6 +81,27 @@ public class NenhumPostEncontradoFragment extends Fragment
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_nenhum_post_encontrado, container, false);
 
+        recyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view_nenhum_post);
+        recyclerView.setHasFixedSize(true);
+        view.setFitsSystemWindows(true);
+        swipeView = (SwipeRefreshLayout)view.findViewById(R.id.swipe_nenhum_post);
+        layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+
+
+        swipeView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeView.setRefreshing(true);
+                (new Handler()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        populaLista();
+                    }
+                }, 1000);
+            }
+        });
+
         btnAddNewPost = (FloatingActionButton) view.findViewById(R.id.add_new_post);
         btnAddNewPost.setOnClickListener(new FloatingActionButton.OnClickListener() {
             @Override
@@ -100,8 +129,26 @@ public class NenhumPostEncontradoFragment extends Fragment
         if (mLastLocation != null) {
             String longitude = String.valueOf(mLastLocation.getLongitude());
             String latitude = String.valueOf(mLastLocation.getLatitude());
-            String maxDis = "100"; // TODO Get from Config
+            SharedPreferences prefs = getActivity().getSharedPreferences("raio_confg", getActivity().MODE_PRIVATE);
+            String maxDis;
+            int raio = prefs.getInt("raio",R.id.raio_um);
+            switch (raio){
+                case  R.id.raio_um:
+                    maxDis = "300";
+                    break;
 
+                case  R.id.raio_dois:
+                    maxDis = "1000";
+                    break;
+
+                case  R.id.raio_tres:
+                    maxDis = "2000";
+                    break;
+
+                default:
+                    maxDis = "300";
+                    break;
+            }
             RestAdapter retrofit = new RestAdapter.Builder()
                     .setEndpoint(API)
                     .build();

@@ -56,7 +56,7 @@ public class PostAoRedorAdapter extends RecyclerView.Adapter<PostAoRedorAdapter.
         public ImageView mImagemPost;
         public Integer mPostTag;
         public View view;
-
+        public TextView hiddenTextview;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -69,6 +69,7 @@ public class PostAoRedorAdapter extends RecyclerView.Adapter<PostAoRedorAdapter.
             mDescricao = (TextView) cv.findViewById(R.id.post_descricao);
             mUserName = (TextView) cv.findViewById(R.id.post_nomeUsuario);
             fotoProfile = (ImageView) cv.findViewById(R.id.imagemview_profile_picture_post_redor);
+            hiddenTextview = (TextView) view.findViewById(R.id.hiddentext);
 
         }
     }
@@ -87,7 +88,7 @@ public class PostAoRedorAdapter extends RecyclerView.Adapter<PostAoRedorAdapter.
     }
 
     @Override
-    public void onBindViewHolder(PostAoRedorAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final PostAoRedorAdapter.ViewHolder holder, int position) {
         mPost = postAoRedorArrayList.get(position);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -99,22 +100,25 @@ public class PostAoRedorAdapter extends RecyclerView.Adapter<PostAoRedorAdapter.
         holder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
-                       Intent intent = createIntent(view.getTag());
+                        //criar esse textview escondido
+                //pra armazenar o id do post
+                       Intent intent = createIntent(holder.hiddenTextview.getText().toString());
                         context.startActivity(intent);
             }
         });
 
         Picasso.with(context).load(("https://graph.facebook.com/" + mPost.getUser_id() + "/picture?type=large")).transform(new CircleImage()).into(holder.fotoProfile);
 
-        holder.cv.setTag(mPost.get_id());
+        holder.hiddenTextview.setText(mPost.get_id());
+        holder.hiddenTextview.setVisibility(View.INVISIBLE);
         holder.mDescricao.setText(mPost.getDescription());
         holder.mUserName.setText(mPost.getUser_name());
 
     }
 
-    private Intent createIntent(Object tag) {
+    private Intent createIntent(String hiddenText) {
         Intent intent = new Intent(context, ComentarioPostActivity.class);
-        intent.putExtra("post_id",tag.toString());
+        intent.putExtra("post_id",hiddenText);
         intent.putExtra("image_url", mPost.getImage_url());
         intent.putExtra("description", mPost.getDescription());
 

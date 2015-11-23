@@ -33,6 +33,24 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
         mComments = comments;
     }
 
+    public static class ViewHolder extends RecyclerView.ViewHolder{
+
+        private View view;
+        private TextView comment;
+        private TextView nome;
+
+    public ViewHolder(View itemView) {
+        super(itemView);
+        view = itemView;
+
+        comment = (TextView) view.findViewById(R.id.textView_novo_comentario_post_comentado);
+        nome = (TextView) view.findViewById(R.id.textView_novo_nome_post_comentado);
+
+    }
+
+    }
+
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
@@ -52,8 +70,10 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
         LayoutInflater inflater = (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view =  inflater.inflate(R.layout.rows_comentario_post, null);
 
-        holder.texto.setText(comment.getText());
-        Picasso.with(mActivity).load(("https://graph.facebook.com/" + comment.getUser_id() + "/picture?type=large")).transform(new CircleImage()).into(holder.userImage);
+        holder.comment.setText(comment.getText());
+      //  Picasso.with(mActivity).load(("https://graph.facebook.com/" + comment.getUser_id() + "/picture?type=large")).transform(new CircleImage()).into(holder.userImage);
+
+
 
     }
 
@@ -70,19 +90,5 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder{
-
-        public TextView texto;
-        public ImageView userImage;
-        public CardView card;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            card = (CardView) itemView.findViewById(R.id.card);
-            texto = (TextView) card.findViewById(R.id.textView_novo_comentario_post_comentado);
-            userImage = (ImageView) card.findViewById(R.id.imageView_post_picture_meu_post);
-        }
     }
 }

@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
 
@@ -105,15 +106,13 @@ public class MeusPostsFragment extends Fragment implements SwipeRefreshLayout.On
         if(location != null) {
             String longitude = String.valueOf(location.get("longitude"));
             String latitude = String.valueOf(location.get("latitude"));
-            String maxDis = "100";
-
             RestAdapter retrofit = new RestAdapter.Builder()
                     .setEndpoint("http://api-tccpostaround.rhcloud.com/api")
                     .build();
 
             RestAPI restAPI = retrofit.create(RestAPI.class);
 
-            restAPI.getPosts(longitude, latitude, maxDis, new Callback<List<Post>>() {
+            restAPI.getPosts(userID, new Callback<List<Post>>() {
                 @Override
                 public void success(List<Post> posts, Response response) {
                     for(int i=0; i<posts.size();i++){
@@ -146,10 +145,10 @@ public class MeusPostsFragment extends Fragment implements SwipeRefreshLayout.On
         (new Handler()).postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (locationManager.getmGoogleApiClient() != null) {
+                /*if (locationManager.getmGoogleApiClient() != null) {
                     locationManager.getmGoogleApiClient().connect();
-                }
-                //populaLista();
+                }*/
+                populaLista();
             }
         }, 1000);
     }
