@@ -92,10 +92,7 @@ public class CriarPostActivityFragment extends Fragment implements GoogleApiClie
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_criar_post, container, false);
-//
-//        titulo = (EditText) view.findViewById(R.id.editText_criar_descricao_post);
-//        descricao = (EditText) view.findViewById(R.id.editText_criar_comentario_post);
-//        botao = (ImageButton) view.findViewById(R.id.button_add_post);
+
 
         botao.setOnClickListener(new View.OnClickListener() {
             @Override

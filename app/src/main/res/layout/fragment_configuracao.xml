@@ -36,6 +36,7 @@
             android:layout_height="wrap_content" >
 
             <RadioGroup
+                android:id="@+id/group_raio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <postaround.tcc.inatel.br.Utils.PostAiRadioButton
