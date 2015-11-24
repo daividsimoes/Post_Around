@@ -4,6 +4,7 @@ import java.util.List;
 
 import postaround.tcc.inatel.br.model.Comment;
 import postaround.tcc.inatel.br.model.Post;
+import postaround.tcc.inatel.br.model.PostCommentRes;
 import postaround.tcc.inatel.br.model.PostPostRes;
 import postaround.tcc.inatel.br.model.PostUserRes;
 import postaround.tcc.inatel.br.model.User;
@@ -31,7 +32,10 @@ public interface RestAPI {
     @POST("/posts/")
     public void postPost(@Body Post post, Callback<PostPostRes> response);
 
-    @GET("/comments/{post_id}")
-    public void getComments(@Path("post_id") String post_id, Callback<List<Comment>> response);
+    @GET("/comments/{postid}")
+    public void getComments(@Path("postid") String postid, Callback<List<Comment>> response);
+
+    @POST("/comments/")
+    public void postComment(@Body Comment comment, Callback<PostCommentRes> response);
 
 }

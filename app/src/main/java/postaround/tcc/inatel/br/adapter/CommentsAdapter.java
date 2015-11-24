@@ -72,8 +72,8 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
         LayoutInflater inflater = (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view =  inflater.inflate(R.layout.rows_comentario_post, null);
 
-        holder.comment.setText(comment.getText());
-        Picasso.with(mActivity).load(("https://graph.facebook.com/" + comment.getUser_id() + "/picture?type=large")).transform(new CircleImage()).into(holder.userImage);
+        holder.comment.setText(comment.getComment());
+        Picasso.with(mActivity).load(("https://graph.facebook.com/" + comment.getUserid() + "/picture?type=large")).transform(new CircleImage()).into(holder.userImage);
 
 
 

@@ -7,9 +7,9 @@ public class Comment {
 
     private String _id;
     private Integer __v;
-    private String text;
-    private String post_id;
-    private String user_id;
+    private String comment;
+    private String postid;
+    private String userid;
 
     public Integer get__v() {
         return __v;
@@ -27,27 +27,27 @@ public class Comment {
         this._id = _id;
     }
 
-    public String getPost_id() {
-        return post_id;
+    public String getPostid() {
+        return postid;
     }
 
-    public void setPost_id(String post_id) {
-        this.post_id = post_id;
+    public void setPostid(String postid) {
+        this.postid = postid;
     }
 
-    public String getText() {
-        return text;
+    public String getComment() {
+        return comment;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
-    public String getUser_id() {
-        return user_id;
+    public String getUserid() {
+        return userid;
     }
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    public void setUserid(String userid) {
+        this.userid = userid;
     }
 }

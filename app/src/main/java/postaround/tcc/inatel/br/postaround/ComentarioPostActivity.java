@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -20,8 +21,11 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import postaround.tcc.inatel.br.Utils.PostAiEditText;
 import postaround.tcc.inatel.br.Utils.PostAiTextView;
+import postaround.tcc.inatel.br.Utils.UserInformation;
 import postaround.tcc.inatel.br.adapter.CommentsAdapter;
+import postaround.tcc.inatel.br.async.CommentAsync;
 import postaround.tcc.inatel.br.interfaces.RestAPI;
 import postaround.tcc.inatel.br.model.Comment;
 import retrofit.Callback;
@@ -39,6 +43,9 @@ public class ComentarioPostActivity extends AppCompatActivity {
     private String mPostImageUrl;
     private String mPostDescription;
     private ImageButton mImageButtonBack;
+    private ImageButton sendButton;
+    private CommentAsync asyncTask;
+    private PostAiEditText mComment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +59,8 @@ public class ComentarioPostActivity extends AppCompatActivity {
         mPostImage = (ImageView) findViewById(R.id.postImage);
         mDescription = (PostAiTextView) findViewById(R.id.tv_description);
 
+        mComment = (PostAiEditText) findViewById(R.id.etComment);
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
@@ -64,6 +73,8 @@ public class ComentarioPostActivity extends AppCompatActivity {
         mPostDescription = bundle.getString("description");
 
         mImageButtonBack = (ImageButton) findViewById(R.id.back_button);
+
+        sendButton = (ImageButton) findViewById(R.id.sendComment);
 
         mImageButtonBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +107,20 @@ public class ComentarioPostActivity extends AppCompatActivity {
                 }
             });
         }
+
+        asyncTask = new CommentAsync(this);
+
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Comment comment = new Comment();
+                comment.setPostid(mPostId);
+                comment.setComment(mComment.getText().toString());
+                comment.setUserid(UserInformation.user_id);
+                asyncTask.execute(comment);
+            }
+        });
+
     }
 
     @Override
