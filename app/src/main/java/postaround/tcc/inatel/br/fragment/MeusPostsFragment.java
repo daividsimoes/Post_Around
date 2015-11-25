@@ -55,13 +55,14 @@ public class MeusPostsFragment extends Fragment implements SwipeRefreshLayout.On
 
     private RecyclerView.LayoutManager layoutManager;
 
-    public  static SharedPreferences prefs;
-    public  static ArrayList<Post> meuPostList;
-    public static  String userID;
+    public static SharedPreferences prefs;
+    public static ArrayList<Post> meuPostList;
+    public static String userID;
 
     public MeusPostsFragment() {
         // Required empty public constructor
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,8 +70,7 @@ public class MeusPostsFragment extends Fragment implements SwipeRefreshLayout.On
         FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
 
         prefs = activity.getSharedPreferences("loginpreferences", activity.MODE_PRIVATE);
-        meuPostList = new ArrayList();
-        userID = prefs.getString("userid","");
+        userID = prefs.getString("userid", "");
 
         locationManager = new LocationManager(getActivity());
         locationManager.addObserver(this);
@@ -94,49 +94,44 @@ public class MeusPostsFragment extends Fragment implements SwipeRefreshLayout.On
         recyclerView.setLayoutManager(layoutManager);
 
 
-
         swipeView.setOnRefreshListener(this);
 
         return view;
     }
 
     private void populaLista() {
-        HashMap<String, Double> location = locationManager.getLocation();
+        meuPostList = new ArrayList();
+        RestAdapter retrofit = new RestAdapter.Builder()
+                .setEndpoint("http://api-tccpostaround.rhcloud.com/api")
+                .build();
 
-        if(location != null) {
-            String longitude = String.valueOf(location.get("longitude"));
-            String latitude = String.valueOf(location.get("latitude"));
-            RestAdapter retrofit = new RestAdapter.Builder()
-                    .setEndpoint("http://api-tccpostaround.rhcloud.com/api")
-                    .build();
+        RestAPI restAPI = retrofit.create(RestAPI.class);
 
-            RestAPI restAPI = retrofit.create(RestAPI.class);
-
-            restAPI.getPosts(userID, new Callback<List<Post>>() {
-                @Override
-                public void success(List<Post> posts, Response response) {
-                    for(int i=0; i<posts.size();i++){
-                        if (posts.get(i).getUser_id().equals(userID)){
-                            meuPostList.add(posts.get(i));
-                        }
-                    }
-                    if (meuPostList.size()>0){
-                        recyclerView.setAdapter(new MeuPostAdapter(activity, meuPostList));
-                        progressBar.setVisibility(View.GONE);
-                        swipeView.setRefreshing(false);
-                        locationManager.getmGoogleApiClient().disconnect();
-                    }else {
-
+        restAPI.getPosts(userID, new Callback<List<Post>>() {
+            @Override
+            public void success(List<Post> posts, Response response) {
+                for (int i = 0; i < posts.size(); i++) {
+                    if (posts.get(i).getUser_id().equals(userID)) {
+                        meuPostList.add(posts.get(i));
                     }
                 }
+                if (meuPostList.size() > 0) {
+                    recyclerView.setAdapter(new MeuPostAdapter(activity, meuPostList));
+                    progressBar.setVisibility(View.GONE);
+                    swipeView.setRefreshing(false);
+                    locationManager.getmGoogleApiClient().disconnect();
+                } else {
 
-                @Override
-                public void failure(RetrofitError error) {
-                    Log.e("error", error.getMessage());
                 }
-            });
+            }
 
-        }
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("error", error.getMessage());
+            }
+        });
+
+
     }
 
     @Override
@@ -162,19 +157,16 @@ public class MeusPostsFragment extends Fragment implements SwipeRefreshLayout.On
     @Override
     public void onStart() {
         super.onStart();
-        if (locationManager.getmGoogleApiClient() != null) {
-            locationManager.getmGoogleApiClient().connect();
-        }
     }
+
     @Override
     public void onResume() {
         super.onResume();
-        locationManager.checkPlayServices();
         progressBar.setVisibility(View.VISIBLE);
-        if(locationManager.getLocation() != null){
-            populaLista();
-        }
+        populaLista();
+
     }
+
     @Override
     public void onStop() {
         super.onStop();

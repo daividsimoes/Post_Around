@@ -35,14 +35,18 @@
                     android:layout_height="50dp"/>
                 <postaround.tcc.inatel.br.Utils.PostAiTextView
                     android:maxLength="18"
-                    android:paddingTop="4dp"
+                    android:textStyle="bold"
                     android:paddingLeft="6dp"
                     android:layout_gravity="center"
-                    android:textSize="12sp"
+                    android:textSize="16sp"
                     android:textColor="#FF9800"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/meu_post_nomeUsuario" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/hiddentext_meu_post"/>
             </LinearLayout>
 
             <ImageView
@@ -58,7 +62,7 @@
 
             <postaround.tcc.inatel.br.Utils.PostAiTextView
                 android:maxLength="50"
-                android:paddingLeft="6dp"
+                android:paddingLeft="12dp"
                 android:id="@+id/meu_post_titulo"
                 android:textStyle="bold"
                 android:layout_width="match_parent"
@@ -67,12 +71,15 @@
                 />
 
             <postaround.tcc.inatel.br.Utils.PostAiTextView
-                android:maxLength="100"
+                android:maxLength="200"
                 android:layout_below="@id/meu_post_titulo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:textSize="14dp"
+                android:textColor="#000000"
                 android:paddingLeft="10dp"
+                android:textStyle="bold"
                 android:id="@+id/meu_post_descricao" />
 
             <LinearLayout

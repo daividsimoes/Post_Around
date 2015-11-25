@@ -69,7 +69,7 @@ public class PostAoRedorAdapter extends RecyclerView.Adapter<PostAoRedorAdapter.
             mDescricao = (TextView) cv.findViewById(R.id.post_descricao);
             mUserName = (TextView) cv.findViewById(R.id.post_nomeUsuario);
             fotoProfile = (ImageView) cv.findViewById(R.id.imagemview_profile_picture_post_redor);
-            hiddenTextview = (TextView) view.findViewById(R.id.hiddentext);
+            hiddenTextview = (TextView) cv.findViewById(R.id.hiddentext);
 
         }
     }
@@ -96,6 +96,8 @@ public class PostAoRedorAdapter extends RecyclerView.Adapter<PostAoRedorAdapter.
 
         if(!mPost.getImage_url().trim().equals("")) {
             Picasso.with(context).load(mPost.getImage_url()).fit().centerCrop().into(holder.mImagemPost);
+        }else {
+            holder.mImagemPost.setVisibility(View.GONE);
         }
         holder.cv.setOnClickListener(new View.OnClickListener() {
             @Override

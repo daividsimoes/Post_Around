@@ -125,7 +125,7 @@ public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.
         if (mLastLocation != null) {
             String longitude = String.valueOf(mLastLocation.getLongitude());
             String latitude = String.valueOf(mLastLocation.getLatitude());
-            SharedPreferences prefs = getActivity().getSharedPreferences("raio_confg", getActivity().MODE_PRIVATE);
+            SharedPreferences prefs = activity.getSharedPreferences("raio_confg", activity.MODE_PRIVATE);
             String maxDis;
             int raio = prefs.getInt("raio",R.id.raio_um);
             switch (raio){
@@ -164,7 +164,7 @@ public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.
                             getFragmentManager().beginTransaction()
                                     .replace(R.id.container, new NenhumPostEncontradoFragment())
                                     .commit();
-                    }
+                        }
                     }
                 }
 
