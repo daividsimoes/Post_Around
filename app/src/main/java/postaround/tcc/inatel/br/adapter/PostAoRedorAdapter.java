@@ -15,6 +15,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import postaround.tcc.inatel.br.Utils.PostAiTextView;
 import postaround.tcc.inatel.br.Utils.UserInformation;
 import postaround.tcc.inatel.br.Utils.CircleImage;
 import postaround.tcc.inatel.br.model.Post;
@@ -54,6 +55,7 @@ public class PostAoRedorAdapter extends RecyclerView.Adapter<PostAoRedorAdapter.
         public CardView cv;
         public ImageView fotoProfile;
         public ImageView mImagemPost;
+        public PostAiTextView comments;
         public Integer mPostTag;
         public View view;
         public TextView hiddenTextview;
@@ -69,6 +71,7 @@ public class PostAoRedorAdapter extends RecyclerView.Adapter<PostAoRedorAdapter.
             mDescricao = (TextView) cv.findViewById(R.id.post_descricao);
             mUserName = (TextView) cv.findViewById(R.id.post_nomeUsuario);
             fotoProfile = (ImageView) cv.findViewById(R.id.imagemview_profile_picture_post_redor);
+            comments = (PostAiTextView) cv.findViewById(R.id.tvComment);
             hiddenTextview = (TextView) view.findViewById(R.id.hiddentext);
 
         }
@@ -109,6 +112,9 @@ public class PostAoRedorAdapter extends RecyclerView.Adapter<PostAoRedorAdapter.
 
         Picasso.with(context).load(("https://graph.facebook.com/" + mPost.getUser_id() + "/picture?type=large")).transform(new CircleImage()).into(holder.fotoProfile);
 
+        if(mPost.getNumComments() != null) {
+            holder.comments.setText(mPost.getNumComments());
+        }
         holder.hiddenTextview.setText(mPost.get_id());
         holder.hiddenTextview.setVisibility(View.INVISIBLE);
         holder.mDescricao.setText(mPost.getDescription());

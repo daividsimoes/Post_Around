@@ -9,11 +9,20 @@ public class Post {
 
     private String _id;
     private String description;
+    private String numComments;
     private String user_id;
     private String user_name;
     private String image_url;
     private Integer __v;
     private Loc loc;
+
+    public String getNumComments() {
+        return numComments;
+    }
+
+    public void setNumComments(String numComments) {
+        this.numComments = numComments;
+    }
 
     public String getUser_name() {
         return user_name;
