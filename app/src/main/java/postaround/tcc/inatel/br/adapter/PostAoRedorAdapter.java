@@ -99,6 +99,8 @@ public class PostAoRedorAdapter extends RecyclerView.Adapter<PostAoRedorAdapter.
 
         if(!mPost.getImage_url().trim().equals("")) {
             Picasso.with(context).load(mPost.getImage_url()).fit().centerCrop().into(holder.mImagemPost);
+        }else {
+            holder.mImagemPost.setVisibility(View.GONE);
         }
         holder.cv.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -8,6 +8,7 @@ import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -50,13 +51,15 @@ public class SairFragment extends Fragment {
 
         TextView title = new TextView(getActivity());
         title.setText("Sair");
-        title.setTextSize(50);
+        title.setTextSize(25);
+        title.setPadding(15, 10, 0, 0);
         title.setTypeface(tf);
 
         TextView content = new TextView(getActivity());
         content.setText("Deseja sair?");
-        title.setTextSize(17);
+        content.setTextSize(25);
         content.setTypeface(tf);
+        content.setPadding(35,10,0,0);
 
         alert.setCustomTitle(title);
         alert.setView(content);
