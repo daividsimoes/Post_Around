@@ -22,6 +22,7 @@ import postaround.tcc.inatel.br.model.Post;
 import postaround.tcc.inatel.br.model.Postinho;
 import postaround.tcc.inatel.br.postaround.ComentarioPostActivity;
 import postaround.tcc.inatel.br.postaround.R;
+import postaround.tcc.inatel.br.postaround.ScrollingActivity;
 
 
 /**
@@ -67,7 +68,6 @@ public class PostAoRedorAdapter extends RecyclerView.Adapter<PostAoRedorAdapter.
 
             cv = (CardView) itemView.findViewById(R.id.cv);
 
-            mTitulo = (TextView) cv.findViewById(R.id.post_titulo);
             mImagemPost = (ImageView) cv.findViewById(R.id.imageView_post_picture_post_redor);
             mDescricao = (TextView) cv.findViewById(R.id.post_descricao);
             mUserName = (TextView) cv.findViewById(R.id.post_nomeUsuario);
@@ -126,11 +126,12 @@ public class PostAoRedorAdapter extends RecyclerView.Adapter<PostAoRedorAdapter.
         Picasso.with(context).load(("https://graph.facebook.com/" + mPost.getUser_id() + "/picture?type=large")).transform(new CircleImage()).into(holder.fotoProfile);
 
         if(mPost.getNumComments() != null) {
-            if(Integer.parseInt(mPost.getNumComments()) > 1) {
-                holder.comments.setText(mPost.getNumComments() + " comentários");
-            }else{
-                holder.comments.setText(mPost.getNumComments() + " comentário");
-            }
+            String com = mPost.getNumComments();
+
+            if(com.equals("1")) com += " comentário";
+            else com += " comentários";
+
+            holder.comments.setText(com);
         }
         //holder.hiddenTextview.setText(mPost.get_id());
         //holder.hiddenTextview.setVisibility(View.INVISIBLE);
@@ -141,11 +142,11 @@ public class PostAoRedorAdapter extends RecyclerView.Adapter<PostAoRedorAdapter.
 
     private Intent createIntent(Postinho postinho) {
         Intent intent = new Intent(context, ComentarioPostActivity.class);
-        //Postinho postinho = new Postinho();
         intent.putExtra("post_id",postinho.getId());
         intent.putExtra("image_url", postAoRedorArrayList.get(postinho.getPosition()).getImage_url());
         intent.putExtra("description", postAoRedorArrayList.get(postinho.getPosition()).getDescription());
-
+        intent.putExtra("user_name", postAoRedorArrayList.get(postinho.getPosition()).getUser_name());
+        intent.putExtra("user_id", postAoRedorArrayList.get(postinho.getPosition()).getUser_id());
         return intent;
     }
 

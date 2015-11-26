@@ -22,7 +22,7 @@ import postaround.tcc.inatel.br.Utils.CircleImage;
 import postaround.tcc.inatel.br.model.Post;
 import postaround.tcc.inatel.br.postaround.ComentarioPostActivity;
 import postaround.tcc.inatel.br.postaround.R;
-
+import postaround.tcc.inatel.br.postaround.ScrollingActivity;
 
 
 /**
@@ -112,7 +112,8 @@ public class MeuPostAdapter extends RecyclerView.Adapter<MeuPostAdapter.ViewHold
     }
 
     private Intent createIntent(String hiddenText) {
-        Intent intent = new Intent(context, ComentarioPostActivity.class);
+        //Intent intent = new Intent(context, ComentarioPostActivity.class);
+        Intent intent = new Intent(context, ScrollingActivity.class);
         intent.putExtra("post_id",hiddenText);
         intent.putExtra("image_url", mPost.getImage_url());
         intent.putExtra("description", mPost.getDescription());

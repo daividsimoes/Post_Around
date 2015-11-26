@@ -37,6 +37,7 @@ import postaround.tcc.inatel.br.model.Post;
 import postaround.tcc.inatel.br.postaround.ComentarioPostActivity;
 import postaround.tcc.inatel.br.postaround.CriarPostActivity;
 import postaround.tcc.inatel.br.postaround.R;
+import postaround.tcc.inatel.br.postaround.ScrollingActivity;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -196,7 +197,8 @@ public class PostAoRedorFragment extends Fragment implements SwipeRefreshLayout.
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        Intent intent = new Intent(getActivity(), ComentarioPostActivity.class);
+        // Intent intent = new Intent(getActivity(), ComentarioPostActivity.class);
+        Intent intent = new Intent(getActivity(), ScrollingActivity.class);
         startActivity(intent);
     }
 
