@@ -90,9 +90,9 @@
                 android:orientation="horizontal">
 
                 <postaround.tcc.inatel.br.Utils.PostAiTextView
+                    android:id="@+id/tvComment_meu_post"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="3 comentários"
                     android:paddingLeft="40dp"/>
 
             </LinearLayout>
