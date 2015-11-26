@@ -17,9 +17,11 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import postaround.tcc.inatel.br.Utils.PostAiTextView;
 import postaround.tcc.inatel.br.Utils.UserInformation;
 import postaround.tcc.inatel.br.Utils.CircleImage;
 import postaround.tcc.inatel.br.model.Post;
+import postaround.tcc.inatel.br.model.Postinho;
 import postaround.tcc.inatel.br.postaround.ComentarioPostActivity;
 import postaround.tcc.inatel.br.postaround.R;
 import postaround.tcc.inatel.br.postaround.ScrollingActivity;
@@ -54,7 +56,7 @@ public class MeuPostAdapter extends RecyclerView.Adapter<MeuPostAdapter.ViewHold
         public ImageView fotoProfile;
         public ImageView mImagemPost;
         public TextView hiddenTextview;
-
+        public PostAiTextView comments;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -65,6 +67,7 @@ public class MeuPostAdapter extends RecyclerView.Adapter<MeuPostAdapter.ViewHold
             mUserName = (TextView) cv.findViewById(R.id.meu_post_nomeUsuario);
             fotoProfile = (ImageView) cv.findViewById(R.id.imagemview_profile_picture_meu_post);
             hiddenTextview = (TextView) cv.findViewById(R.id.hiddentext_meu_post);
+            comments = (PostAiTextView) cv.findViewById(R.id.tvComment_meu_post);
         }
     }
 
@@ -94,30 +97,47 @@ public class MeuPostAdapter extends RecyclerView.Adapter<MeuPostAdapter.ViewHold
             }else {
                 holder.mImagemPost.setVisibility(View.GONE);
             }
+
+        Postinho postinho = new Postinho();
+        postinho.setId(mPost.get_id());
+        postinho.setPosition(position);
+
+        holder.cv.setTag(postinho);//setar id e position como tag
+
             holder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
                 //criar esse textview escondido
                 //pra armazenar o id do post
-                Intent intent = createIntent(holder.hiddenTextview.getText().toString());
+                Intent intent = createIntent((Postinho) view.getTag());
                 context.startActivity(intent);
             }
         });
             Picasso.with(context).load(("https://graph.facebook.com/" + mPost.getUser_id() + "/picture?type=large")).transform(new CircleImage()).into(holder.fotoProfile);
 
-            holder.hiddenTextview.setText(mPost.get_id());
-            holder.hiddenTextview.setVisibility(View.INVISIBLE);
+            if(mPost.getNumComments() != null) {
+                String com = mPost.getNumComments();
+
+                if(com.equals("1")) {com += " comentário";
+                } else {
+                    com += " comentários";
+                }
+
+                holder.comments.setText(com);
+            }
+           // holder.hiddenTextview.setText(mPost.get_id());
+           // holder.hiddenTextview.setVisibility(View.INVISIBLE);
             holder.mDescricao.setText(mPost.getDescription());
             holder.mUserName.setText(mPost.getUser_name());
     }
 
-    private Intent createIntent(String hiddenText) {
-        //Intent intent = new Intent(context, ComentarioPostActivity.class);
-        Intent intent = new Intent(context, ScrollingActivity.class);
-        intent.putExtra("post_id",hiddenText);
-        intent.putExtra("image_url", mPost.getImage_url());
-        intent.putExtra("description", mPost.getDescription());
-
+    private Intent createIntent(Postinho postinho) {
+        Intent intent = new Intent(context, ComentarioPostActivity.class);
+        intent.putExtra("post_id",postinho.getId());
+        intent.putExtra("image_url", meuPostArrayList.get(postinho.getPosition()).getImage_url());
+        intent.putExtra("description", meuPostArrayList.get(postinho.getPosition()).getDescription());
+        intent.putExtra("user_name", meuPostArrayList.get(postinho.getPosition()).getUser_name());
+        intent.putExtra("user_id", meuPostArrayList.get(postinho.getPosition()).getUser_id());
         return intent;
     }
     @Override

@@ -85,6 +85,8 @@ public class ComentarioPostActivity extends AppCompatActivity {
 
         if(!mPostImageUrl.trim().equals("")) {
             Picasso.with(this).load(mPostImageUrl).into(mPostImage);
+        }else{
+            mPostImage.setVisibility(View.GONE);
         }
         mDescription.setText(mPostDescription);
 

@@ -119,7 +119,11 @@ public class MeusPostsFragment extends Fragment implements SwipeRefreshLayout.On
                     swipeView.setRefreshing(false);
                     locationManager.getmGoogleApiClient().disconnect();
                 } else {
-
+                    if(getFragmentManager() != null){
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.container, new PostNaoEncontradoFragment())
+                                .commit();
+                    }
                 }
             }
 

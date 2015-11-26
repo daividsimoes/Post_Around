@@ -168,9 +168,14 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
     }
 
     private void drawMarkerWithCircleAndZoom(LatLng position){
-        SharedPreferences prefs = this.getSharedPreferences("raio_confg", this.MODE_PRIVATE);
+        SharedPreferences prefs;
+        int raio;
         String maxDis;
-        int raio = prefs.getInt("raio",R.id.raio_um);
+        if( (prefs = this.getSharedPreferences("raio_confg", this.MODE_PRIVATE))!= null){
+            raio = prefs.getInt("raio",R.id.raio_um);
+        }else{
+            raio = R.id.raio_um;
+        }
         switch (raio){
             case  R.id.raio_um:
                 maxDis = "300";
