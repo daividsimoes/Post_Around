@@ -21,6 +21,7 @@ import postaround.tcc.inatel.br.Utils.CircleImage;
 import postaround.tcc.inatel.br.model.Post;
 import postaround.tcc.inatel.br.postaround.ComentarioPostActivity;
 import postaround.tcc.inatel.br.postaround.R;
+import postaround.tcc.inatel.br.postaround.ScrollingActivity;
 
 
 /**
@@ -66,7 +67,6 @@ public class PostAoRedorAdapter extends RecyclerView.Adapter<PostAoRedorAdapter.
 
             cv = (CardView) itemView.findViewById(R.id.cv);
 
-            mTitulo = (TextView) cv.findViewById(R.id.post_titulo);
             mImagemPost = (ImageView) cv.findViewById(R.id.imageView_post_picture_post_redor);
             mDescricao = (TextView) cv.findViewById(R.id.post_descricao);
             mUserName = (TextView) cv.findViewById(R.id.post_nomeUsuario);
@@ -115,7 +115,12 @@ public class PostAoRedorAdapter extends RecyclerView.Adapter<PostAoRedorAdapter.
         Picasso.with(context).load(("https://graph.facebook.com/" + mPost.getUser_id() + "/picture?type=large")).transform(new CircleImage()).into(holder.fotoProfile);
 
         if(mPost.getNumComments() != null) {
-            holder.comments.setText(mPost.getNumComments());
+            String com = mPost.getNumComments();
+
+            if(com.equals("1")) com += " comentário";
+            else com += " comentários";
+
+            holder.comments.setText(com);
         }
         holder.hiddenTextview.setText(mPost.get_id());
         holder.hiddenTextview.setVisibility(View.INVISIBLE);
@@ -125,10 +130,13 @@ public class PostAoRedorAdapter extends RecyclerView.Adapter<PostAoRedorAdapter.
     }
 
     private Intent createIntent(String hiddenText) {
-        Intent intent = new Intent(context, ComentarioPostActivity.class);
+        // Intent intent = new Intent(context, ComentarioPostActivity.class);
+        Intent intent = new Intent(context, ScrollingActivity.class);
         intent.putExtra("post_id",hiddenText);
         intent.putExtra("image_url", mPost.getImage_url());
         intent.putExtra("description", mPost.getDescription());
+        intent.putExtra("user_name", mPost.getUser_name());
+        intent.putExtra("user_id", mPost.getUser_id());
 
         return intent;
     }

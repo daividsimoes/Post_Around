@@ -22,7 +22,6 @@ import android.widget.Toast;
 import com.facebook.FacebookSdk;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import postaround.tcc.inatel.br.Utils.LocationManager;
@@ -31,9 +30,8 @@ import postaround.tcc.inatel.br.adapter.PostAoRedorAdapter;
 import postaround.tcc.inatel.br.interfaces.LocationObserver;
 import postaround.tcc.inatel.br.interfaces.RestAPI;
 import postaround.tcc.inatel.br.model.Post;
-import postaround.tcc.inatel.br.postaround.ComentarioPostActivity;
-import postaround.tcc.inatel.br.postaround.CriarPostActivity;
 import postaround.tcc.inatel.br.postaround.R;
+import postaround.tcc.inatel.br.postaround.ScrollingActivity;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -150,7 +148,8 @@ public class MeusPostsFragment extends Fragment implements SwipeRefreshLayout.On
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        Intent intent = new Intent(getActivity(), ComentarioPostActivity.class);
+        // Intent intent = new Intent(getActivity(), ComentarioPostActivity.class);
+        Intent intent = new Intent(getActivity(), ScrollingActivity.class);
         startActivity(intent);
     }
 
