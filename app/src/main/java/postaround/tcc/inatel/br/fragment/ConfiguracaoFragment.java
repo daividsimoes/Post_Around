@@ -44,10 +44,12 @@ public class ConfiguracaoFragment extends Fragment {
         FacebookSdk.sdkInitialize(this.getActivity());
         tf = Typeface.createFromAsset(getActivity().getAssets(), "fonts/WalkwaySemiBold.ttf");
         alert = new AlertDialog.Builder(getActivity());
-        prefs = getActivity().getSharedPreferences("raio_confg", getActivity().MODE_PRIVATE);
+        if( (prefs = getActivity().getSharedPreferences("raio_confg", getActivity().MODE_PRIVATE))!= null){
+            groupID = prefs.getInt("raio",R.id.raio_um);
+        }else{
+            groupID = R.id.raio_um;
+        }
         editor = prefs.edit();
-        groupID = prefs.getInt("raio",R.id.raio_um);
-
     }
 
     @Override

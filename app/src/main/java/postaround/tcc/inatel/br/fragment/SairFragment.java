@@ -56,10 +56,10 @@ public class SairFragment extends Fragment {
         title.setTypeface(tf);
 
         TextView content = new TextView(getActivity());
-        content.setText("Deseja sair?");
-        content.setTextSize(25);
+        content.setText("Deseja sair do aplicativo PostAí?");
+        content.setTextSize(20);
         content.setTypeface(tf);
-        content.setPadding(35,10,0,0);
+        content.setPadding(30,10,0,0);
 
         alert.setCustomTitle(title);
         alert.setView(content);
