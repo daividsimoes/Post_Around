@@ -19,6 +19,7 @@ import postaround.tcc.inatel.br.Utils.PostAiTextView;
 import postaround.tcc.inatel.br.Utils.UserInformation;
 import postaround.tcc.inatel.br.Utils.CircleImage;
 import postaround.tcc.inatel.br.model.Post;
+import postaround.tcc.inatel.br.model.Postinho;
 import postaround.tcc.inatel.br.postaround.ComentarioPostActivity;
 import postaround.tcc.inatel.br.postaround.R;
 
@@ -75,6 +76,7 @@ public class PostAoRedorAdapter extends RecyclerView.Adapter<PostAoRedorAdapter.
             hiddenTextview = (TextView) view.findViewById(R.id.hiddentext);
 
         }
+
     }
 
     @Override
@@ -91,7 +93,7 @@ public class PostAoRedorAdapter extends RecyclerView.Adapter<PostAoRedorAdapter.
     }
 
     @Override
-    public void onBindViewHolder(final PostAoRedorAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final PostAoRedorAdapter.ViewHolder holder, final int position) {
         mPost = postAoRedorArrayList.get(position);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -102,12 +104,21 @@ public class PostAoRedorAdapter extends RecyclerView.Adapter<PostAoRedorAdapter.
         }else {
             holder.mImagemPost.setVisibility(View.GONE);
         }
+
+        Postinho postinho = new Postinho();
+        postinho.setId(mPost.get_id());
+        postinho.setPosition(position);
+
+        holder.cv.setTag(postinho);//setar id e position como tag
+
         holder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
                         //criar esse textview escondido
                 //pra armazenar o id do post
-                       Intent intent = createIntent(holder.hiddenTextview.getText().toString());
+
+
+                       Intent intent = createIntent((Postinho) view.getTag());
                         context.startActivity(intent);
             }
         });
@@ -115,20 +126,25 @@ public class PostAoRedorAdapter extends RecyclerView.Adapter<PostAoRedorAdapter.
         Picasso.with(context).load(("https://graph.facebook.com/" + mPost.getUser_id() + "/picture?type=large")).transform(new CircleImage()).into(holder.fotoProfile);
 
         if(mPost.getNumComments() != null) {
-            holder.comments.setText(mPost.getNumComments());
+            if(Integer.parseInt(mPost.getNumComments()) > 1) {
+                holder.comments.setText(mPost.getNumComments() + " comentários");
+            }else{
+                holder.comments.setText(mPost.getNumComments() + " comentário");
+            }
         }
-        holder.hiddenTextview.setText(mPost.get_id());
-        holder.hiddenTextview.setVisibility(View.INVISIBLE);
+        //holder.hiddenTextview.setText(mPost.get_id());
+        //holder.hiddenTextview.setVisibility(View.INVISIBLE);
         holder.mDescricao.setText(mPost.getDescription());
         holder.mUserName.setText(mPost.getUser_name());
 
     }
 
-    private Intent createIntent(String hiddenText) {
+    private Intent createIntent(Postinho postinho) {
         Intent intent = new Intent(context, ComentarioPostActivity.class);
-        intent.putExtra("post_id",hiddenText);
-        intent.putExtra("image_url", mPost.getImage_url());
-        intent.putExtra("description", mPost.getDescription());
+        //Postinho postinho = new Postinho();
+        intent.putExtra("post_id",postinho.getId());
+        intent.putExtra("image_url", postAoRedorArrayList.get(postinho.getPosition()).getImage_url());
+        intent.putExtra("description", postAoRedorArrayList.get(postinho.getPosition()).getDescription());
 
         return intent;
     }

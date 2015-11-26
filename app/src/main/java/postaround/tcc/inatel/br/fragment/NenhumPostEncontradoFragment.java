@@ -278,8 +278,6 @@ public class NenhumPostEncontradoFragment extends Fragment
         // Assign the new location
         mLastLocation = location;
 
-        Toast.makeText(getActivity().getApplicationContext(), "Location changed!",
-                Toast.LENGTH_SHORT).show();
     }
 
 }
