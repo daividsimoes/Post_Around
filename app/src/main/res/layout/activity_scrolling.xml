@@ -20,7 +20,9 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/app_bar_height"
             android:fitsSystemWindows="true"
-            android:theme="@style/AppTheme.AppBarOverlay">
+            android:theme="@style/AppTheme.AppBarOverlay"
+            android:minHeight="200dp"
+            >
 
             <android.support.design.widget.CollapsingToolbarLayout
                 android:id="@+id/toolbar_layout"
@@ -36,7 +38,8 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/tcc"
                     android:scaleType="centerCrop"
-                    android:fitsSystemWindows="true"/>
+                    android:fitsSystemWindows="true"
+                    app:layout_collapseMode="parallax"/>
 
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
@@ -52,7 +55,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
-                        android:src="@drawable/ic_arrow_back_white_24dp" />
+                        android:src="@drawable/ic_arrow_back_white_24dp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -75,12 +78,9 @@
             android:layout_margin="@dimen/fab_margin"
             android:src="@android:drawable/ic_dialog_email"
             app:layout_anchor="@id/app_bar"
-
-
-
             app:layout_anchorGravity="bottom|left|end"
-
-            app:layout_collapseMode="parallax"/>
+            app:layout_scrollFlags="scroll"
+            app:layout_behavior="postaround.tcc.inatel.br.Utils.ScrollingFABBehavior"/>
 
         <include
             layout="@layout/content_scrolling" />

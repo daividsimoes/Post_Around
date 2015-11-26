@@ -115,11 +115,11 @@ public class PostAoRedorAdapter extends RecyclerView.Adapter<PostAoRedorAdapter.
             @Override
             public void onClick(View view){
                         //criar esse textview escondido
-                //pra armazenar o id do post
+                        //pra armazenar o id do post
 
 
-                       Intent intent = createIntent((Postinho) view.getTag());
-                        context.startActivity(intent);
+                Intent intent = createIntent((Postinho) view.getTag());
+                context.startActivity(intent);
             }
         });
 
@@ -141,7 +141,7 @@ public class PostAoRedorAdapter extends RecyclerView.Adapter<PostAoRedorAdapter.
     }
 
     private Intent createIntent(Postinho postinho) {
-        Intent intent = new Intent(context, ComentarioPostActivity.class);
+        Intent intent = new Intent(context, ScrollingActivity.class);
         intent.putExtra("post_id",postinho.getId());
         intent.putExtra("image_url", postAoRedorArrayList.get(postinho.getPosition()).getImage_url());
         intent.putExtra("description", postAoRedorArrayList.get(postinho.getPosition()).getDescription());

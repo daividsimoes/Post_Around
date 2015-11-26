@@ -1,14 +1,9 @@
 package postaround.tcc.inatel.br.postaround;
 
-import android.app.Activity;
-import android.content.ComponentName;
 import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ResolveInfo;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.location.Location;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -22,8 +17,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import android.app.AlertDialog;
-
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -35,25 +28,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import postaround.tcc.inatel.br.Utils.PostAiEditText;
-import postaround.tcc.inatel.br.Utils.UserInformation;
-import postaround.tcc.inatel.br.adapter.CropImageAdapter;
 import postaround.tcc.inatel.br.async.GetResponseAsync;
-import postaround.tcc.inatel.br.interfaces.RestAPI;
-import postaround.tcc.inatel.br.model.AsyncTaskArguments;
-import postaround.tcc.inatel.br.model.CropImage;
 import postaround.tcc.inatel.br.model.Loc;
 import postaround.tcc.inatel.br.model.Post;
-import postaround.tcc.inatel.br.model.PostPostRes;
-import retrofit.Callback;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCallback{
 
@@ -61,7 +42,6 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
     private static final int SELECT_PHOTO_RESULT = 2;
     private static final int CAMERA_PIC_REQUEST = 3;
     private static final int SELECT_PHOTO_REQUEST = 4;
-    private static final int CROP_FROM_CAMERA = 5;
 
     private EditText mDescription;
     private ImageButton mSendButton;
@@ -280,16 +260,16 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
         } else if(resultCode == this.RESULT_OK) {
             if (requestCode == CAMERA_PIC_REQUEST) {
                 try {
-                    mImageUri = data.getData();
+
                     mImgViewPic.setImageURI(mImageUri);
                     postImageCard.setVisibility(View.VISIBLE);
                     mImgViewPic.setVisibility(View.VISIBLE);
+                    fotoCard.setVisibility(View.GONE);
 
-                  //  doCrop();
                 } catch (Exception e) {
                     e.printStackTrace();
 
-                    Toast t = Toast.makeText(this, "Fail", Toast.LENGTH_LONG);
+                    Toast t = Toast.makeText(this, "Falha ao obter imagem.", Toast.LENGTH_LONG);
                     t.show();
                 }
             } else if (requestCode == SELECT_PHOTO_REQUEST) {
@@ -299,104 +279,13 @@ public class CriarPostActivity extends AppCompatActivity implements OnMapReadyCa
                     postImageCard.setVisibility(View.VISIBLE);
                     mImgViewPic.setVisibility(View.VISIBLE);
                     fotoCard.setVisibility(View.GONE);
-                    //doCrop();
+
                 } catch (Exception e) {
                     e.printStackTrace();
 
-                    Toast t = Toast.makeText(this, "Fail", Toast.LENGTH_LONG);
+                    Toast t = Toast.makeText(this, "Falha ao obter imagem.", Toast.LENGTH_LONG);
                     t.show();
                 }
-            } else if (requestCode == CROP_FROM_CAMERA) {
-                mImageUri = data.getData();
-                mImgViewPic.setImageURI(mImageUri);
-
-                postImageCard.setVisibility(View.VISIBLE);
-                fotoCard.setVisibility(View.GONE);
-        }
-        }
-    }
-
-    private void doCrop() {
-        final ArrayList<CropImage> cropOptions = new ArrayList<CropImage>();
-
-        Intent intent = new Intent("com.android.camera.action.CROP");
-        intent.setType("image/*");
-
-        List<ResolveInfo> list = getPackageManager().queryIntentActivities(
-                intent, 0);
-
-        int size = list.size();
-
-        if (size == 0) {
-
-            Toast.makeText(this, "Can not find image crop app",
-                    Toast.LENGTH_SHORT).show();
-
-            return;
-        } else {
-            intent.setData(mImageUri);
-
-            //intent.putExtra("outputX", 200);
-            //intent.putExtra("outputY", 200);
-            intent.putExtra("aspectX", 21);
-            intent.putExtra("aspectY", 9);
-            intent.putExtra("scale", true);
-            intent.putExtra("return-data", true);
-
-            if (size == 1) {
-                Intent i = new Intent(intent);
-                ResolveInfo res = list.get(0);
-
-                i.setComponent(new ComponentName(res.activityInfo.packageName,
-                        res.activityInfo.name));
-
-                startActivityForResult(i, CROP_FROM_CAMERA);
-            } else {
-                for (ResolveInfo res : list) {
-                    final CropImage co = new CropImage();
-
-                    co.title = getPackageManager().getApplicationLabel(
-                            res.activityInfo.applicationInfo);
-                    co.icon = getPackageManager().getApplicationIcon(
-                            res.activityInfo.applicationInfo);
-                    co.appIntent = new Intent(intent);
-
-                    co.appIntent
-                            .setComponent(new ComponentName(
-                                    res.activityInfo.packageName,
-                                    res.activityInfo.name));
-
-                    cropOptions.add(co);
-                }
-
-                CropImageAdapter adapter = new CropImageAdapter(
-                        getApplicationContext(), cropOptions);
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Choose Crop App");
-                builder.setAdapter(adapter,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int item) {
-                                startActivityForResult(
-                                        cropOptions.get(item).appIntent,
-                                        CROP_FROM_CAMERA);
-                            }
-                        });
-
-                builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-
-                        if (mImageUri != null) {
-                            getContentResolver().delete(mImageUri, null,
-                                    null);
-                            mImageUri = null;
-                        }
-                    }
-                });
-
-                AlertDialog alert = builder.create();
-                alert.show();
             }
         }
     }
