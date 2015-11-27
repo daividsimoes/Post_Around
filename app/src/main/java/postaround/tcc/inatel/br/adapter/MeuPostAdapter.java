@@ -132,9 +132,17 @@ public class MeuPostAdapter extends RecyclerView.Adapter<MeuPostAdapter.ViewHold
     }
 
     private Intent createIntent(Postinho postinho) {
-        Intent intent = new Intent(context, ComentarioPostActivity.class);
+        Intent intent;
+        String str = meuPostArrayList.get(postinho.getPosition()).getImage_url();
+
+        if(str.trim().equals(""))
+            intent = new Intent(context, ComentarioPostActivity.class);
+        else {
+            intent = new Intent(context, ScrollingActivity.class);
+            intent.putExtra("image_url", meuPostArrayList.get(postinho.getPosition()).getImage_url());
+        }
+
         intent.putExtra("post_id",postinho.getId());
-        intent.putExtra("image_url", meuPostArrayList.get(postinho.getPosition()).getImage_url());
         intent.putExtra("description", meuPostArrayList.get(postinho.getPosition()).getDescription());
         intent.putExtra("user_name", meuPostArrayList.get(postinho.getPosition()).getUser_name());
         intent.putExtra("user_id", meuPostArrayList.get(postinho.getPosition()).getUser_id());

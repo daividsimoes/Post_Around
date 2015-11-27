@@ -51,7 +51,7 @@
             android:paddingTop="23dp"
             android:textSize="18sp"
             android:layout_gravity="left"
-            android:layout_marginLeft="@dimen/user_name_margin" />
+            android:layout_marginLeft="10dp" />
 
     </LinearLayout>
 
