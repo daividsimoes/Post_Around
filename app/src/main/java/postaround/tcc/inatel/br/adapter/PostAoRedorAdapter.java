@@ -141,9 +141,17 @@ public class PostAoRedorAdapter extends RecyclerView.Adapter<PostAoRedorAdapter.
     }
 
     private Intent createIntent(Postinho postinho) {
-        Intent intent = new Intent(context, ScrollingActivity.class);
+        Intent intent;
+        String str = postAoRedorArrayList.get(postinho.getPosition()).getImage_url();
+
+        if(str.trim().equals(""))
+            intent = new Intent(context, ComentarioPostActivity.class);
+        else {
+            intent = new Intent(context, ScrollingActivity.class);
+            intent.putExtra("image_url", postAoRedorArrayList.get(postinho.getPosition()).getImage_url());
+        }
+
         intent.putExtra("post_id",postinho.getId());
-        intent.putExtra("image_url", postAoRedorArrayList.get(postinho.getPosition()).getImage_url());
         intent.putExtra("description", postAoRedorArrayList.get(postinho.getPosition()).getDescription());
         intent.putExtra("user_name", postAoRedorArrayList.get(postinho.getPosition()).getUser_name());
         intent.putExtra("user_id", postAoRedorArrayList.get(postinho.getPosition()).getUser_id());

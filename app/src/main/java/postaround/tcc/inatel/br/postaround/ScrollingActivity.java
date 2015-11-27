@@ -1,58 +1,105 @@
 package postaround.tcc.inatel.br.postaround;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 import postaround.tcc.inatel.br.Utils.CircleImage;
 import postaround.tcc.inatel.br.Utils.PostAiEditText;
+import postaround.tcc.inatel.br.Utils.PostAiTextView;
 import postaround.tcc.inatel.br.Utils.UserInformation;
+import postaround.tcc.inatel.br.adapter.CommentsAdapter;
 import postaround.tcc.inatel.br.async.CommentAsync;
+import postaround.tcc.inatel.br.interfaces.RestAPI;
 import postaround.tcc.inatel.br.model.Comment;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class ScrollingActivity extends AppCompatActivity {
 
-    private CommentAsync asyncTask;
-    private FloatingActionButton send_comment;
+    private Activity mActivity;
+    private RecyclerView mRecyclerView;
+    private View mInclude;
+    private ImageView mPostPicture;
+    private PostAiTextView mDescription;
+    private ImageView mUserPicture;
+    private PostAiTextView mUserName;
     private PostAiEditText mComment;
-    private ImageView fotoProfile;
+    private FloatingActionButton mSendComment;
+    private CommentAsync asyncTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scrolling);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        CollapsingToolbarLayout toolBarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
-        //toolBarLayout.setTitle("Texto Aqui!");
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);;
 
-        fotoProfile = (ImageView) findViewById(R.id.imagemview_profile_picture_post_redor);
-        send_comment = (FloatingActionButton) findViewById(R.id.send_comment);
+        mActivity = this;
+
+        mUserPicture = (ImageView) findViewById(R.id.imagemview_profile_picture_post_redor);
+        mPostPicture = (ImageView) findViewById(R.id.imagemview_post_picture_post_redor);
+        mSendComment = (FloatingActionButton) findViewById(R.id.send_comment);
         mComment = (PostAiEditText) findViewById(R.id.commentEditText);
+        mUserName = (PostAiTextView) findViewById(R.id.userNameTextView);
+        mInclude = findViewById(R.id.includeView);
+        mDescription = (PostAiTextView) mInclude.findViewById(R.id.textview_conteudo_post_detalhado);
 
         Bundle extras = getIntent().getExtras();
 
         final String postId = extras.getString("post_id");
-        String image_url = extras.getString("image_url");
-        String description = extras.getString("post_id");
-        String user_name = extras.getString("user_name");
-        String user_id = extras.getString("user_id");
+        String imageUrl = extras.getString("image_url");
+        String description = extras.getString("description");
+        String userName = extras.getString("user_name");
+        String userId = extras.getString("user_id");
 
-        ImageView fotoProfile = (ImageView) findViewById(R.id.imagemview_profile_picture_post_redor);
-        Picasso.with(this).load(("https://graph.facebook.com/" + user_id + "/picture?type=large")).transform(new CircleImage()).into(fotoProfile);
+        mUserName.setText(userName);
+        mDescription.setText(description);
+        Picasso.with(this).load(("https://graph.facebook.com/" + userId + "/picture?type=large")).transform(new CircleImage()).into(mUserPicture);
+        Picasso.with(this).load(imageUrl).into(mPostPicture);
+
+
+        mRecyclerView = (RecyclerView) mInclude.findViewById(R.id.my_recycler_view_comments);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(layoutManager);
+
+        RestAdapter retrofit = new RestAdapter.Builder()
+                .setEndpoint("http://api-tccpostaround.rhcloud.com/api")
+                .build();
+
+        RestAPI restAPI = retrofit.create(RestAPI.class);
+        if(postId != null) {
+            restAPI.getComments(postId, new Callback<List<Comment>>() {
+                @Override
+                public void success(List<Comment> comments, Response response) {
+                    Log.e("tag", response.getReason().toString());
+                    mRecyclerView.setAdapter(new CommentsAdapter(mActivity, comments));
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.e("erro", "erro");
+                }
+            });
+        }
 
         asyncTask = new CommentAsync(this);
 
-        send_comment.setOnClickListener(new View.OnClickListener() {
+        mSendComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Comment comment = new Comment();
@@ -63,5 +110,4 @@ public class ScrollingActivity extends AppCompatActivity {
             }
         });
     }
-
 }

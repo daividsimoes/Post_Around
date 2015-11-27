@@ -1,4 +1,4 @@
-package postaround.tcc.inatel.br.Utils;  //postaround.tcc.inatel.br.Utils.ScrollingFABBehavior
+package postaround.tcc.inatel.br.Utils;  //postaround.tcc.inatel.br.Utils.ScrollingImageViewBehavior
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -14,11 +14,11 @@ import android.widget.ImageView;
 /**
  * Created by Carol on 26/11/2015.
  */
-public class ScrollingFABBehavior extends CoordinatorLayout.Behavior<ImageView> {
+public class ScrollingImageViewBehavior extends CoordinatorLayout.Behavior<ImageView> {
 
     private int toolbarHeight;
 
-    public ScrollingFABBehavior(Context context, AttributeSet attrs) {
+    public ScrollingImageViewBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         //this.toolbarHeight = GenericUtils.getActionBarHeight(context);

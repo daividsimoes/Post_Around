@@ -1,20 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView
+
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_gravity="fill_vertical"
-    android:layout_marginTop="50dp"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="postaround.tcc.inatel.br.postaround.ScrollingFABBehavior"
-    tools:showIn="@layout/activity_scrolling">
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
 
-    <TextView
+    tools:context="postaround.tcc.inatel.br.postaround.ScrollingActivity"
+    tools:showIn="@layout/activity_scrolling"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="60dp"
+        android:paddingBottom="10dp">
+
+        <postaround.tcc.inatel.br.Utils.PostAiTextView
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:id="@+id/textview_conteudo_post_detalhado"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
-            android:text="@string/large_text" />
+            android:textSize="20sp"
+            android:text="vamos lá!!! reta final!!!"
+            />
+    </LinearLayout>
 
-</android.support.v4.widget.NestedScrollView>
+    <View android:id="@+id/separator"
+        android:background="@color/gray"
+        android:layout_width = "fill_parent"
+        android:layout_height="1dip"/>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_gravity="fill_vertical"
+        tools:context="postaround.tcc.inatel.br.postaround.ScrollingActivity"
+        tools:showIn="@layout/activity_scrolling"
+        xmlns:android="http://schemas.android.com/apk/res/android" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:text="@string/large_text" />
+
+    </android.support.v4.widget.NestedScrollView>
+
+</LinearLayout>

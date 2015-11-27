@@ -10,6 +10,7 @@
     >
 
     <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout"
         android:layout_above="@+id/linearLayout"
         tools:context="postaround.tcc.inatel.br.postaround.ScrollingActivity"
         android:layout_width="wrap_content"
@@ -33,13 +34,13 @@
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <ImageView
-                    android:id="@+id/image"
+                    android:id="@+id/imagemview_post_picture_post_redor"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@drawable/tcc"
                     android:scaleType="centerCrop"
                     android:fitsSystemWindows="true"
-                    app:layout_collapseMode="parallax"/>
+                    app:layout_collapseMode="parallax" />
 
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
@@ -68,6 +69,7 @@
                 </android.support.v7.widget.Toolbar>
 
             </android.support.design.widget.CollapsingToolbarLayout>
+
         </android.support.design.widget.AppBarLayout>
 
         <ImageView
@@ -75,15 +77,30 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
 
-            android:layout_margin="@dimen/fab_margin"
+            android:layout_margin="@dimen/user_img_margin"
             android:src="@android:drawable/ic_dialog_email"
             app:layout_anchor="@id/app_bar"
             app:layout_anchorGravity="bottom|left|end"
             app:layout_scrollFlags="scroll"
-            app:layout_behavior="postaround.tcc.inatel.br.Utils.ScrollingFABBehavior"/>
+            app:layout_behavior="postaround.tcc.inatel.br.Utils.ScrollingImageViewBehavior"/>
+
+        <postaround.tcc.inatel.br.Utils.PostAiTextView
+            android:id="@+id/userNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/dark_orange"
+            android:text="Caroline Tenório"
+            android:layout_above="@+id/linearLayout"
+            android:paddingTop="23dp"
+            android:textSize="18sp"
+            app:layout_anchor="@id/app_bar"
+            app:layout_anchorGravity="bottom|left|end"
+            android:layout_marginLeft="@dimen/user_name_margin"
+            app:layout_behavior="postaround.tcc.inatel.br.Utils.ScrollingPostAiTextViewBehavior" />
 
         <include
-            layout="@layout/content_scrolling" />
+            android:id="@+id/includeView"
+            layout="@layout/fragment_comentario_post" />
 
     </android.support.design.widget.CoordinatorLayout>
 

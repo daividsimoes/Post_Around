@@ -30,7 +30,7 @@ public class ComentarioPostFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_comentario_post, container, false);
-        listView = (ListView) view.findViewById(R.id.listView_comentario_post);
+        //listView = (ListView) view.findViewById(R.id.listView_comentario_post);
         postList = populaLista();
 
 
