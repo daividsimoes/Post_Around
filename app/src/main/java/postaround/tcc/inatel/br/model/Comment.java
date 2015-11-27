@@ -10,6 +10,15 @@ public class Comment {
     private String comment;
     private String postid;
     private String userid;
+    private String username;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public Integer get__v() {
         return __v;
