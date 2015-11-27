@@ -1,6 +1,7 @@
 package postaround.tcc.inatel.br.postaround;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -40,6 +42,8 @@ public class ScrollingActivity extends AppCompatActivity {
     private PostAiEditText mComment;
     private FloatingActionButton mSendComment;
     private CommentAsync asyncTask;
+    private String commentUserName;
+    private String commentUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +53,7 @@ public class ScrollingActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);;
 
         mActivity = this;
-
+        getUserInfo();
         mUserPicture = (ImageView) findViewById(R.id.imagemview_profile_picture_post_redor);
         mPostPicture = (ImageView) findViewById(R.id.imagemview_post_picture_post_redor);
         mSendComment = (FloatingActionButton) findViewById(R.id.send_comment);
@@ -102,12 +106,23 @@ public class ScrollingActivity extends AppCompatActivity {
         mSendComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Comment comment = new Comment();
-                comment.setPostid(postId);
-                comment.setComment(mComment.getText().toString());
-                comment.setUserid(UserInformation.user_id);
-                asyncTask.execute(comment);
+                String description = mComment.getText().toString();
+                if (description.equals(null) || description.equals("")) {
+                    Toast.makeText(getApplication(), "Post deve possuir um comentário", Toast.LENGTH_LONG).show();
+                } else {
+                    Comment comment = new Comment();
+                    comment.setPostid(postId);
+                    comment.setComment(mComment.getText().toString());
+                    comment.setUserid(commentUserId);
+                    comment.setUsername(commentUserName);
+                    asyncTask.execute(comment);
+                }
             }
         });
+    }
+    private void getUserInfo() {
+        SharedPreferences prefs = this.getSharedPreferences("loginpreferences", this.MODE_PRIVATE);
+        commentUserId = prefs.getString("userid","");
+        commentUserName = prefs.getString("username","");
     }
 }

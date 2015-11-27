@@ -2,8 +2,10 @@ package postaround.tcc.inatel.br.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +28,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
 
     private Activity mActivity;
     private List<Comment> mComments;
-
 
     public CommentsAdapter(Activity activity, List<Comment> comments){
         mActivity = activity;
@@ -73,9 +74,8 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
         View view =  inflater.inflate(R.layout.rows_comentario_post, null);
 
         holder.comment.setText(comment.getComment());
+        holder.nome.setText(comment.getUsername());
         Picasso.with(mActivity).load(("https://graph.facebook.com/" + comment.getUserid() + "/picture?type=large")).transform(new CircleImage()).into(holder.userImage);
-
-
 
     }
 
