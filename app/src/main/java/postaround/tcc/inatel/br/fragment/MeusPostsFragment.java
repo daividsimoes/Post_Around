@@ -121,8 +121,8 @@ public class MeusPostsFragment extends Fragment implements SwipeRefreshLayout.On
                 } else {
                     if(getFragmentManager() != null){
                         getFragmentManager().beginTransaction()
-                                .replace(R.id.container, new PostNaoEncontradoFragment())
-                                .commit();
+                                .replace(R.id.container, new NenhumPostEncontradoFragment())
+                                        .commit();
                     }
                 }
             }
